@@ -1,5 +1,6 @@
 package com.bcdm.foodtraceability.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 import lombok.Data;
@@ -11,13 +12,18 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author 王
- * @since 2022-01-11
+ * @since 2022-01-13
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class User implements Serializable {
 
     private static final long serialVersionUID=1L;
+
+    /**
+     * 用户ID
+     */
+    private Integer userId;
 
     /**
      * 账号
@@ -30,9 +36,9 @@ public class User implements Serializable {
     private String password;
 
     /**
-     * 用户ID
+     * UUID
      */
-    private Integer userId;
+    private String salt;
 
     /**
      * 用户状态
@@ -40,9 +46,39 @@ public class User implements Serializable {
     private Integer userStatus;
 
     /**
-     * UUID
+     * 姓名
      */
-    private String salt;
+    private String userName;
+
+    /**
+     * 身份证号
+     */
+    private String idCard;
+
+    /**
+     * 电话号
+     */
+    private Integer phoneNumber;
+
+    /**
+     * 邮箱地址
+     */
+    private String mailAddress;
+
+    /**
+     * 性别
+     */
+    private Integer sex;
+
+    /**
+     * 年龄
+     */
+    private Integer age;
+
+    /**
+     * 出生日期
+     */
+    private LocalDate birthday;
 
     private LocalDateTime createTime;
 

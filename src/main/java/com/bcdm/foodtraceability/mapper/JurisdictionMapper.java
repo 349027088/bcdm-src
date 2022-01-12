@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author 王
- * @since 2022-01-11
+ * @since 2022-01-13
  */
 public interface JurisdictionMapper extends BaseMapper<Jurisdiction> {
 

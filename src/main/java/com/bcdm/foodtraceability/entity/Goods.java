@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author 王
- * @since 2022-01-11
+ * @since 2022-01-13
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -52,11 +52,6 @@ public class Goods implements Serializable {
      * 生产厂商ID
      */
     private Integer manufacturerId;
-
-    /**
-     * 产地
-     */
-    private Integer producingAreaId;
 
     /**
      * 商品名称
