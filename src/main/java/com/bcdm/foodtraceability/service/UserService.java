@@ -22,7 +22,6 @@ public interface UserService extends IService<User> {
     /**
      * 用于用户注册
      * @param user 用户登录信息
-     * @param userInfo 用户信息
      * @return 用户信息
      */
     User register(User user);
@@ -36,8 +35,22 @@ public interface UserService extends IService<User> {
 
     /**
      * 修改用户信息
-     * @param userInfo 修改用用户信息
+     * @param user 修改用用户信息
      * @return 用户信息
      */
     User modifyUserInfo(User user);
+
+    /**
+     * 锁定用户
+     * @param user 锁定用户
+     * @return 成功与否
+     */
+    boolean lockUser(User user);
+
+    /**
+     * 解锁用户
+     * @param user 解锁用户
+     * @return 成功与否
+     */
+    boolean unLockUser(User user);
 }

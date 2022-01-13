@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 
+ * 用户企业管理信息载体
  * </p>
  *
  * @author 王

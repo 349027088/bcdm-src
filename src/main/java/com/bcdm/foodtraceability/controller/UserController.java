@@ -1,9 +1,10 @@
 package com.bcdm.foodtraceability.controller;
 
 
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.stereotype.Controller;
+import com.bcdm.foodtraceability.entity.ReturnItem;
+import com.bcdm.foodtraceability.entity.User;
+import com.bcdm.foodtraceability.exception.ServiceBusinessException;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -13,9 +14,19 @@ import org.springframework.stereotype.Controller;
  * @author 王
  * @since 2022-01-13
  */
-@Controller
+@RestController
 @RequestMapping("/user")
 public class UserController {
+
+    @RequestMapping("/login")
+    public ReturnItem<User> login(@RequestBody User user) throws Exception{
+        if ("1".equals(user.getLoginId())){
+
+            throw  new ServiceBusinessException("400","链接失败");
+        }
+        return null;
+    }
+
 
 }
 

@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 
+ * 商品信息载体
  * </p>
  *
  * @author 王

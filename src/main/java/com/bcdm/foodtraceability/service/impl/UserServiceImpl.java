@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+import static com.bcdm.foodtraceability.common.Constants.USER_STATUS_LOCK;
+import static com.bcdm.foodtraceability.common.Constants.USER_STATUS_UNLOCK;
 import static com.bcdm.foodtraceability.common.CreateMD5.Md5encode;
 import static com.bcdm.foodtraceability.common.CreateUUID.getUUID;
 
@@ -55,6 +57,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             stringBuilder.append(user.getSalt());
             user.setPassword(Md5encode(stringBuilder.toString()));
             LocalDateTime now = LocalDateTime.now();
+            user.setUserStatus(USER_STATUS_UNLOCK);
             user.setCreateTime(now);
             user.setUpdateTime(now);
             save(user);
@@ -84,5 +87,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         updateWrapper.eq("userId",targetUser.getUserId());
         updateWrapper.eq("updateTime",targetUser.getUpdateTime());
         return update(user,updateWrapper)?user:targetUser;
+    }
+
+    @Override
+    public boolean lockUser(User user) {
+        UpdateWrapper updateWrapper = new UpdateWrapper();
+        updateWrapper.eq("userId",user.getUserId());
+        updateWrapper.set("userStatus",USER_STATUS_LOCK);
+        return update(user,updateWrapper);
+    }
+
+    @Override
+    public boolean unLockUser(User user) {
+        UpdateWrapper updateWrapper = new UpdateWrapper();
+        updateWrapper.eq("userId",user.getUserId());
+        updateWrapper.set("userStatus",USER_STATUS_UNLOCK);
+        return update(user,updateWrapper);
     }
 }
