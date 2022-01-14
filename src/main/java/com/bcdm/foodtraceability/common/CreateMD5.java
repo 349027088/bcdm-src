@@ -3,8 +3,6 @@ package com.bcdm.foodtraceability.common;
 import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
 
-import java.nio.charset.StandardCharsets;
-
 /**
  * <p>
  *  工具类：使用MD5进行加密

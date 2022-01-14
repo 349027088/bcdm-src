@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author 王
@@ -15,42 +15,48 @@ public interface UserService extends IService<User> {
 
     /**
      * 用于用户登录
+     *
      * @return 用户信息
      */
-    User login(User user);
+    User login(User user) throws Exception;
 
     /**
      * 用于用户注册
+     *
      * @param user 用户登录信息
      * @return 用户信息
      */
-    User register(User user);
+    User register(User user) throws Exception;
 
     /**
      * 修改密码
+     *
      * @param user 修改用登录信息
      * @return 用户信息
      */
-    User modifyPassword(User user,String newPassword);
+    User modifyPassword(User user, String newPassword) throws Exception;
 
     /**
      * 修改用户信息
+     *
      * @param user 修改用用户信息
      * @return 用户信息
      */
-    User modifyUserInfo(User user);
+    User modifyUserInfo(User user) throws Exception;
 
     /**
      * 锁定用户
+     *
      * @param user 锁定用户
      * @return 成功与否
      */
-    boolean lockUser(User user);
+    boolean lockUser(User user) throws Exception;
 
     /**
      * 解锁用户
+     *
      * @param user 解锁用户
      * @return 成功与否
      */
-    boolean unLockUser(User user);
+    boolean unLockUser(User user) throws Exception;
 }

@@ -7,6 +7,9 @@ import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
 /**
  * <p>
  * 供应商信息载体
@@ -40,7 +43,9 @@ public class Supplier implements Serializable {
     /**
      * 联系方式
      */
-    private Integer supplierPhoneNumber;
+    @NotNull(message = "请输入正确的电话号码")
+    @Pattern(message = "请输入正确的电话号码", regexp = "^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$")
+    private String supplierPhoneNumber;
 
     /**
      * 主营业务

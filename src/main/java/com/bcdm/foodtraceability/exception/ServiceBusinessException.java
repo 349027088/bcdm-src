@@ -10,12 +10,13 @@ import lombok.Setter;
 public class ServiceBusinessException extends Exception{
 
     /**
+     * 异常码
+     */
+    private String errorCode;
+
+    /**
      * 异常信息
      */
     private String errorMessage;
 
-    /**
-     * 异常码
-     */
-    private String errorCode;
 }

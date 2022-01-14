@@ -20,5 +20,15 @@ public class Constants {
      */
     public static final int USER_STATUS_LOCK = 1;
 
+    /**
+     * 性别男
+     */
+    public static final int USER_SEX_MAN = 1;
+
+    /**
+     * 性别女
+     */
+    public static final int USER_SEX_WOMEN = 0;
+
 
 }

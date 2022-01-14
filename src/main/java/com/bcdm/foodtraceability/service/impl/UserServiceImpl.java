@@ -1,15 +1,13 @@
 package com.bcdm.foodtraceability.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.segments.MergeSegments;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.bcdm.foodtraceability.entity.User;
+import com.bcdm.foodtraceability.exception.ServiceBusinessException;
 import com.bcdm.foodtraceability.mapper.UserMapper;
 import com.bcdm.foodtraceability.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import lombok.val;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,6 +16,7 @@ import static com.bcdm.foodtraceability.common.Constants.USER_STATUS_LOCK;
 import static com.bcdm.foodtraceability.common.Constants.USER_STATUS_UNLOCK;
 import static com.bcdm.foodtraceability.common.CreateMD5.Md5encode;
 import static com.bcdm.foodtraceability.common.CreateUUID.getUUID;
+import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_FAIL;
 
 /**
  * <p>
@@ -28,80 +27,97 @@ import static com.bcdm.foodtraceability.common.CreateUUID.getUUID;
  * @since 2022-01-13
  */
 @Service
+@Slf4j
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     @Override
-    public User login(User user) {
+    public User login(User user) throws Exception {
+        log.info(user.getLoginId() + "-------登录");
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("loginId", user.getLoginId());
+        queryWrapper.eq("login_id", user.getLoginId());
         User selectUser = getOne(queryWrapper);
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(user.getPassword());
-        stringBuilder.append(selectUser.getSalt());
-        if (selectUser.getPassword().equals(Md5encode(stringBuilder.toString()))) {
-            return user;
+        if (null != selectUser) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(user.getPassword());
+            stringBuilder.append(selectUser.getSalt());
+            if (Md5encode(stringBuilder.toString()).equals(selectUser.getPassword())) {
+                return selectUser;
+            }
         }
-        return null;
-
-
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, "账号密码错误");
     }
 
     @Override
-    public User register(User user) {
+    public User register(User user) throws Exception {
+        log.info(user.getLoginId() + "-------注册");
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("loginId", user.getLoginId());
-        if (0 == count(queryWrapper)){
+        queryWrapper.eq("login_id", user.getLoginId());
+        if (0 == count(queryWrapper)) {
             user.setSalt(getUUID());
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(user.getPassword());
-            stringBuilder.append(user.getSalt());
-            user.setPassword(Md5encode(stringBuilder.toString()));
+            String password = user.getPassword();
+            String stringBuffer = user.getPassword() + user.getSalt();
+            user.setPassword(Md5encode(stringBuffer));
             LocalDateTime now = LocalDateTime.now();
             user.setUserStatus(USER_STATUS_UNLOCK);
             user.setCreateTime(now);
             user.setUpdateTime(now);
             save(user);
-           return login(user);
+            user.setPassword(password);
+            return login(user);
         }
-        return null;
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, "当前账号已被使用");
     }
 
     @Override
-    public User modifyPassword(User user,String newPassword) {
+    public User modifyPassword(User user, String newPassword) throws Exception {
+        log.info(user.getLoginId() + "-------修改密码");
         User targetUser = login(user);
-        user = targetUser;
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(newPassword);
-        stringBuilder.append(targetUser.getSalt());
-        targetUser.setPassword(Md5encode(stringBuilder.toString()));
-        UpdateWrapper updateWrapper = new UpdateWrapper();
-        updateWrapper.eq("userId",targetUser.getUserId());
-        updateWrapper.eq("updateTime",targetUser.getUpdateTime());
-        return update(targetUser,updateWrapper)?targetUser:user;
+        String stringBuffer = newPassword + targetUser.getSalt();
+        targetUser.setPassword(Md5encode(stringBuffer));
+        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("user_id", targetUser.getUserId());
+        updateWrapper.eq("update_time", targetUser.getUpdateTime());
+        LocalDateTime now = LocalDateTime.now();
+        user.setUpdateTime(now);
+        if (update(targetUser, updateWrapper)) {
+            return targetUser;
+        }
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, "密码修改失败");
     }
 
     @Override
-    public User modifyUserInfo(User user) {
+    public User modifyUserInfo(User user) throws Exception {
+        log.info(user.getLoginId() + "-------修改用户信息");
         User targetUser = login(user);
-        UpdateWrapper updateWrapper = new UpdateWrapper();
-        updateWrapper.eq("userId",targetUser.getUserId());
-        updateWrapper.eq("updateTime",targetUser.getUpdateTime());
-        return update(user,updateWrapper)?user:targetUser;
+        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("user_id", targetUser.getUserId());
+        updateWrapper.eq("update_time", targetUser.getUpdateTime());
+        LocalDateTime now = LocalDateTime.now();
+        user.setUpdateTime(now);
+        return update(user, updateWrapper) ? user : targetUser;
     }
 
     @Override
-    public boolean lockUser(User user) {
-        UpdateWrapper updateWrapper = new UpdateWrapper();
-        updateWrapper.eq("userId",user.getUserId());
-        updateWrapper.set("userStatus",USER_STATUS_LOCK);
-        return update(user,updateWrapper);
+    public boolean lockUser(User user) throws Exception {
+        log.info(user.getLoginId() + "-------锁定用户");
+        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("user_id", user.getUserId());
+        updateWrapper.set("user_status", USER_STATUS_LOCK);
+        updateWrapper.eq("update_time", user.getUpdateTime());
+        LocalDateTime now = LocalDateTime.now();
+        user.setUpdateTime(now);
+        return update(user, updateWrapper);
     }
 
     @Override
-    public boolean unLockUser(User user) {
-        UpdateWrapper updateWrapper = new UpdateWrapper();
-        updateWrapper.eq("userId",user.getUserId());
-        updateWrapper.set("userStatus",USER_STATUS_UNLOCK);
-        return update(user,updateWrapper);
+    public boolean unLockUser(User user) throws Exception {
+        log.info(user.getLoginId() + "-------解锁用户");
+        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("userId", user.getUserId());
+        updateWrapper.set("user_status", USER_STATUS_UNLOCK);
+        updateWrapper.eq("update_time", user.getUpdateTime());
+        LocalDateTime now = LocalDateTime.now();
+        user.setUpdateTime(now);
+        return update(user, updateWrapper);
     }
 }
