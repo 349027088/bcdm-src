@@ -75,7 +75,7 @@ public class ManagementController {
     public ReturnItem<Management> modifyPassword(@Validated() @RequestBody String passwordInfo) throws Exception{
         JSONObject jsonObject = JSONObject.parseObject(passwordInfo);
         String newPassword = jsonObject.getString("newPassword");
-        Management management = jsonObject.getObject("Management",Management.class);
+        Management management = jsonObject.getObject("management",Management.class);
         ReturnItem<Management> returnItem = new ReturnItem<>();
         returnItem.setT(managementService.modifyPassword(management,newPassword));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);

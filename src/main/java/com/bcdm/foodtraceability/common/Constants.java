@@ -30,5 +30,15 @@ public class Constants {
      */
     public static final int USER_SEX_WOMEN = 0;
 
+    /**
+     * 性别女
+     */
+    public static final int MANAGEMENT_NORMAL_LEVEL = 1;
+
+    /**
+     * 性别女
+     */
+    public static final int MANAGEMENT_HIGH_LEVEL = 2;
+
 
 }

@@ -2,7 +2,6 @@ package com.bcdm.foodtraceability.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.bcdm.foodtraceability.entity.Management;
 import com.bcdm.foodtraceability.entity.User;
 import com.bcdm.foodtraceability.exception.ServiceBusinessException;
 import com.bcdm.foodtraceability.mapper.UserMapper;

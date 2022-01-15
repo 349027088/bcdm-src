@@ -7,12 +7,14 @@ import java.io.Serializable;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.bcdm.foodtraceability.validatedgroup.RegisterGroup;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.*;
 
@@ -41,6 +43,7 @@ public class Management implements Serializable {
      * 管理员账号
      */
     @NotNull(message = "账号不能为空")
+    @Pattern(message = "账号只能为字母或者数字", regexp = "^[A-Za-z0-9]+$")
     @Length(max=32,min=6,message="用户长度为6-32位")
     private String loginId;
 
@@ -48,6 +51,7 @@ public class Management implements Serializable {
      * 管理员密码
      */
     @NotNull(message = "密码不能为空")
+    @Pattern(message = "密码只能为字母或者数字", regexp = "^[A-Za-z0-9]+$")
     @Length(max=16,min=6,message="密码长度为6-16位")
     private String password;
 
@@ -110,6 +114,7 @@ public class Management implements Serializable {
     /**
      * 出生日期
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private LocalDate birthday;
 
     private LocalDateTime createTime;

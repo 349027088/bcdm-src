@@ -3,20 +3,16 @@ package com.bcdm.foodtraceability.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.bcdm.foodtraceability.entity.Management;
-import com.bcdm.foodtraceability.entity.User;
 import com.bcdm.foodtraceability.exception.ServiceBusinessException;
 import com.bcdm.foodtraceability.mapper.ManagementMapper;
 import com.bcdm.foodtraceability.service.ManagementService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
-import static com.bcdm.foodtraceability.common.Constants.USER_STATUS_LOCK;
-import static com.bcdm.foodtraceability.common.Constants.USER_STATUS_UNLOCK;
+import static com.bcdm.foodtraceability.common.Constants.*;
 import static com.bcdm.foodtraceability.common.CreateMD5.Md5encode;
 import static com.bcdm.foodtraceability.common.CreateUUID.getUUID;
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_FAIL;
@@ -62,6 +58,7 @@ public class ManagementServiceImpl extends ServiceImpl<ManagementMapper, Managem
             management.setPassword(Md5encode(stringBuffer));
             LocalDateTime now = LocalDateTime.now();
             management.setManagerStatus(USER_STATUS_UNLOCK);
+            management.setManagerLevel(MANAGEMENT_NORMAL_LEVEL);
             management.setCreateTime(now);
             management.setUpdateTime(now);
             save(management);
