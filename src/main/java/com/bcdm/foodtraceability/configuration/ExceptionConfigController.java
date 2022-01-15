@@ -17,10 +17,10 @@ public class ExceptionConfigController {
     // 专门用来捕获和处理Controller层的业务异常
     @ExceptionHandler(ServiceBusinessException.class)
     public ModelAndView serviceBusinessExceptionHandler(ServiceBusinessException e){
-        log.info(e.getErrorMessage());
+        log.info(e.getHttpMessage());
         ModelAndView mv = new ModelAndView(new MappingJackson2JsonView());
-        mv.addObject("errorCode",e.getErrorCode());
-        mv.addObject("message",e.getErrorMessage());
+        mv.addObject("httpStatus",e.getHttpStatus());
+        mv.addObject("httpMessage",e.getHttpMessage());
         return mv;
     }
 
@@ -34,8 +34,8 @@ public class ExceptionConfigController {
     @ExceptionHandler(NullPointerException.class)
     public ModelAndView nullPointerExceptionHandler(NullPointerException e){
         ModelAndView mv = new ModelAndView(new MappingJackson2JsonView());
-        mv.addObject("errorCode",false);
-        mv.addObject("message","请求发生了空指针异常，请稍后再试");
+        mv.addObject("httpStatus",false);
+        mv.addObject("httpMessage","请求发生了空指针异常，请稍后再试");
         return mv;
     }
 
@@ -44,8 +44,8 @@ public class ExceptionConfigController {
     public ModelAndView runtimeExceptionHandler(RuntimeException e){
         e.printStackTrace();
         ModelAndView mv = new ModelAndView(new MappingJackson2JsonView());
-        mv.addObject("errorCode",false);
-        mv.addObject("message","请求发生了运行时异常，请稍后再试");
+        mv.addObject("httpStatus",false);
+        mv.addObject("httpMessage","请求发生了运行时异常，请稍后再试");
         return mv;
     }
 
@@ -53,8 +53,8 @@ public class ExceptionConfigController {
     @ExceptionHandler(Exception.class)
     public ModelAndView exceptionHandler(Exception e){
         ModelAndView mv = new ModelAndView(new MappingJackson2JsonView());
-        mv.addObject("errorCode",false);
-        mv.addObject("message","请求发生了异常，请稍后再试");
+        mv.addObject("httpStatus",false);
+        mv.addObject("httpMessage","请求发生了异常，请稍后再试");
         return mv;
     }
 }

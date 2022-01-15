@@ -4,9 +4,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.bcdm.foodtraceability.validatedgroup.RegisterGroup;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 
@@ -20,7 +24,8 @@ import javax.validation.constraints.*;
  * @author 王
  * @since 2022-01-13
  */
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = false)
 public class User implements Serializable {
 
@@ -29,6 +34,7 @@ public class User implements Serializable {
     /**
      * 用户ID
      */
+    @TableId(type = IdType.AUTO)
     private Integer userId;
 
     /**

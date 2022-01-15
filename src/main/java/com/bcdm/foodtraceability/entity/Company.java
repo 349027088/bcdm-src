@@ -2,6 +2,9 @@ package com.bcdm.foodtraceability.entity;
 
 import java.time.LocalDateTime;
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -22,6 +25,7 @@ public class Company implements Serializable {
     /**
      * 企业ID
      */
+    @TableId(type = IdType.AUTO)
     private Integer companyId;
 
     /**

@@ -2,6 +2,7 @@ package com.bcdm.foodtraceability.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.bcdm.foodtraceability.entity.Management;
 import com.bcdm.foodtraceability.entity.User;
 import com.bcdm.foodtraceability.exception.ServiceBusinessException;
 import com.bcdm.foodtraceability.mapper.UserMapper;
@@ -36,7 +37,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("login_id", user.getLoginId());
         User selectUser = getOne(queryWrapper);
-        if (null != selectUser) {
+        if (!(null == selectUser)) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(user.getPassword());
             stringBuilder.append(selectUser.getSalt());
@@ -100,10 +101,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public boolean lockUser(User user) throws Exception {
         log.info(user.getLoginId() + "-------锁定用户");
-        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("user_id", user.getUserId());
-        updateWrapper.set("user_status", USER_STATUS_LOCK);
-        updateWrapper.eq("update_time", user.getUpdateTime());
+        user.setUserStatus(USER_STATUS_LOCK);
+        UpdateWrapper<User> updateWrapper = forStatusUpdate(user);
         LocalDateTime now = LocalDateTime.now();
         user.setUpdateTime(now);
         return update(user, updateWrapper);
@@ -112,12 +111,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public boolean unLockUser(User user) throws Exception {
         log.info(user.getLoginId() + "-------解锁用户");
-        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("userId", user.getUserId());
-        updateWrapper.set("user_status", USER_STATUS_UNLOCK);
-        updateWrapper.eq("update_time", user.getUpdateTime());
-        LocalDateTime now = LocalDateTime.now();
-        user.setUpdateTime(now);
+        user.setUserStatus(USER_STATUS_UNLOCK);
+        UpdateWrapper<User> updateWrapper = forStatusUpdate(user);
+        user.setUpdateTime(LocalDateTime.now());
         return update(user, updateWrapper);
+    }
+
+    /**
+     * 用户锁定解锁用共通处理
+     * @param user 用户
+     * @return 生成的SQL操作
+     */
+    private UpdateWrapper<User> forStatusUpdate(User user){
+        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("user_id", user.getUserId());
+        updateWrapper.set("user_status", user.getUserStatus());
+        updateWrapper.eq("update_time", user.getUpdateTime());
+        return updateWrapper;
     }
 }

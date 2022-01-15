@@ -3,6 +3,9 @@ package com.bcdm.foodtraceability.entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -23,6 +26,7 @@ public class Empower implements Serializable {
     /**
      * 授权ID
      */
+    @TableId(type = IdType.AUTO)
     private Integer empowerId;
 
     /**

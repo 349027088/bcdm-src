@@ -12,11 +12,11 @@ public class ServiceBusinessException extends Exception{
     /**
      * 异常码
      */
-    private String errorCode;
+    private String httpStatus;
 
     /**
      * 异常信息
      */
-    private String errorMessage;
+    private String httpMessage;
 
 }
