@@ -40,5 +40,10 @@ public class Constants {
      */
     public static final int MANAGEMENT_HIGH_LEVEL = 2;
 
+    /**
+     * 查询结果为0
+     */
+    public static final int SELECT_ZERO = 0;
+
 
 }
