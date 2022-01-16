@@ -10,7 +10,16 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_FAIL;
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_SERVER_FAIL;
+import static com.bcdm.foodtraceability.common.MessageConstants.*;
 
+/**
+ * <p>
+ * 全局异常捕捉器
+ * </p>
+ *
+ * @author 王
+ * @since 2022-01-16
+ */
 @ControllerAdvice
 @Slf4j
 public class ExceptionConfigController {
@@ -34,18 +43,18 @@ public class ExceptionConfigController {
     // 专门用来捕获和处理Controller层的空指针异常
     @ExceptionHandler(NullPointerException.class)
     public ModelAndView nullPointerExceptionHandler(NullPointerException e){
-        return serviceBusinessExceptionHandler(new ServiceBusinessException(HTTP_RETURN_SERVER_FAIL,e.getMessage()));
+        return serviceBusinessExceptionHandler(new ServiceBusinessException(HTTP_RETURN_SERVER_FAIL,NOT_POINT_ERROR));
     }
 
     // 专门用来捕获和处理Controller层的运行时异常
     @ExceptionHandler(RuntimeException.class)
     public ModelAndView runtimeExceptionHandler(RuntimeException e){
-        return serviceBusinessExceptionHandler(new ServiceBusinessException(HTTP_RETURN_SERVER_FAIL,e.getMessage()));
+        return serviceBusinessExceptionHandler(new ServiceBusinessException(HTTP_RETURN_SERVER_FAIL,RUNTIME_ERROR));
     }
 
     // 专门用来捕获和处理Controller层的异常
     @ExceptionHandler(Exception.class)
     public ModelAndView exceptionHandler(Exception e){
-        return serviceBusinessExceptionHandler(new ServiceBusinessException(HTTP_RETURN_SERVER_FAIL,e.getMessage()));
+        return serviceBusinessExceptionHandler(new ServiceBusinessException(HTTP_RETURN_SERVER_FAIL,SEVER_ERROR));
     }
 }

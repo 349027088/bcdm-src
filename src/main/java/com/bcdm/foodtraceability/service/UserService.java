@@ -1,7 +1,11 @@
 package com.bcdm.foodtraceability.service;
 
+import com.bcdm.foodtraceability.entity.Company;
+import com.bcdm.foodtraceability.entity.Jurisdiction;
 import com.bcdm.foodtraceability.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -50,7 +54,7 @@ public interface UserService extends IService<User> {
      * @param user 锁定用户
      * @return 成功与否
      */
-    boolean lockUser(User user) throws Exception;
+    int lockUser(User user) throws Exception;
 
     /**
      * 解锁用户
@@ -58,5 +62,14 @@ public interface UserService extends IService<User> {
      * @param user 解锁用户
      * @return 成功与否
      */
-    boolean unLockUser(User user) throws Exception;
+    int unLockUser(User user) throws Exception;
+
+    /**
+     * 获取企业的所有员工
+     *
+     * @param company 需要获取员工的企业
+     * @return 取得的员工列表
+     */
+    List<User> getUserByCompany(Company company) throws Exception;
+
 }

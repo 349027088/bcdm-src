@@ -41,7 +41,7 @@ public class Jurisdiction implements Serializable {
     /**
      * 职位
      */
-    private String identity;
+    private Integer identity;
 
     /**
      * 操作权限
