@@ -1,18 +1,16 @@
 package com.bcdm.foodtraceability.controller;
 
-
-import com.baomidou.mybatisplus.extension.api.R;
 import com.bcdm.foodtraceability.entity.Company;
 import com.bcdm.foodtraceability.entity.ReturnItem;
 import com.bcdm.foodtraceability.entity.User;
 import com.bcdm.foodtraceability.service.CompanyService;
 import com.bcdm.foodtraceability.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_SUCCESS;
+import static com.bcdm.foodtraceability.common.MessageConstants.*;
 
 /**
  * <p>
@@ -26,11 +24,14 @@ import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_SUCCESS
 @RequestMapping("/company")
 public class CompanyController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private CompanyService companyService;
+    private final CompanyService companyService;
+
+    public CompanyController(UserService userService, CompanyService companyService) {
+        this.userService = userService;
+        this.companyService = companyService;
+    }
 
     /**
      * 企业登录Controller
@@ -46,7 +47,7 @@ public class CompanyController {
         ReturnItem<Company> returnItem = new ReturnItem<>();
         returnItem.setT(companyService.register(user, company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
-        returnItem.setHttpMessage("企业登录成功");
+        returnItem.setHttpMessage(CREATE_COMPANY_SUCCESS);
         return returnItem;
     }
 
@@ -64,7 +65,7 @@ public class CompanyController {
         ReturnItem<Company> returnItem = new ReturnItem<>();
         returnItem.setT(companyService.modify(user, company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
-        returnItem.setHttpMessage("企业信息修改成功");
+        returnItem.setHttpMessage(MODIFY_COMPANY_INFO_SUCCESS);
         return returnItem;
     }
 
@@ -81,7 +82,7 @@ public class CompanyController {
         ReturnItem<List<User>> returnItem = new ReturnItem<>();
         returnItem.setT(userService.getUserByCompany(company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
-        returnItem.setHttpMessage("员工信息获取成功");
+        returnItem.setHttpMessage(COMPANY_USER_GET_SUCCESS);
         return returnItem;
     }
 
@@ -90,7 +91,7 @@ public class CompanyController {
     public ReturnItem<Company> createCompanyIcon() {
         ReturnItem<Company> returnItem = new ReturnItem<>();
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
-        returnItem.setHttpMessage("企业图片上传成功");
+        returnItem.setHttpMessage(COMPANY_ICON_UPLOAD_SUCCESS);
         return returnItem;
     }
 
@@ -99,7 +100,7 @@ public class CompanyController {
     public ReturnItem<Company> modifyCompanyIcon() {
         ReturnItem<Company> returnItem = new ReturnItem<>();
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
-        returnItem.setHttpMessage("企业图片修改成功");
+        returnItem.setHttpMessage(COMPANY_ICON_MODIFY_SUCCESS);
         return returnItem;
     }
 

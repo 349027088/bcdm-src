@@ -4,18 +4,15 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bcdm.foodtraceability.entity.Company;
-import com.bcdm.foodtraceability.entity.Jurisdiction;
 import com.bcdm.foodtraceability.entity.User;
 import com.bcdm.foodtraceability.exception.ServiceBusinessException;
 import com.bcdm.foodtraceability.mapper.UserMapper;
 import com.bcdm.foodtraceability.service.JurisdictionService;
 import com.bcdm.foodtraceability.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.bcdm.foodtraceability.common.Constants.*;
@@ -36,8 +33,11 @@ import static com.bcdm.foodtraceability.common.MessageConstants.*;
 @Slf4j
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
-    @Autowired
-    private JurisdictionService jurisdictionService;
+    private final JurisdictionService jurisdictionService;
+
+    public UserServiceImpl(JurisdictionService jurisdictionService) {
+        this.jurisdictionService = jurisdictionService;
+    }
 
     @Override
     public User login(User user) throws Exception {
@@ -70,7 +70,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             user.setUserStatus(USER_STATUS_UNLOCK);
             user.setCreateTime(now);
             user.setUpdateTime(now);
-            save(user);
+            if (!save(user)){
+                throw new ServiceBusinessException(HTTP_RETURN_FAIL, REGISTER_FAIL);
+            }
             user.setPassword(password);
             return login(user);
         }
@@ -83,32 +85,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User targetUser = login(user);
         String stringBuffer = newPassword + targetUser.getSalt();
         targetUser.setPassword(Md5encode(stringBuffer));
-        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
-        updateWrapper
-                .eq("user_id", targetUser.getUserId())
-                .eq("update_time", targetUser.getUpdateTime());
-        LocalDateTime now = LocalDateTime.now();
-        user.setUpdateTime(now);
-        if (update(targetUser, updateWrapper)) {
-            return targetUser;
-        }
-        throw new ServiceBusinessException(HTTP_RETURN_FAIL, MODIFY_PASSWORD_FAIL);
+        return getUser(targetUser, MODIFY_PASSWORD_FAIL);
     }
 
     @Override
     public User modifyUserInfo(User user) throws Exception {
         log.info(user.getLoginId() + "-------修改用户信息");
-        User targetUser = login(user);
-        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
-        updateWrapper
-                .eq("user_id", targetUser.getUserId())
-                .eq("update_time", targetUser.getUpdateTime());
-        LocalDateTime now = LocalDateTime.now();
-        user.setUpdateTime(now);
-        if (update(targetUser, updateWrapper)) {
-            return targetUser;
-        }
-        throw new ServiceBusinessException(HTTP_RETURN_FAIL, MODIFY_USERINFO_FAIL);
+        login(user);
+        return getUser(user, MODIFY_USERINFO_FAIL);
     }
 
     @Override
@@ -138,14 +122,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public List<User> getUserByCompany(Company company) throws Exception {
-        List<Jurisdiction> jurisdictionList = jurisdictionService.getJurisdiction(company);
-        List<User> userList = new ArrayList<>();
-        for (Jurisdiction jurisdiction : jurisdictionList) {
-            QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-            userQueryWrapper.eq("user_id", jurisdiction.getUserId());
-            User user = getOne(userQueryWrapper);
-            userList.add(user);
-        }
+        List<User> userList = jurisdictionService.getJurisdiction(company);
         if (SELECT_ZERO != userList.size()) {
             return userList;
         }
@@ -163,7 +140,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         updateWrapper
                 .eq("user_id", user.getUserId())
                 .eq("update_time", user.getUpdateTime())
-                .set("user_status", user.getUserStatus());
+                .set("user_status", user.getUserStatus())
+                .set("update_time",LocalDateTime.now());
         return updateWrapper;
+    }
+
+    /**
+     * 生成用户
+     * @param targetUser 查询出来的用户信息
+     * @param modifyUserinfoFail 更改用户信息失败
+     * @return 修改后的用户信息
+     * @throws ServiceBusinessException 修改信息失败
+     */
+    private User getUser(User targetUser, String modifyUserinfoFail) throws ServiceBusinessException {
+        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+        updateWrapper
+                .eq("user_id", targetUser.getUserId())
+                .eq("update_time", targetUser.getUpdateTime())
+                .set("update_time",LocalDateTime.now());
+        if (update(targetUser, updateWrapper)) {
+            return targetUser;
+        }
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, modifyUserinfoFail);
     }
 }

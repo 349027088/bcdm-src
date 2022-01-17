@@ -31,5 +31,8 @@ public class Constants {
     /** 查询结果为0  */
     public static final int SELECT_ZERO = 0;
 
+    /** 单个用户公司创建上限 */
+    public static final int COMPANY_MAX = 3;
+
 
 }

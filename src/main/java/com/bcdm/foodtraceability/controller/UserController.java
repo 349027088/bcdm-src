@@ -1,6 +1,5 @@
 package com.bcdm.foodtraceability.controller;
 
-
 import com.alibaba.fastjson.JSONObject;
 import com.bcdm.foodtraceability.entity.Company;
 import com.bcdm.foodtraceability.entity.ReturnItem;
@@ -8,7 +7,6 @@ import com.bcdm.foodtraceability.entity.User;
 import com.bcdm.foodtraceability.service.CompanyService;
 import com.bcdm.foodtraceability.service.UserService;
 import com.bcdm.foodtraceability.validatedgroup.RegisterGroup;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,11 +29,14 @@ import static com.bcdm.foodtraceability.common.MessageConstants.*;
 @RequestMapping("/user")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private CompanyService companyService;
+    private final CompanyService companyService;
+
+    public UserController(UserService userService, CompanyService companyService) {
+        this.userService = userService;
+        this.companyService = companyService;
+    }
 
     /**
      * 用户登录Controller

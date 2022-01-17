@@ -1,7 +1,6 @@
 package com.bcdm.foodtraceability.service;
 
 import com.bcdm.foodtraceability.entity.Company;
-import com.bcdm.foodtraceability.entity.Jurisdiction;
 import com.bcdm.foodtraceability.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 

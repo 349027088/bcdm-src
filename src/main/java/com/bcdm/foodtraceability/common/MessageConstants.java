@@ -51,4 +51,22 @@ public class MessageConstants {
 
     /** 员工信息获取失败 */
     public static final String COMPANY_GET_USER_INFO_FAIL = "员工信息获取失败";
+
+    /** 企业登录成功 */
+    public static final String CREATE_COMPANY_SUCCESS = "企业登录成功";
+
+    /** 企业信息修改成功 */
+    public static final String MODIFY_COMPANY_INFO_SUCCESS = "企业信息修改成功";
+
+    /** 员工信息获取成功 */
+    public static final String COMPANY_USER_GET_SUCCESS = "员工信息获取成功";
+
+    /** 企业图片上传成功 */
+    public static final String COMPANY_ICON_UPLOAD_SUCCESS = "企业图片上传成功";
+
+    /** 企业图片修改成功 */
+    public static final String COMPANY_ICON_MODIFY_SUCCESS = "企业图片修改成功";
+
+    /** 添加企业信息失败 */
+    public static final String CREATE_COMPANY_FAIL = "添加企业信息失败";
 }
