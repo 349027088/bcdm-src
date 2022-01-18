@@ -69,4 +69,13 @@ public class MessageConstants {
 
     /** 添加企业信息失败 */
     public static final String CREATE_COMPANY_FAIL = "添加企业信息失败";
+
+    /** 图片类型不符合规范 */
+    public static final String ICON_TYPE_FORMAT_FAIL = "图片类型不符合规范";
+
+    /** 图片超过大小限制 */
+    public static final String ICON_SIZE_FAIL = "图片超过大小限制";
+
+    /** 上传企业LOGO时未找到公司的注册信息 */
+    public static final String FIND_COMPANY_BY_CREATE_ICON_FAIL = "上传企业LOGO时未找到公司的注册信息";
 }

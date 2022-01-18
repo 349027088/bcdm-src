@@ -2,8 +2,8 @@ package com.bcdm.foodtraceability.service;
 
 import com.bcdm.foodtraceability.entity.Company;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.bcdm.foodtraceability.entity.Jurisdiction;
 import com.bcdm.foodtraceability.entity.User;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -44,4 +44,19 @@ public interface CompanyService extends IService<Company> {
     List<Company> getCompanyByUser(User user) throws Exception;
 
 
+    /**
+     * 修改企业图片
+     * @param file 修改后的企业图片
+     * @return 修改后的企业图片地址
+     * @throws Exception 修改企业图片失败
+     */
+    String modifyCompanyIcon(MultipartFile file,Company company) throws Exception;
+
+    /**
+     * 创建企业图片
+     * @param file 需要被创建的企业图片
+     * @return 企业图片的链接地址
+     * @throws Exception 创建企业图片失败
+     */
+    String createCompanyIcon(MultipartFile file,Company company) throws Exception;
 }

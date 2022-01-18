@@ -44,6 +44,11 @@ public class Company implements Serializable {
     private String companyName;
 
     /**
+     *
+     */
+    private String companyIcon;
+
+    /**
      * 企业地址
      */
     private String companyAddress;

@@ -4,6 +4,8 @@ import com.bcdm.foodtraceability.entity.Goods;
 import com.bcdm.foodtraceability.mapper.GoodsMapper;
 import com.bcdm.foodtraceability.service.GoodsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.bcdm.foodtraceability.service.GoodsTypeService;
+import com.bcdm.foodtraceability.service.IconService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,4 +19,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements GoodsService {
 
+    private final IconService iconService;
+
+    private final GoodsTypeService goodsTypeService;
+
+
+    public GoodsServiceImpl(IconService iconService, GoodsTypeService goodsTypeService) {
+        this.iconService = iconService;
+        this.goodsTypeService = goodsTypeService;
+    }
 }

@@ -34,5 +34,11 @@ public class Constants {
     /** 单个用户公司创建上限 */
     public static final int COMPANY_MAX = 3;
 
+    /** PNG格式的图片 */
+    public static final String PNG_TYPE_ICON = "png";
+
+    /** JPG格式的图片 */
+    public static final String JPG_TYPE_ICON = "jpg";
+
 
 }
