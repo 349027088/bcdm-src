@@ -23,13 +23,13 @@ public interface JurisdictionService extends IService<Jurisdiction> {
      * @param user 获取信息的用户
      * @return 返回该用户相关联的企业
      */
-    List<Company> getJurisdiction(User user) throws Exception;
+    List<Jurisdiction> getJurisdictionByUser(User user) throws Exception;
 
     /**
      * 获取企业的用户关联信息
      * @param company 获取信息的企业
      * @return 返回该用户相关联的用户
      */
-    List<User> getJurisdiction(Company company) throws Exception;
+    List<Jurisdiction> getJurisdictionByCompany(Company company) throws Exception;
 
 }

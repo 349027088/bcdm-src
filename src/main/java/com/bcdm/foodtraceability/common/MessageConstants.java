@@ -73,6 +73,9 @@ public class MessageConstants {
     /** 图片类型不符合规范 */
     public static final String ICON_TYPE_FORMAT_FAIL = "图片类型不符合规范";
 
+    /** 图片上传失败 */
+    public static final String ICON_UPLOAD_FAIL = "图片上传失败";
+
     /** 图片超过大小限制 */
     public static final String ICON_SIZE_FAIL = "图片超过大小限制";
 

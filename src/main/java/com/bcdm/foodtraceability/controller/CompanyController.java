@@ -30,9 +30,12 @@ public class CompanyController {
 
     private final CompanyService companyService;
 
-    public CompanyController(UserService userService, CompanyService companyService) {
+    private final IconService iconService;
+
+    public CompanyController(UserService userService, CompanyService companyService, IconService iconService) {
         this.userService = userService;
         this.companyService = companyService;
+        this.iconService = iconService;
     }
 
     /**
@@ -103,6 +106,20 @@ public class CompanyController {
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
         returnItem.setHttpMessage(COMPANY_ICON_UPLOAD_SUCCESS);
         return returnItem;
+    }
+
+    /**
+     * 创建企业头像图片
+     *
+     * @param file 需要被创建的企业头像图片
+     * @return 创建成功的企业头像地址
+     * @throws Exception 企业头像创建失败
+     */
+    @PostMapping("t")
+    @CrossOrigin
+    public String t(@RequestPart MultipartFile file) throws Exception {
+
+        return iconService.createIcon(file);
     }
 
     /**

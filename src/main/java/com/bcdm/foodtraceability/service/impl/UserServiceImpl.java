@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bcdm.foodtraceability.entity.Company;
+import com.bcdm.foodtraceability.entity.Jurisdiction;
 import com.bcdm.foodtraceability.entity.User;
 import com.bcdm.foodtraceability.exception.ServiceBusinessException;
 import com.bcdm.foodtraceability.mapper.UserMapper;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.bcdm.foodtraceability.common.Constants.*;
@@ -122,7 +124,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public List<User> getUserByCompany(Company company) throws Exception {
-        List<User> userList = jurisdictionService.getJurisdiction(company);
+        List<User> userList = jurisdictionGetUserList(company);
         if (SELECT_ZERO != userList.size()) {
             return userList;
         }
@@ -162,5 +164,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return targetUser;
         }
         throw new ServiceBusinessException(HTTP_RETURN_FAIL, modifyUserinfoFail);
+    }
+
+    private List<User> jurisdictionGetUserList(Company company) throws Exception {
+        List<Jurisdiction> jurisdictionList = jurisdictionService.getJurisdictionByCompany(company);
+        List<User> userList = new ArrayList<>();
+        for (Jurisdiction jurisdiction : jurisdictionList) {
+            QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+            userQueryWrapper.eq("user_id", jurisdiction.getUserId());
+            User user = getOne(userQueryWrapper);
+            userList.add(user);
+        }
+        return userList;
     }
 }

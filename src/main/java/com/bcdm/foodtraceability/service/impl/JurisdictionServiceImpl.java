@@ -26,44 +26,18 @@ import java.util.List;
 @Service
 public class JurisdictionServiceImpl extends ServiceImpl<JurisdictionMapper, Jurisdiction> implements JurisdictionService {
 
-    private final CompanyService companyService;
-
-    private final UserService userService;
-
-    public JurisdictionServiceImpl(CompanyService companyService, UserService userService) {
-        this.companyService = companyService;
-        this.userService = userService;
-    }
-
     @Override
-    public List<Company> getJurisdiction(User user) {
+    public List<Jurisdiction> getJurisdictionByUser(User user) {
         QueryWrapper<Jurisdiction> jurisdictionQueryWrapper = new QueryWrapper<>();
         jurisdictionQueryWrapper.eq("user_id", user.getUserId());
-        List<Jurisdiction> jurisdictionList = list(jurisdictionQueryWrapper);
-        List<Company> companyList = new ArrayList<>();
-        for (Jurisdiction jurisdiction : jurisdictionList) {
-            QueryWrapper<Company> companyQueryWrapper = new QueryWrapper<>();
-            companyQueryWrapper.eq("company_id", jurisdiction.getCompanyId());
-            Company company = companyService.getOne(companyQueryWrapper);
-            companyList.add(company);
-        }
-        return companyList;
+        return list(jurisdictionQueryWrapper);
     }
 
     @Override
-    public List<User> getJurisdiction(Company company) {
+    public List<Jurisdiction> getJurisdictionByCompany(Company company) {
         QueryWrapper<Jurisdiction> jurisdictionQueryWrapper = new QueryWrapper<>();
         jurisdictionQueryWrapper.eq("company_id", company.getCompanyId());
-        List<Jurisdiction> jurisdictionList = list(jurisdictionQueryWrapper);
-
-        List<User> userList = new ArrayList<>();
-        for (Jurisdiction jurisdiction : jurisdictionList) {
-            QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-            userQueryWrapper.eq("user_id", jurisdiction.getUserId());
-            User user = userService.getOne(userQueryWrapper);
-            userList.add(user);
-        }
-        return userList;
+        return list(jurisdictionQueryWrapper);
     }
 
 }

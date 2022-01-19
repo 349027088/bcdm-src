@@ -1,12 +1,14 @@
 package com.bcdm.foodtraceability.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.bcdm.foodtraceability.common.Constants;
 import com.bcdm.foodtraceability.entity.Company;
 import com.bcdm.foodtraceability.entity.ReturnItem;
 import com.bcdm.foodtraceability.entity.User;
 import com.bcdm.foodtraceability.service.CompanyService;
 import com.bcdm.foodtraceability.service.UserService;
 import com.bcdm.foodtraceability.validatedgroup.RegisterGroup;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
