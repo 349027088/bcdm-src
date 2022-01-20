@@ -44,15 +44,15 @@ public class IconServiceImpl implements IconService {
     }
 
     @Override
-    public void deleteIcon(String URI) throws Exception {
-        //TODO
+    public boolean deleteIcon(String URI) throws Exception {
+        return deleteIconCloud(URI);
     }
 
 
     /**
      * 发送图片至千牛云地址
      * @param icon 需要发送的图片
-     * @return 返回上传的地址
+     * @return 返回上传的子链接地址
      * @throws Exception 图片发送失败
      */
     private String sendIconToCloud(MultipartFile icon) throws Exception {
@@ -65,12 +65,17 @@ public class IconServiceImpl implements IconService {
         try {
             Response res = uploadManager.put(icon.getBytes(), fileName, Auth.create(ACCESS_KEY, SECRET_KEY).uploadToken(bucketName));
             if (res.isOK() && res.isJson()) {
+                //TODO
                 return iconServiceLink + JSONObject.parseObject(res.bodyString()).get("key");
             }
         } catch (QiniuException e) {
             throw new ServiceBusinessException(HTTP_RETURN_FAIL, e.getMessage());
         }
         throw new ServiceBusinessException(HTTP_RETURN_FAIL, ICON_UPLOAD_FAIL);
+    }
+
+    private boolean deleteIconCloud(String URI){
+        return false;
     }
 
 }

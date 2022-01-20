@@ -18,5 +18,5 @@ public interface IconService {
      * @param URI 需要删除的图片地址
      * @throws Exception 删除图片失败
      */
-    void deleteIcon(String URI) throws Exception;
+    boolean deleteIcon(String URI) throws Exception;
 }

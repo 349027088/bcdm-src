@@ -6,6 +6,8 @@ import com.bcdm.foodtraceability.service.GoodsTypeService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务实现类
@@ -17,4 +19,24 @@ import org.springframework.stereotype.Service;
 @Service
 public class GoodsTypeServiceImpl extends ServiceImpl<GoodsTypeMapper, GoodsType> implements GoodsTypeService {
 
+    @Override
+    public boolean isGoodsType(int goodsTypeId) throws Exception {
+        return false;
+    }
+
+    @Override
+    public List<GoodsType> getGoodsTypeList(int status) throws Exception {
+        return null;
+    }
+
+
+    @Override
+    public GoodsType createGoodsType(GoodsType goodsType) throws Exception {
+        return null;
+    }
+
+    @Override
+    public GoodsType modifyGoodsType(GoodsType goodsType) throws Exception {
+        return null;
+    }
 }

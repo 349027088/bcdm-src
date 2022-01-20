@@ -6,6 +6,8 @@ import com.bcdm.foodtraceability.service.SupplierService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务实现类
@@ -17,4 +19,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class SupplierServiceImpl extends ServiceImpl<SupplierMapper, Supplier> implements SupplierService {
 
+    @Override
+    public Supplier createSupplier(Supplier supplier) throws Exception {
+        return null;
+    }
+
+    @Override
+    public Supplier modifySupplier(Supplier supplier) throws Exception {
+        return null;
+    }
+
+    @Override
+    public List<Supplier> getSupplierList() throws Exception {
+        return null;
+    }
 }
