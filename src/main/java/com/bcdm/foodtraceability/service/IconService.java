@@ -2,6 +2,14 @@ package com.bcdm.foodtraceability.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * <p>
+ * 图片服务类
+ * </p>
+ *
+ * @author 王
+ * @since 2022-01-20
+ */
 public interface IconService {
 
     /**

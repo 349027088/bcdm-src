@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * <p>
- * 服务类
+ * 商品种别服务类
  * </p>
  *
  * @author 王

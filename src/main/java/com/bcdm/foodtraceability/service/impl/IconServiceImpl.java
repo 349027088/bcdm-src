@@ -19,6 +19,14 @@ import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_FAIL;
 import static com.bcdm.foodtraceability.common.MessageConstants.ICON_TYPE_FORMAT_FAIL;
 import static com.bcdm.foodtraceability.common.MessageConstants.ICON_UPLOAD_FAIL;
 
+/**
+ * <p>
+ *  图片功能服务实现类
+ * </p>
+ *
+ * @author 王
+ * @since 2022-01-13
+ */
 @Service
 public class IconServiceImpl implements IconService {
 

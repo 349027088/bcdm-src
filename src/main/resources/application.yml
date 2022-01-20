@@ -28,7 +28,7 @@ spring:
   poolPreparedStatements: true
 
 foodTraceability:
- IconServiceLink: r5yq3xpj4.hd-bkt.clouddn.com
+ IconServiceLink: https://r5yq3xpj4.hd-bkt.clouddn.com/
  accessKey: egx9P5zd9a2GNrhtXUnsSuSg23e4S-XMSw0toNfj
  secretKey: IqqgqouCykKzidSS0wlhN785z2t7BEgoBr9CCxjp
  bucket: bcdm

@@ -10,12 +10,6 @@ package com.bcdm.foodtraceability.common;
  */
 public class Constants {
 
-    /** 解锁状态  */
-    public static final int USER_STATUS_UNLOCK = 0;
-
-    /** 加锁状态  */
-    public static final int USER_STATUS_LOCK = 1;
-
     /** 性别男  */
     public static final int USER_SEX_MAN = 1;
 
@@ -36,6 +30,34 @@ public class Constants {
 
     /** . */
     public static final String CUT_POINT = ".";
+
+    // --------------------------------管理员状态--------------------------------
+
+    /** 解锁状态  */
+    public static final int MANAGEMENT_STATUS_UNLOCK = 0;
+    // --------------------------------用户状态--------------------------------
+
+    /** 解锁状态  */
+    public static final int USER_STATUS_UNLOCK = 0;
+
+    /** 加锁状态  */
+    public static final int USER_STATUS_LOCK = 1;
+
+    // --------------------------------企业状态--------------------------------
+
+    /** 企业状态：未提供服务 */
+    public static final int COMPANY_STATUS_OUT_OF_SERVICE = 0;
+
+    /** 企业状态：正在提供服务 */
+    public static final int COMPANY_STATUS_ON_SERVICE = 1;
+
+    /** 企业状态：企业正在被锁定 */
+    public static final int COMPANY_STATUS_IS_LOCK = 2;
+
+    /** 企业状态：企业关闭 */
+    public static final int COMPANY_STATUS_CLOSE = 3;
+
+
 
 
 }

@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * <p>
- *  服务类
+ *  关联信息服务类
  * </p>
  *
  * @author 王

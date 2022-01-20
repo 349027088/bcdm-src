@@ -21,16 +21,19 @@ public class SupplierServiceImpl extends ServiceImpl<SupplierMapper, Supplier> i
 
     @Override
     public Supplier createSupplier(Supplier supplier) throws Exception {
+        //TODO
         return null;
     }
 
     @Override
     public Supplier modifySupplier(Supplier supplier) throws Exception {
+        //TODO
         return null;
     }
 
     @Override
     public List<Supplier> getSupplierList() throws Exception {
+        //TODO
         return null;
     }
 }
