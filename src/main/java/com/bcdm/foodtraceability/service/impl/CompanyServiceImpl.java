@@ -84,6 +84,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
                 companyUpdateWrapper
                         .eq("company_id", company.getCompanyId())
                         .eq("update_time", company.getUpdateTime())
+                        .setEntity(company)
                         .set("update_time", LocalDateTime.now());
                 if (!update(companyUpdateWrapper)) {
                     throw new ServiceBusinessException(HTTP_RETURN_FAIL, CREATE_COMPANY_FAIL);

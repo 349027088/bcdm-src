@@ -51,10 +51,9 @@ public class CompanyController {
     @PostMapping("/register")
     @CrossOrigin
     public ReturnItem<Company> register(@RequestBody String jsonInfo) throws Exception {
-        log.info("json___________________" + jsonInfo);
         JSONObject jsonObject = JSONObject.parseObject(jsonInfo);
-        User user = jsonObject.getObject("user",User.class);
-        Company company = jsonObject.getObject("company",Company.class);
+        User user = jsonObject.getObject("user", User.class);
+        Company company = jsonObject.getObject("company", Company.class);
         ReturnItem<Company> returnItem = new ReturnItem<>();
         returnItem.setT(companyService.register(user, company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -65,14 +64,16 @@ public class CompanyController {
     /**
      * 企业信息修改Controller
      *
-     * @param user    修改信息的用户
-     * @param company 需要需改的公司信息
+     * @param jsonInfo
      * @return 修改成功的公司信息
      * @throws Exception 修改信息失败
      */
     @PostMapping("/modify")
     @CrossOrigin
-    public ReturnItem<Company> modify(@RequestBody User user, Company company) throws Exception {
+    public ReturnItem<Company> modify(@RequestBody String jsonInfo) throws Exception {
+        JSONObject jsonObject = JSONObject.parseObject(jsonInfo);
+        User user = jsonObject.getObject("user", User.class);
+        Company company = jsonObject.getObject("company", Company.class);
         ReturnItem<Company> returnItem = new ReturnItem<>();
         returnItem.setT(companyService.modify(user, company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
