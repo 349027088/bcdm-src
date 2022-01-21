@@ -81,4 +81,7 @@ public class MessageConstants {
 
     /** 上传企业LOGO时未找到公司的注册信息 */
     public static final String FIND_COMPANY_BY_CREATE_ICON_FAIL = "上传企业LOGO时未找到公司的注册信息";
+
+    /** 创建授权信息失败 */
+    public static final String CREATE_EMPOWER_FAIL = "创建授权信息失败";
 }

@@ -9,8 +9,10 @@ import com.bcdm.foodtraceability.exception.ServiceBusinessException;
 import com.bcdm.foodtraceability.mapper.CompanyMapper;
 import com.bcdm.foodtraceability.service.CompanyService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.bcdm.foodtraceability.service.EmpowerService;
 import com.bcdm.foodtraceability.service.IconService;
 import com.bcdm.foodtraceability.service.JurisdictionService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,8 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.bcdm.foodtraceability.common.Constants.COMPANY_MAX;
-import static com.bcdm.foodtraceability.common.Constants.SELECT_ZERO;
+import static com.bcdm.foodtraceability.common.Constants.*;
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_FAIL;
 import static com.bcdm.foodtraceability.common.MessageConstants.*;
 
@@ -34,30 +35,43 @@ import static com.bcdm.foodtraceability.common.MessageConstants.*;
  * @since 2022-01-13
  */
 @Service
+@Slf4j
 public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> implements CompanyService {
 
     private final JurisdictionService jurisdictionService;
 
     private final IconService iconService;
 
-    public CompanyServiceImpl(JurisdictionService jurisdictionService, IconService iconService) {
+    private final EmpowerService empowerService;
+
+    public CompanyServiceImpl(JurisdictionService jurisdictionService, IconService iconService,EmpowerService empowerService) {
         this.jurisdictionService = jurisdictionService;
         this.iconService = iconService;
+        this.empowerService = empowerService;
     }
 
     @Override
     public Company register(User user, Company company) throws Exception {
         List<Company> companyList = jurisdictionGetCompanyList(user);
         if (companyList.size() <= COMPANY_MAX) {
-            LocalDateTime now = LocalDateTime.now();
-            company.setCreateTime(now);
-            company.setUpdateTime(now);
+            company = createNewCompanyInfo(company);
             if (!save(company)) {
                 throw new ServiceBusinessException(HTTP_RETURN_FAIL, CREATE_COMPANY_FAIL);
             }
+            empowerService.createCompanyServiceEmpower(company);
             return company;
         }
         throw new ServiceBusinessException(HTTP_RETURN_FAIL, CREATE_COMPANY_FAIL);
+    }
+
+    private Company createNewCompanyInfo(Company company) {
+        LocalDateTime now = LocalDateTime.now();
+        company.setCreateTime(now);
+        company.setUpdateTime(now);
+        company.setCompanyLevel(COMPANY_LEVEL_NORMAL);
+        company.setCompanyStatus(COMPANY_STATUS_OUT_OF_SERVICE);
+        log.info(company.toString());
+        return company;
     }
 
     @Override
@@ -80,6 +94,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
 
     @Override
     public List<Company> getCompanyByUser(User user) throws Exception {
+        log.info(user.getUserId() + "---------------" + "getCompanyByUser");
         List<Company> companyList = jurisdictionGetCompanyList(user);
         if (SELECT_ZERO != companyList.size()) {
             return companyList;
@@ -90,20 +105,20 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     @Override
     public String modifyCompanyIcon(MultipartFile file, Company company) throws Exception {
         Company selectCompany = getById(company.getCompanyId());
-        if (null == selectCompany){
-            throw new ServiceBusinessException(HTTP_RETURN_FAIL,FIND_COMPANY_BY_CREATE_ICON_FAIL);
+        if (null == selectCompany) {
+            throw new ServiceBusinessException(HTTP_RETURN_FAIL, FIND_COMPANY_BY_CREATE_ICON_FAIL);
         }
-        if (!StringUtils.isEmpty(company.getCompanyIcon())){
+        if (!StringUtils.isEmpty(company.getCompanyIcon())) {
             iconService.deleteIcon(company.getCompanyIcon());
         }
         String iconLink = iconService.createIcon(file);
         UpdateWrapper<Company> companyUpdateWrapper = new UpdateWrapper<>();
         companyUpdateWrapper
-                .eq("company_id",selectCompany.getCompanyId())
-                .eq("update_time",selectCompany.getUpdateTime())
-                .set("update_time",LocalDateTime.now())
-                .set("company_icon",iconLink);
-        if (!update(companyUpdateWrapper)){
+                .eq("company_id", selectCompany.getCompanyId())
+                .eq("update_time", selectCompany.getUpdateTime())
+                .set("update_time", LocalDateTime.now())
+                .set("company_icon", iconLink);
+        if (!update(companyUpdateWrapper)) {
             throw new ServiceBusinessException(HTTP_RETURN_FAIL, USER_GET_COMPANY_INFO_FAIL);
         }
         return iconLink;

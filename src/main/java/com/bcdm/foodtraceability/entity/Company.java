@@ -44,7 +44,7 @@ public class Company implements Serializable {
     private String companyName;
 
     /**
-     *
+     * 企业图片
      */
     private String companyIcon;
 

@@ -1,14 +1,12 @@
 package com.bcdm.foodtraceability.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.bcdm.foodtraceability.common.Constants;
 import com.bcdm.foodtraceability.entity.Company;
 import com.bcdm.foodtraceability.entity.ReturnItem;
 import com.bcdm.foodtraceability.entity.User;
 import com.bcdm.foodtraceability.service.CompanyService;
 import com.bcdm.foodtraceability.service.UserService;
 import com.bcdm.foodtraceability.validatedgroup.RegisterGroup;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -83,7 +81,7 @@ public class UserController {
      */
     @PostMapping("/modifyPassword")
     @CrossOrigin
-    public ReturnItem<User> modifyPassword(@Validated() @RequestBody String passwordInfo) throws Exception {
+    public ReturnItem<User> modifyPassword(@Validated @RequestBody String passwordInfo) throws Exception {
         JSONObject jsonObject = JSONObject.parseObject(passwordInfo);
         String newPassword = jsonObject.getString("newPassword");
         User user = jsonObject.getObject("user", User.class);
@@ -101,7 +99,7 @@ public class UserController {
      * @return 该用户所属公司信息
      * @throws Exception 查询公司信息失败
      */
-    @GetMapping("/getCompanyByUser")
+    @PostMapping("/getCompanyByUser")
     @CrossOrigin
     public ReturnItem<List<Company>> getCompanyByUser(@RequestBody User user) throws Exception {
         ReturnItem<List<Company>> returnItem = new ReturnItem<>();
