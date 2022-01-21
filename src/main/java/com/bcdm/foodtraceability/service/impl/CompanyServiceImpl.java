@@ -58,6 +58,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
             if (!save(company)) {
                 throw new ServiceBusinessException(HTTP_RETURN_FAIL, CREATE_COMPANY_FAIL);
             }
+            jurisdictionService.createJurisdiction(user,company,1);
             empowerService.createCompanyServiceEmpower(company);
             return company;
         }
@@ -133,6 +134,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         List<Jurisdiction> jurisdictionList = jurisdictionService.getJurisdictionByUser(user);
         List<Company> companyList = new ArrayList<>();
         for (Jurisdiction jurisdiction : jurisdictionList) {
+            log.info(jurisdiction.toString());
             QueryWrapper<Company> companyQueryWrapper = new QueryWrapper<>();
             companyQueryWrapper.eq("company_id", jurisdiction.getCompanyId());
             Company company = getOne(companyQueryWrapper);

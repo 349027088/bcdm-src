@@ -10,6 +10,8 @@ package com.bcdm.foodtraceability.common;
  */
 public class MessageConstants {
 
+    /**----------------------HTTP RESPONSE MESSAGE START----------------------**/
+
     /** 服务器异常 */
     public static final String SEVER_ERROR = "服务器异常";
 
@@ -84,4 +86,10 @@ public class MessageConstants {
 
     /** 创建授权信息失败 */
     public static final String CREATE_EMPOWER_FAIL = "创建授权信息失败";
+
+    /** 创建关联信息失败 */
+    public static final String CREATE_JURISDICTION_FAIL = "创建关联信息失败";
+
+    /**----------------------HTTP RESPONSE MESSAGE END------------------------**/
+
 }

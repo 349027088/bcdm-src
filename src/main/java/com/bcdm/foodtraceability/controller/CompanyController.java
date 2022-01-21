@@ -1,11 +1,13 @@
 package com.bcdm.foodtraceability.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bcdm.foodtraceability.entity.Company;
 import com.bcdm.foodtraceability.entity.ReturnItem;
 import com.bcdm.foodtraceability.entity.User;
 import com.bcdm.foodtraceability.service.CompanyService;
 import com.bcdm.foodtraceability.service.IconService;
 import com.bcdm.foodtraceability.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +26,7 @@ import static com.bcdm.foodtraceability.common.MessageConstants.*;
  */
 @RestController
 @RequestMapping("/company")
+@Slf4j
 public class CompanyController {
 
     private final UserService userService;
@@ -41,14 +44,17 @@ public class CompanyController {
     /**
      * 企业登录Controller
      *
-     * @param user    登录企业的用户
-     * @param company 新加入的企业信息
+     * @param jsonInfo
      * @return 创建成功的企业信息
      * @throws Exception 创建失败
      */
     @PostMapping("/register")
     @CrossOrigin
-    public ReturnItem<Company> register(@RequestBody User user, Company company) throws Exception {
+    public ReturnItem<Company> register(@RequestBody String jsonInfo) throws Exception {
+        log.info("json___________________" + jsonInfo);
+        JSONObject jsonObject = JSONObject.parseObject(jsonInfo);
+        User user = jsonObject.getObject("user",User.class);
+        Company company = jsonObject.getObject("company",Company.class);
         ReturnItem<Company> returnItem = new ReturnItem<>();
         returnItem.setT(companyService.register(user, company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);

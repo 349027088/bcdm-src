@@ -32,4 +32,13 @@ public interface JurisdictionService extends IService<Jurisdiction> {
      */
     List<Jurisdiction> getJurisdictionByCompany(Company company) throws Exception;
 
+    /**
+     * 创建一个企业和用户的关联信息
+     * @param user 需要关联的用户信息
+     * @param company 需要关联的企业信息
+     * @return 创建成功的关联信息
+     * @throws Exception 创建新的关联信息失败
+     */
+    Jurisdiction createJurisdiction(User user,Company company,Integer identity) throws Exception;
+
 }

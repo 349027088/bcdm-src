@@ -28,8 +28,4 @@ public class HttpConstants {
     public static final String HTTP_RETURN_SERVER_FAIL = "500";
 
     /**---------------------------HTTP STATUS END-----------------------------**/
-
-    /**----------------------HTTP RESPONSE MESSAGE START----------------------**/
-
-    /**----------------------HTTP RESPONSE MESSAGE END------------------------**/
 }

@@ -34,11 +34,6 @@ public class Jurisdiction implements Serializable {
     private Integer companyId;
 
     /**
-     * 供应商ID
-     */
-    private Integer supplierId;
-
-    /**
      * 职位
      */
     private Integer identity;
