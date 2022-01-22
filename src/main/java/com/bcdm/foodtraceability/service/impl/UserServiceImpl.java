@@ -96,7 +96,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public User modifyUserInfo(User user) throws Exception {
         log.info(user.getLoginId() + "-------修改用户信息");
-        User login = login(user);
         return getUser(user, MODIFY_USERINFO_FAIL);
     }
 
@@ -162,8 +161,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
         updateWrapper
                 .eq("user_id", targetUser.getUserId())
-                .eq("update_time", targetUser.getUpdateTime())
-                .set("update_time", LocalDateTime.now());
+                .eq("update_time", targetUser.getUpdateTime());
+        targetUser.setUpdateTime(LocalDateTime.now());
         if (update(targetUser, updateWrapper)) {
             return targetUser;
         }
@@ -194,6 +193,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         UserModel userModel = new UserModel();
         BeanUtils.copyProperties(user, userModel);
         userModel.setIdentity(jurisdiction.getIdentity());
+        userModel.setJurisdictionUpdateTime(jurisdiction.getUpdateTime());
         return userModel;
     }
 }

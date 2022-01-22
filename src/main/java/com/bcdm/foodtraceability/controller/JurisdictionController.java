@@ -12,7 +12,7 @@ import static com.bcdm.foodtraceability.common.MessageConstants.COMPANY_ICON_MOD
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author 王
@@ -33,17 +33,17 @@ public class JurisdictionController {
      * 修改关联用户权限
      *
      * @param jsonInfo 需要修改的关联信息和修改权限的管理
-     * @return 返回修改图片的地址
-     * @throws Exception 图片修改失败
+     * @return 修改关联信息成功状态
+     * @throws Exception 关联信息修改失败
      */
     @PostMapping("modify")
     @CrossOrigin
-    public ReturnItem<Boolean> modifyCompanyIcon(@RequestPart String jsonInfo) throws Exception {
+    public ReturnItem<Boolean> modifyJurisdiction(@RequestBody String jsonInfo) throws Exception {
         JSONObject jsonObject = JSONObject.parseObject(jsonInfo);
-        Jurisdiction jurisdiction = jsonObject.getObject("jurisdiction",Jurisdiction.class);
+        Jurisdiction jurisdiction = jsonObject.getObject("jurisdiction", Jurisdiction.class);
         Integer companyManagerUserId = jsonObject.getInteger("userId");
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
-        returnItem.setT(jurisdictionService.modifyJurisdiction(jurisdiction,companyManagerUserId));
+        returnItem.setT(jurisdictionService.modifyJurisdiction(jurisdiction, companyManagerUserId));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
         returnItem.setHttpMessage(COMPANY_ICON_MODIFY_SUCCESS);
         return returnItem;

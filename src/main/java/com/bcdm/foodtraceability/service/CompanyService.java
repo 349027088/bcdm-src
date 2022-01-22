@@ -45,17 +45,29 @@ public interface CompanyService extends IService<Company> {
 
     /**
      * 修改企业图片
+     *
      * @param file 修改后的企业图片
      * @return 修改后的企业图片地址
      * @throws Exception 修改企业图片失败
      */
-    String modifyCompanyIcon(MultipartFile file,Company company) throws Exception;
+    String modifyCompanyIcon(MultipartFile file, Company company) throws Exception;
 
     /**
      * 创建企业图片
+     *
      * @param file 需要被创建的企业图片
      * @return 企业图片的链接地址
      * @throws Exception 创建企业图片失败
      */
-    String createCompanyIcon(MultipartFile file,Company company) throws Exception;
+    String createCompanyIcon(MultipartFile file, Company company) throws Exception;
+
+    /**
+     * 登录员工信息到企业
+     *
+     * @param user_id 需要登录的员工信息
+     * @param company 需要被登录到的企业信息
+     * @return 被登录的企业信息
+     * @throws Exception 登录员工信息失败
+     */
+    Company createUserToCompany(Integer user_id, Company company) throws Exception;
 }

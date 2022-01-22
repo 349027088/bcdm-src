@@ -76,6 +76,11 @@ public class UserModel {
     private Integer identity;
 
     /**
+     * 职位
+     */
+    private LocalDateTime jurisdictionUpdateTime;
+
+    /**
      * 出生日期
      */
     private LocalDate birthday;

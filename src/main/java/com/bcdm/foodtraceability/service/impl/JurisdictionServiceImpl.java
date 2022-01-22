@@ -7,6 +7,7 @@ import com.bcdm.foodtraceability.exception.ServiceBusinessException;
 import com.bcdm.foodtraceability.mapper.JurisdictionMapper;
 import com.bcdm.foodtraceability.service.JurisdictionService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,6 +25,7 @@ import static com.bcdm.foodtraceability.common.MessageConstants.*;
  * @since 2022-01-13
  */
 @Service
+@Slf4j
 public class JurisdictionServiceImpl extends ServiceImpl<JurisdictionMapper, Jurisdiction> implements JurisdictionService {
 
     @Override
@@ -50,13 +52,15 @@ public class JurisdictionServiceImpl extends ServiceImpl<JurisdictionMapper, Jur
 
     @Override
     public Boolean modifyJurisdiction(Jurisdiction jurisdiction, Integer companyManagerUserId) throws Exception {
+        log.info(jurisdiction.toString());
+        log.info("modifyUserId--------------------"+companyManagerUserId);
         if (jurisdictionCheck(companyManagerUserId, jurisdiction)) {
             UpdateWrapper<Jurisdiction> jurisdictionUpdateWrapper = new UpdateWrapper<>();
             jurisdictionUpdateWrapper
                     .eq("user_id", jurisdiction.getUserId())
                     .eq("company_id", jurisdiction.getCompanyId())
                     .eq("update_time", jurisdiction.getUpdateTime())
-                    .set("update_time",LocalDateTime.now())
+                    .set("update_time", LocalDateTime.now())
                     .set("jurisdiction", jurisdiction.getIdentity())
                     .set("identity", jurisdiction.getIdentity());
             if (!update(jurisdictionUpdateWrapper)) {
@@ -74,9 +78,10 @@ public class JurisdictionServiceImpl extends ServiceImpl<JurisdictionMapper, Jur
             if (jurisdictionEntity.getCompanyId().equals(jurisdiction.getCompanyId())) {
                 Jurisdiction compareJurisdiction =
                         getOne(new QueryWrapper<Jurisdiction>()
-                        .eq("user_id",jurisdiction.getUserId())
-                        .eq("company_id",jurisdiction.getCompanyId()));
-                if (compareJurisdiction.getJurisdiction() > jurisdictionEntity.getJurisdiction()){
+                                .eq("user_id", jurisdiction.getUserId())
+                                .eq("company_id", jurisdiction.getCompanyId()));
+                if (compareJurisdiction.getJurisdiction() > jurisdictionEntity.getJurisdiction() &&
+                        jurisdiction.getJurisdiction() > jurisdictionEntity.getJurisdiction()) {
                     return true;
                 }
 

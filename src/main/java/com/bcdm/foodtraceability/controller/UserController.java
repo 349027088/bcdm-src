@@ -39,6 +39,23 @@ public class UserController {
     }
 
     /**
+     * 用户注册Controller
+     *
+     * @param user 需要注册的用户信息
+     * @return 注册成功用户信息
+     * @throws Exception 注册失败
+     */
+    @PostMapping("/register")
+    @CrossOrigin
+    public ReturnItem<User> register(@Validated({RegisterGroup.class, Default.class}) @RequestBody User user) throws Exception {
+        ReturnItem<User> returnItem = new ReturnItem<>();
+        returnItem.setT(userService.register(user));
+        returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
+        returnItem.setHttpMessage(REGISTER_SUCCESS);
+        return returnItem;
+    }
+
+    /**
      * 用户登录Controller
      *
      * @param user 登录用账号密码
@@ -56,19 +73,19 @@ public class UserController {
     }
 
     /**
-     * 用户注册Controller
+     * 修改用户信息Controller
      *
-     * @param user 需要注册的用户信息
-     * @return 注册成功用户信息
-     * @throws Exception 注册失败
+     * @param user 用户账号密码和新密码
+     * @return 修改成功的用户信息
+     * @throws Exception 修改失败
      */
-    @PostMapping("/register")
+    @PostMapping("/modify")
     @CrossOrigin
-    public ReturnItem<User> register(@Validated({RegisterGroup.class, Default.class}) @RequestBody User user) throws Exception {
+    public ReturnItem<User> modify(@Validated({RegisterGroup.class, Default.class}) @RequestBody User user) throws Exception {
         ReturnItem<User> returnItem = new ReturnItem<>();
-        returnItem.setT(userService.register(user));
+        returnItem.setT(userService.modifyUserInfo(user));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
-        returnItem.setHttpMessage(REGISTER_SUCCESS);
+        returnItem.setHttpMessage(MODIFY_PASSWORD_SUCCESS);
         return returnItem;
     }
 
@@ -93,23 +110,6 @@ public class UserController {
     }
 
     /**
-     * 修改用户信息Controller
-     *
-     * @param user 用户账号密码和新密码
-     * @return 修改成功的用户信息
-     * @throws Exception 修改失败
-     */
-    @PostMapping("/modify")
-    @CrossOrigin
-    public ReturnItem<User> modify(@Validated @RequestBody User user) throws Exception {
-        ReturnItem<User> returnItem = new ReturnItem<>();
-        returnItem.setT(userService.modifyUserInfo(user));
-        returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
-        returnItem.setHttpMessage(MODIFY_PASSWORD_SUCCESS);
-        return returnItem;
-    }
-
-    /**
      * 获得用户的所有公司信息
      *
      * @param user 获取公司信息的用户
@@ -122,7 +122,7 @@ public class UserController {
         ReturnItem<List<Company>> returnItem = new ReturnItem<>();
         returnItem.setT(companyService.getCompanyByUser(user));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
-        returnItem.setHttpMessage("企业信息获取成功");
+        returnItem.setHttpMessage(GET_COMPANY_INFO_SUCCESS);
         return returnItem;
     }
 

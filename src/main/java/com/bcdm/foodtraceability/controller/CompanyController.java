@@ -1,10 +1,7 @@
 package com.bcdm.foodtraceability.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.bcdm.foodtraceability.entity.Company;
-import com.bcdm.foodtraceability.entity.ReturnItem;
-import com.bcdm.foodtraceability.entity.User;
-import com.bcdm.foodtraceability.entity.UserModel;
+import com.bcdm.foodtraceability.entity.*;
 import com.bcdm.foodtraceability.service.CompanyService;
 import com.bcdm.foodtraceability.service.IconService;
 import com.bcdm.foodtraceability.service.UserService;
@@ -127,6 +124,26 @@ public class CompanyController {
         returnItem.setT(companyService.modifyCompanyIcon(file, company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
         returnItem.setHttpMessage(COMPANY_ICON_MODIFY_SUCCESS);
+        return returnItem;
+    }
+
+    /**
+     * 登录员工到企业
+     *
+     * @param jsonInfo 登录的员工和企业信息
+     * @return 被登录的企业信息
+     * @throws Exception 登录员工到企业失败
+     */
+    @PostMapping("createUserToCompany")
+    @CrossOrigin
+    public ReturnItem<Company> createUserToCompany(@RequestBody String jsonInfo) throws Exception {
+        JSONObject jsonObject = JSONObject.parseObject(jsonInfo);
+        Company company = jsonObject.getObject("company", Company.class);
+        Integer user_id = jsonObject.getInteger("userId");
+        ReturnItem<Company> returnItem = new ReturnItem<>();
+        returnItem.setT(companyService.createUserToCompany(user_id, company));
+        returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
+        returnItem.setHttpMessage(CREATE_USER_TO_COMPANY_SUCCESS);
         return returnItem;
     }
 

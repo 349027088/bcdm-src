@@ -128,6 +128,19 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         return null;
     }
 
+    @Override
+    public Company createUserToCompany(Integer user_id, Company company) throws Exception{
+        if (null == company.getCompanyId()){
+            QueryWrapper<Company> companyQueryWrapper = new QueryWrapper<>();
+            companyQueryWrapper.eq("company_name",company.getCompanyName());
+            company = getOne(companyQueryWrapper);
+        }else {
+            company = getById(company.getCompanyId());
+        }
+        jurisdictionService.createJurisdiction(user_id,company.getCompanyId(),COMPANY_USER_3);
+        return company;
+    }
+
 
     /**
      * 新公司创建初始化

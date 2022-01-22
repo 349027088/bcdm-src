@@ -67,8 +67,17 @@ public class MessageConstants {
     /** 企业图片修改成功 */
     public static final String COMPANY_ICON_MODIFY_SUCCESS = "企业图片修改成功";
 
+    /** 修改员工职位成功 */
+    public static final String MODIFY_USER_TO_COMPANY_SUCCESS = "修改员工职位成功";
+
+    /** 登录到企业成功 */
+    public static final String CREATE_USER_TO_COMPANY_SUCCESS = "登录到企业成功";
+
     /** 添加企业信息失败 */
     public static final String CREATE_COMPANY_FAIL = "添加企业信息失败";
+
+    /** 企业信息获取成功 */
+    public static final String GET_COMPANY_INFO_SUCCESS = "企业信息获取成功";
 
     /** 修改企业信息失败 */
     public static final String MODIFY_COMPANY_FAIL = "修改企业信息失败";
