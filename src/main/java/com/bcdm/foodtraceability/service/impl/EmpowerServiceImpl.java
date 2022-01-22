@@ -1,5 +1,6 @@
 package com.bcdm.foodtraceability.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.bcdm.foodtraceability.entity.Company;
 import com.bcdm.foodtraceability.entity.Empower;
@@ -73,8 +74,11 @@ public class EmpowerServiceImpl extends ServiceImpl<EmpowerMapper, Empower> impl
 
     @Override
     public List<Empower> getEmpowerList(Management management) throws Exception {
-        //TODO
-        return null;
+        List<Empower> empowerList = list();
+        if (SELECT_ZERO != empowerList.size()) {
+            return empowerList;
+        }
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, INQUIRE_EMPOWER_FAIL);
     }
 
     /**

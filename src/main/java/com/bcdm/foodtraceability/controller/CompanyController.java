@@ -3,7 +3,6 @@ package com.bcdm.foodtraceability.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.bcdm.foodtraceability.entity.*;
 import com.bcdm.foodtraceability.service.CompanyService;
-import com.bcdm.foodtraceability.service.IconService;
 import com.bcdm.foodtraceability.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -31,18 +30,15 @@ public class CompanyController {
 
     private final CompanyService companyService;
 
-    private final IconService iconService;
-
-    public CompanyController(UserService userService, CompanyService companyService, IconService iconService) {
+    public CompanyController(UserService userService, CompanyService companyService) {
         this.userService = userService;
         this.companyService = companyService;
-        this.iconService = iconService;
     }
 
     /**
      * 企业登录Controller
      *
-     * @param jsonInfo
+     * @param jsonInfo 新建企业的信息和新建企业的用户
      * @return 创建成功的企业信息
      * @throws Exception 创建失败
      */
@@ -90,40 +86,6 @@ public class CompanyController {
         returnItem.setT(userService.getUserByCompany(company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
         returnItem.setHttpMessage(COMPANY_USER_GET_SUCCESS);
-        return returnItem;
-    }
-
-    /**
-     * 创建企业头像图片
-     *
-     * @param file 需要被创建的企业头像图片
-     * @return 创建成功的企业头像地址
-     * @throws Exception 企业头像创建失败
-     */
-    @PostMapping("createCompanyIcon")
-    @CrossOrigin
-    public ReturnItem<String> createCompanyIcon(@RequestPart MultipartFile file, @RequestPart Company company) throws Exception {
-        ReturnItem<String> returnItem = new ReturnItem<>();
-        returnItem.setT(companyService.createCompanyIcon(file, company));
-        returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
-        returnItem.setHttpMessage(COMPANY_ICON_UPLOAD_SUCCESS);
-        return returnItem;
-    }
-
-    /**
-     * 企业修改企业头像
-     *
-     * @param file 需要修改成的企业头像
-     * @return 返回修改图片的地址
-     * @throws Exception 图片修改失败
-     */
-    @PostMapping("modifyCompanyIcon")
-    @CrossOrigin
-    public ReturnItem<String> modifyCompanyIcon(@RequestPart MultipartFile file, @RequestPart Company company) throws Exception {
-        ReturnItem<String> returnItem = new ReturnItem<>();
-        returnItem.setT(companyService.modifyCompanyIcon(file, company));
-        returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
-        returnItem.setHttpMessage(COMPANY_ICON_MODIFY_SUCCESS);
         return returnItem;
     }
 

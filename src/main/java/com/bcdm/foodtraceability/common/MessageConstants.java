@@ -112,4 +112,19 @@ public class MessageConstants {
     /** 修改权限级别不足 */
     public static final String MODIFY_JURISDICTION_LEVEL_FAIL = "修改权限级别不足";
 
+    /** 创建供应商失败 */
+    public static final String CREATE_SUPPLIER_FAILED = "创建供应商失败";
+
+    /** 修改供应商信息失败 */
+    public static final String MODIFY_SUPPLIER_FAILED = "修改供应商信息失败";
+
+    /** 当前没有授权信息 */
+    public static final String SELECT_EMPOWER_FAIL = "当前没有授权信息";
+
+    /** 查询授权信息失败 */
+    public static final String INQUIRE_EMPOWER_FAIL = "查询授权信息失败";
+
+    /** 正在等待企业承认您的申请 */
+    public static final String USER_ADMIT_FAIL = "正在等待企业承认您的申请";
+
 }

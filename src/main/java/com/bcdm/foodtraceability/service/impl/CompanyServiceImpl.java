@@ -13,9 +13,7 @@ import com.bcdm.foodtraceability.service.EmpowerService;
 import com.bcdm.foodtraceability.service.IconService;
 import com.bcdm.foodtraceability.service.JurisdictionService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -39,13 +37,10 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
 
     private final JurisdictionService jurisdictionService;
 
-    private final IconService iconService;
-
     private final EmpowerService empowerService;
 
-    public CompanyServiceImpl(JurisdictionService jurisdictionService, IconService iconService, EmpowerService empowerService) {
+    public CompanyServiceImpl(JurisdictionService jurisdictionService, EmpowerService empowerService) {
         this.jurisdictionService = jurisdictionService;
-        this.iconService = iconService;
         this.empowerService = empowerService;
     }
 
@@ -102,45 +97,17 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     }
 
     @Override
-    public String modifyCompanyIcon(MultipartFile file, Company company) throws Exception {
-        Company selectCompany = getById(company.getCompanyId());
-        if (null == selectCompany) {
-            throw new ServiceBusinessException(HTTP_RETURN_FAIL, FIND_COMPANY_BY_CREATE_ICON_FAIL);
-        }
-        if (!StringUtils.isEmpty(company.getCompanyIcon())) {
-            iconService.deleteIcon(company.getCompanyIcon());
-        }
-        String iconLink = iconService.createIcon(file);
-        UpdateWrapper<Company> companyUpdateWrapper = new UpdateWrapper<>();
-        companyUpdateWrapper
-                .eq("company_id", selectCompany.getCompanyId())
-                .eq("update_time", selectCompany.getUpdateTime())
-                .set("update_time", LocalDateTime.now())
-                .set("company_icon", iconLink);
-        if (!update(companyUpdateWrapper)) {
-            throw new ServiceBusinessException(HTTP_RETURN_FAIL, USER_GET_COMPANY_INFO_FAIL);
-        }
-        return iconLink;
-    }
-
-    @Override
-    public String createCompanyIcon(MultipartFile file, Company company) throws Exception {
-        return null;
-    }
-
-    @Override
-    public Company createUserToCompany(Integer user_id, Company company) throws Exception{
-        if (null == company.getCompanyId()){
+    public Company createUserToCompany(Integer user_id, Company company) throws Exception {
+        if (null == company.getCompanyId()) {
             QueryWrapper<Company> companyQueryWrapper = new QueryWrapper<>();
-            companyQueryWrapper.eq("company_name",company.getCompanyName());
+            companyQueryWrapper.eq("company_name", company.getCompanyName());
             company = getOne(companyQueryWrapper);
-        }else {
+        } else {
             company = getById(company.getCompanyId());
         }
-        jurisdictionService.createJurisdiction(user_id,company.getCompanyId(),COMPANY_USER_3);
+        jurisdictionService.createJurisdiction(user_id, company.getCompanyId(), COMPANY_USER_3);
         return company;
     }
-
 
     /**
      * 新公司创建初始化
@@ -166,14 +133,23 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     private List<Company> jurisdictionGetCompanyList(Integer userId) throws Exception {
         List<Jurisdiction> jurisdictionList = jurisdictionService.getJurisdictionByUser(userId);
         List<Company> companyList = new ArrayList<>();
+        boolean isCompanyUser = true;
         for (Jurisdiction jurisdiction : jurisdictionList) {
-            log.info(jurisdiction.toString());
-            QueryWrapper<Company> companyQueryWrapper = new QueryWrapper<>();
-            companyQueryWrapper.eq("company_id", jurisdiction.getCompanyId());
-            Company company = getOne(companyQueryWrapper);
-            companyList.add(company);
+            if (!COMPANY_USER_3.equals(jurisdiction.getJurisdiction())) {
+                log.info(jurisdiction.toString());
+                QueryWrapper<Company> companyQueryWrapper = new QueryWrapper<>();
+                companyQueryWrapper.eq("company_id", jurisdiction.getCompanyId());
+                Company company = getOne(companyQueryWrapper);
+                companyList.add(company);
+                isCompanyUser = true;
+            } else {
+                isCompanyUser = false;
+            }
         }
-        return companyList;
+        if (isCompanyUser) {
+            return companyList;
+        }
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, USER_ADMIT_FAIL);
     }
 
 
