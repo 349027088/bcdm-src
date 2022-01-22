@@ -93,6 +93,12 @@ public class MessageConstants {
     /** 创建关联信息失败 */
     public static final String CREATE_JURISDICTION_FAIL = "创建关联信息失败";
 
+    /** 修改权限信息失败 */
+    public static final String MODIFY_JURISDICTION_FAIL = "修改权限信息失败";
+
+    /** 修改权限级别不足 */
+    public static final String MODIFY_JURISDICTION_LEVEL_FAIL = "修改权限级别不足";
+
     /**----------------------HTTP RESPONSE MESSAGE END------------------------**/
 
 }

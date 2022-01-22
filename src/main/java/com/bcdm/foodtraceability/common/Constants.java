@@ -80,13 +80,13 @@ public class Constants {
     /** 企业老板 */
     public static final Integer COMPANY_USER_0 = 0;
 
-    /** 操作员 */
+    /** 管理员 */
     public static final Integer COMPANY_USER_1 = 1;
 
     /** 普通员工 */
     public static final Integer COMPANY_USER_2 = 2;
 
-    /** 员工登陆中 */
+    /** 待审批员工 */
     public static final Integer COMPANY_USER_3 = 3;
 
 

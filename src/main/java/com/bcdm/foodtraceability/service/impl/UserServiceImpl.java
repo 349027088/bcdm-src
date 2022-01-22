@@ -6,11 +6,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bcdm.foodtraceability.entity.Company;
 import com.bcdm.foodtraceability.entity.Jurisdiction;
 import com.bcdm.foodtraceability.entity.User;
+import com.bcdm.foodtraceability.entity.UserModel;
 import com.bcdm.foodtraceability.exception.ServiceBusinessException;
 import com.bcdm.foodtraceability.mapper.UserMapper;
 import com.bcdm.foodtraceability.service.JurisdictionService;
 import com.bcdm.foodtraceability.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -72,7 +75,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             user.setUserStatus(USER_STATUS_UNLOCK);
             user.setCreateTime(now);
             user.setUpdateTime(now);
-            if (!save(user)){
+            if (!save(user)) {
                 throw new ServiceBusinessException(HTTP_RETURN_FAIL, REGISTER_FAIL);
             }
             user.setPassword(password);
@@ -123,8 +126,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public List<User> getUserByCompany(Company company) throws Exception {
-        List<User> userList = jurisdictionGetUserList(company.getCompanyId());
+    public List<UserModel> getUserByCompany(Company company) throws Exception {
+        List<UserModel> userList = jurisdictionGetUserList(company.getCompanyId());
         if (SELECT_ZERO != userList.size()) {
             return userList;
         }
@@ -143,13 +146,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .eq("user_id", user.getUserId())
                 .eq("update_time", user.getUpdateTime())
                 .set("user_status", user.getUserStatus())
-                .set("update_time",LocalDateTime.now());
+                .set("update_time", LocalDateTime.now());
         return updateWrapper;
     }
 
     /**
      * 生成用户
-     * @param targetUser 查询出来的用户信息
+     *
+     * @param targetUser         查询出来的用户信息
      * @param modifyUserinfoFail 更改用户信息失败
      * @return 修改后的用户信息
      * @throws ServiceBusinessException 修改信息失败
@@ -159,22 +163,37 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         updateWrapper
                 .eq("user_id", targetUser.getUserId())
                 .eq("update_time", targetUser.getUpdateTime())
-                .set("update_time",LocalDateTime.now());
+                .set("update_time", LocalDateTime.now());
         if (update(targetUser, updateWrapper)) {
             return targetUser;
         }
         throw new ServiceBusinessException(HTTP_RETURN_FAIL, modifyUserinfoFail);
     }
 
-    private List<User> jurisdictionGetUserList(Integer CompanyId) throws Exception {
+    private List<UserModel> jurisdictionGetUserList(Integer CompanyId) throws Exception {
         List<Jurisdiction> jurisdictionList = jurisdictionService.getJurisdictionByCompany(CompanyId);
-        List<User> userList = new ArrayList<>();
+        List<UserModel> userList = new ArrayList<>();
         for (Jurisdiction jurisdiction : jurisdictionList) {
             QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
             userQueryWrapper.eq("user_id", jurisdiction.getUserId());
             User user = getOne(userQueryWrapper);
-            userList.add(user);
+            UserModel userModel = createUserModel(user, jurisdiction);
+            userList.add(userModel);
         }
         return userList;
+    }
+
+    /**
+     * 创造一个前端显示的用户模板
+     *
+     * @param user         查找出来的用户信息
+     * @param jurisdiction 查找出来该用户的关联信息
+     * @return 创建的用户显示模板
+     */
+    private UserModel createUserModel(User user, Jurisdiction jurisdiction) {
+        UserModel userModel = new UserModel();
+        BeanUtils.copyProperties(user, userModel);
+        userModel.setIdentity(jurisdiction.getIdentity());
+        return userModel;
     }
 }

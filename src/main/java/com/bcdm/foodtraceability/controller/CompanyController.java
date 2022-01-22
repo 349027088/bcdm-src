@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.bcdm.foodtraceability.entity.Company;
 import com.bcdm.foodtraceability.entity.ReturnItem;
 import com.bcdm.foodtraceability.entity.User;
+import com.bcdm.foodtraceability.entity.UserModel;
 import com.bcdm.foodtraceability.service.CompanyService;
 import com.bcdm.foodtraceability.service.IconService;
 import com.bcdm.foodtraceability.service.UserService;
@@ -18,7 +19,7 @@ import static com.bcdm.foodtraceability.common.MessageConstants.*;
 
 /**
  * <p>
- * 前端控制器
+ * 公司前端控制器
  * </p>
  *
  * @author 王
@@ -87,8 +88,8 @@ public class CompanyController {
      */
     @PostMapping("/getUserByCompany")
     @CrossOrigin
-    public ReturnItem<List<User>> getUserByCompany(@RequestBody Company company) throws Exception {
-        ReturnItem<List<User>> returnItem = new ReturnItem<>();
+    public ReturnItem<List<UserModel>> getUserByCompany(@RequestBody Company company) throws Exception {
+        ReturnItem<List<UserModel>> returnItem = new ReturnItem<>();
         returnItem.setT(userService.getUserByCompany(company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
         returnItem.setHttpMessage(COMPANY_USER_GET_SUCCESS);
@@ -110,20 +111,6 @@ public class CompanyController {
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
         returnItem.setHttpMessage(COMPANY_ICON_UPLOAD_SUCCESS);
         return returnItem;
-    }
-
-    /**
-     * 创建企业头像图片
-     *
-     * @param file 需要被创建的企业头像图片
-     * @return 创建成功的企业头像地址
-     * @throws Exception 企业头像创建失败
-     */
-    @PostMapping("t")
-    @CrossOrigin
-    public String t(@RequestPart MultipartFile file) throws Exception {
-
-        return iconService.createIcon(file);
     }
 
     /**

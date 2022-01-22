@@ -93,6 +93,23 @@ public class UserController {
     }
 
     /**
+     * 修改用户信息Controller
+     *
+     * @param user 用户账号密码和新密码
+     * @return 修改成功的用户信息
+     * @throws Exception 修改失败
+     */
+    @PostMapping("/modify")
+    @CrossOrigin
+    public ReturnItem<User> modify(@Validated @RequestBody User user) throws Exception {
+        ReturnItem<User> returnItem = new ReturnItem<>();
+        returnItem.setT(userService.modifyUserInfo(user));
+        returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
+        returnItem.setHttpMessage(MODIFY_PASSWORD_SUCCESS);
+        return returnItem;
+    }
+
+    /**
      * 获得用户的所有公司信息
      *
      * @param user 获取公司信息的用户

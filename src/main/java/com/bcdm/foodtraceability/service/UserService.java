@@ -3,6 +3,7 @@ package com.bcdm.foodtraceability.service;
 import com.bcdm.foodtraceability.entity.Company;
 import com.bcdm.foodtraceability.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.bcdm.foodtraceability.entity.UserModel;
 
 import java.util.List;
 
@@ -69,6 +70,6 @@ public interface UserService extends IService<User> {
      * @param company 需要获取员工的企业
      * @return 取得的员工列表
      */
-    List<User> getUserByCompany(Company company) throws Exception;
+    List<UserModel> getUserByCompany(Company company) throws Exception;
 
 }
