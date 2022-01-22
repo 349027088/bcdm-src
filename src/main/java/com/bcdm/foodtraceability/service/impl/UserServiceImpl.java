@@ -96,7 +96,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public User modifyUserInfo(User user) throws Exception {
         log.info(user.getLoginId() + "-------修改用户信息");
-        login(user);
+        User login = login(user);
         return getUser(user, MODIFY_USERINFO_FAIL);
     }
 

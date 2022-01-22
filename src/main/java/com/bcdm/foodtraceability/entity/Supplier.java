@@ -31,6 +31,11 @@ public class Supplier implements Serializable {
     private Integer supplierId;
 
     /**
+     * 企业ID
+     */
+    private Integer companyId;
+
+    /**
      * 供应商状态
      */
     private Integer supplierStatus;

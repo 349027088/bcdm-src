@@ -57,7 +57,7 @@ public class Empower implements Serializable {
     /**
      * 停止服务时间
      */
-    private LocalDate severiceStopTime;
+    private LocalDate serviceStopTime;
 
     /**
      * 授权凭证

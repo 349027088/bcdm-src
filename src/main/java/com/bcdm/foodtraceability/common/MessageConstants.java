@@ -10,8 +10,6 @@ package com.bcdm.foodtraceability.common;
  */
 public class MessageConstants {
 
-    /**----------------------HTTP RESPONSE MESSAGE START----------------------**/
-
     /** 服务器异常 */
     public static final String SEVER_ERROR = "服务器异常";
 
@@ -84,8 +82,14 @@ public class MessageConstants {
     /** 图片超过大小限制 */
     public static final String ICON_SIZE_FAIL = "图片超过大小限制";
 
+    /** 修改企业授权信息失败*/
+    public static final String MODIFY_EMPOWER_FAIL = "修改企业授权信息失败";
+
     /** 上传企业LOGO时未找到公司的注册信息 */
     public static final String FIND_COMPANY_BY_CREATE_ICON_FAIL = "上传企业LOGO时未找到公司的注册信息";
+
+    /**企业授权失败*/
+    public static final String ENTERPRISE_AUTHORIZATION_FAILED = "企业授权失败";
 
     /** 创建授权信息失败 */
     public static final String CREATE_EMPOWER_FAIL = "创建授权信息失败";
@@ -98,7 +102,5 @@ public class MessageConstants {
 
     /** 修改权限级别不足 */
     public static final String MODIFY_JURISDICTION_LEVEL_FAIL = "修改权限级别不足";
-
-    /**----------------------HTTP RESPONSE MESSAGE END------------------------**/
 
 }
