@@ -72,6 +72,9 @@ public class MessageConstants {
     /** 添加企业信息失败 */
     public static final String CREATE_COMPANY_FAIL = "添加企业信息失败";
 
+    /** 修改企业信息失败 */
+    public static final String MODIFY_COMPANY_FAIL = "修改企业信息失败";
+
     /** 图片类型不符合规范 */
     public static final String ICON_TYPE_FORMAT_FAIL = "图片类型不符合规范";
 

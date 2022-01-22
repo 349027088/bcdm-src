@@ -1,6 +1,7 @@
 package com.bcdm.foodtraceability.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.bcdm.foodtraceability.entity.Company;
 import com.bcdm.foodtraceability.entity.Jurisdiction;
 import com.bcdm.foodtraceability.entity.User;
@@ -32,26 +33,42 @@ import static com.bcdm.foodtraceability.common.MessageConstants.CREATE_JURISDICT
 public class JurisdictionServiceImpl extends ServiceImpl<JurisdictionMapper, Jurisdiction> implements JurisdictionService {
 
     @Override
-    public List<Jurisdiction> getJurisdictionByUser(User user) {
+    public List<Jurisdiction> getJurisdictionByUser(Integer userId) {
         QueryWrapper<Jurisdiction> jurisdictionQueryWrapper = new QueryWrapper<>();
-        jurisdictionQueryWrapper.eq("user_id", user.getUserId());
+        jurisdictionQueryWrapper.eq("user_id", userId);
         return list(jurisdictionQueryWrapper);
     }
 
     @Override
-    public List<Jurisdiction> getJurisdictionByCompany(Company company) {
+    public List<Jurisdiction> getJurisdictionByCompany(Integer CompanyId) {
         QueryWrapper<Jurisdiction> jurisdictionQueryWrapper = new QueryWrapper<>();
-        jurisdictionQueryWrapper.eq("company_id", company.getCompanyId());
+        jurisdictionQueryWrapper.eq("company_id", CompanyId);
         return list(jurisdictionQueryWrapper);
     }
 
     @Override
-    public Jurisdiction createJurisdiction(User user, Company company,Integer identity) throws Exception {
-        Jurisdiction jurisdiction = createJurisdictionEntity(user.getUserId(),company.getCompanyId(),identity);
+    public void createJurisdiction(Integer userId, Integer companyId,Integer identity) throws Exception {
+        Jurisdiction jurisdiction = createJurisdictionEntity(userId,companyId,identity);
         if (!save(jurisdiction)){
             throw new ServiceBusinessException(HTTP_RETURN_FAIL,CREATE_JURISDICTION_FAIL);
         }
-        return jurisdiction;
+    }
+
+    @Override
+    public boolean modifyJurisdiction(Integer userId, Integer companyId, Integer identity) throws Exception {
+        UpdateWrapper<Jurisdiction> jurisdictionUpdateWrapper = new UpdateWrapper<>();
+        jurisdictionUpdateWrapper
+                .eq("company_id",companyId)
+                .eq("user_id",userId)
+                .set("identity",identity);
+        if (!update(jurisdictionUpdateWrapper)){
+            throw new ServiceBusinessException(HTTP_RETURN_FAIL,CREATE_JURISDICTION_FAIL);
+        }
+        QueryWrapper<Jurisdiction> jurisdictionQueryWrapper = new QueryWrapper<>();
+        jurisdictionQueryWrapper
+                .eq("company_id",companyId)
+                .eq("user_id",userId);
+        return true;
     }
 
     private Jurisdiction createJurisdictionEntity(Integer userId,Integer companyId,Integer identity) {
@@ -60,7 +77,7 @@ public class JurisdictionServiceImpl extends ServiceImpl<JurisdictionMapper, Jur
         jurisdiction.setUserId(userId);
         jurisdiction.setCompanyId(companyId);
         jurisdiction.setIdentity(identity);
-        jurisdiction.setJurisdiction(1);
+        jurisdiction.setJurisdiction(identity);
         jurisdiction.setUpdateTime(now);
         jurisdiction.setCreateTime(now);
         return jurisdiction;

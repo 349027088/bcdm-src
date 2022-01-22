@@ -72,6 +72,23 @@ public class Constants {
     /** 企业状态：未提供服务 */
     public static final Integer COMPANY_LEVEL_NORMAL = 0;
 
+    /** 企业状态：未提供服务 */
+    public static final Integer COMPANY_LEVEL_HIGH_ = 1;
+
+    // --------------------------------关联状态--------------------------------
+
+    /** 企业老板 */
+    public static final Integer COMPANY_USER_0 = 0;
+
+    /** 操作员 */
+    public static final Integer COMPANY_USER_1 = 1;
+
+    /** 普通员工 */
+    public static final Integer COMPANY_USER_2 = 2;
+
+    /** 员工登陆中 */
+    public static final Integer COMPANY_USER_3 = 3;
+
 
 
 

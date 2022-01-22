@@ -64,18 +64,15 @@ public class CompanyController {
     /**
      * 企业信息修改Controller
      *
-     * @param jsonInfo
+     * @param company 需要修改的公司信息
      * @return 修改成功的公司信息
      * @throws Exception 修改信息失败
      */
     @PostMapping("/modify")
     @CrossOrigin
-    public ReturnItem<Company> modify(@RequestBody String jsonInfo) throws Exception {
-        JSONObject jsonObject = JSONObject.parseObject(jsonInfo);
-        User user = jsonObject.getObject("user", User.class);
-        Company company = jsonObject.getObject("company", Company.class);
+    public ReturnItem<Company> modify(@RequestBody Company company) throws Exception {
         ReturnItem<Company> returnItem = new ReturnItem<>();
-        returnItem.setT(companyService.modify(user, company));
+        returnItem.setT(companyService.modify(company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
         returnItem.setHttpMessage(MODIFY_COMPANY_INFO_SUCCESS);
         return returnItem;
@@ -88,7 +85,7 @@ public class CompanyController {
      * @return 该公司的用户信息
      * @throws Exception 查询用户信息失败
      */
-    @GetMapping("/getUserByCompany")
+    @PostMapping("/getUserByCompany")
     @CrossOrigin
     public ReturnItem<List<User>> getUserByCompany(@RequestBody Company company) throws Exception {
         ReturnItem<List<User>> returnItem = new ReturnItem<>();

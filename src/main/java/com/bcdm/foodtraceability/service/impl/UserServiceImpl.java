@@ -124,7 +124,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public List<User> getUserByCompany(Company company) throws Exception {
-        List<User> userList = jurisdictionGetUserList(company);
+        List<User> userList = jurisdictionGetUserList(company.getCompanyId());
         if (SELECT_ZERO != userList.size()) {
             return userList;
         }
@@ -166,8 +166,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         throw new ServiceBusinessException(HTTP_RETURN_FAIL, modifyUserinfoFail);
     }
 
-    private List<User> jurisdictionGetUserList(Company company) throws Exception {
-        List<Jurisdiction> jurisdictionList = jurisdictionService.getJurisdictionByCompany(company);
+    private List<User> jurisdictionGetUserList(Integer CompanyId) throws Exception {
+        List<Jurisdiction> jurisdictionList = jurisdictionService.getJurisdictionByCompany(CompanyId);
         List<User> userList = new ArrayList<>();
         for (Jurisdiction jurisdiction : jurisdictionList) {
             QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();

@@ -19,7 +19,7 @@ import static com.bcdm.foodtraceability.common.MessageConstants.*;
 
 /**
  * <p>
- * 前端控制器
+ * 用户前端控制器
  * </p>
  *
  * @author 王

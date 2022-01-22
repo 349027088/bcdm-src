@@ -29,11 +29,10 @@ public interface CompanyService extends IService<Company> {
     /**
      * 修改企业信息
      *
-     * @param user 操作的用户
      * @param company 需要修改信息的企业
      * @return 修改成功的企业信息
      */
-    Company modify(User user, Company company) throws Exception;
+    Company modify(Company company) throws Exception;
 
     /**
      * 获取用户的企业信息

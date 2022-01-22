@@ -1,63 +1,28 @@
 package com.bcdm.foodtraceability.entity;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.io.Serializable;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.bcdm.foodtraceability.validatedgroup.RegisterGroup;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-/**
- * <p>
- * 用户信息载体
- * </p>
- *
- * @author 王
- * @since 2022-01-13
- */
+
 @Data
-@EqualsAndHashCode(callSuper = false)
-public class User implements Serializable {
-
-    private static final long serialVersionUID=1L;
+public class UserModel {
 
     /**
      * 用户ID
      */
     @TableId(type = IdType.AUTO)
     private Integer userId;
-
-    /**
-     * 账号
-     */
-    @NotNull(message = "账号不能为空")
-    @Pattern(message = "账号只能为字母或者数字", regexp = "^[A-Za-z0-9]+$")
-    @Length(max=32,min=6,message="用户长度为6-32位")
-    private String loginId;
-
-    /**
-     * 密码
-     */
-    @NotNull(message = "密码不能为空")
-    @Pattern(message = "密码只能为字母或者数字", regexp = "^[A-Za-z0-9]+$")
-    @Length(max=16,min=6,message="密码长度为6-16位")
-    private String password;
-
-    /**
-     * UUID
-     */
-    private String salt;
 
     /**
      * 用户状态
@@ -106,6 +71,11 @@ public class User implements Serializable {
     private Integer age;
 
     /**
+     * 职位
+     */
+    private Integer identity;
+
+    /**
      * 出生日期
      */
     private LocalDate birthday;
@@ -113,6 +83,4 @@ public class User implements Serializable {
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
-
-
 }

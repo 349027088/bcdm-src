@@ -29,6 +29,11 @@ public class Company implements Serializable {
     private Integer companyId;
 
     /**
+     * 创建者用户ID
+     */
+    private Integer userId;
+
+    /**
      * 企业状态
      */
     private Integer companyStatus;
