@@ -17,15 +17,16 @@ import java.util.List;
 public interface GoodsTypeService extends IService<GoodsType> {
 
     /**
-     * 查询xx状态下的所有种类信息
-     * @param company 需要查询商品种类的状态
-     * @return 返回当前通过审核的所有种类信息
-     * @throws Exception 查询商品种类信息失败
+     * 获取公司全部的商品种类
+     *
+     * @param company 公司信息
+     * @return 查询成功的商品种类
      */
-    List<GoodsType> getGoodsTypeList(Company company) throws Exception;
+    List<GoodsType> getGoodsTypeList(Company company);
 
     /**
      * 创建一个新的商品种类
+     *
      * @param goodsType 商品的种类信息
      * @return 创建成功的商品种类
      * @throws Exception 创建商品种类失败
@@ -33,8 +34,9 @@ public interface GoodsTypeService extends IService<GoodsType> {
     Boolean createGoodsType(GoodsType goodsType) throws Exception;
 
     /**
-     * 修改商品种类信息或者通过商品种类信息的审核
-     * @param goodsType 变更结束的商品种类信息
+     * 修改商品种类信息
+     *
+     * @param goodsType 变更的商品种类信息
      * @return 变成成功的商品种类信息
      * @throws Exception 变更商品种类信息操作失败
      */

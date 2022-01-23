@@ -7,6 +7,8 @@ import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -33,6 +35,7 @@ public class Supplier implements Serializable {
     /**
      * 企业ID
      */
+    @NotNull(message = "公司ID不能为空")
     private Integer companyId;
 
     /**
@@ -46,14 +49,15 @@ public class Supplier implements Serializable {
     private Integer supplierLevel;
 
     /**
-     * 供应商级别
+     * 供应商名称
      */
-    private Integer supplierName;
+    @NotBlank(message = "供应商名称不能为空")
+    private String supplierName;
 
     /**
      * 联系方式
      */
-    @NotNull(message = "请输入正确的电话号码")
+    @NotBlank(message = "电话号码不能为空")
     @Pattern(message = "请输入正确的电话号码", regexp = "^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$")
     private String supplierPhoneNumber;
 

@@ -133,4 +133,10 @@ public class MessageConstants {
     /** 删除供应商信息成功 */
     public static final String DELETE_SUPPLIER_INFO_SUCCESS = "删除供应商信息成功";
 
+    /** 删除供应商信息成功 */
+    public static final String   ADD_GOODSTYPE_FAILED = "删除供应商信息成功";
+
+    /** 删除供应商信息成功 */
+    public static final String   DELETE_GOODSTYPE_FAILED = "删除供应商信息成功";
+
 }

@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * <p>
  * 企业信息载体
@@ -46,6 +48,7 @@ public class Company implements Serializable {
     /**
      * 企业名称
      */
+    @NotBlank(message = "企业名称不能为空")
     private String companyName;
 
     /**
@@ -56,11 +59,13 @@ public class Company implements Serializable {
     /**
      * 企业地址
      */
+    @NotBlank(message = "企业地址不能为空")
     private String companyAddress;
 
     /**
      * 企业信息
      */
+    @NotBlank(message = "企业信息不能为空")
     private String companyInfo;
 
     /**

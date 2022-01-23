@@ -4,9 +4,7 @@ package com.bcdm.foodtraceability.controller;
 import com.bcdm.foodtraceability.entity.Company;
 import com.bcdm.foodtraceability.entity.GoodsType;
 import com.bcdm.foodtraceability.entity.ReturnItem;
-import com.bcdm.foodtraceability.entity.Supplier;
 import com.bcdm.foodtraceability.service.GoodsTypeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +19,7 @@ import static com.bcdm.foodtraceability.common.MessageConstants.*;
 
 /**
  * <p>
- *  前端控制器
+ * 商品种类前端控制器
  * </p>
  *
  * @author 王
@@ -38,7 +36,7 @@ public class GoodsTypeController {
     }
 
     /**
-     * 增加供应商信息Controller
+     * 增加商品种类信息Controller
      *
      * @param goodsType 需要添加的供应想信息
      * @return 创建成功的供应商信息
@@ -55,11 +53,11 @@ public class GoodsTypeController {
     }
 
     /**
-     * 删除供应商信息Controller
+     * 删除商品种类信息Controller
      *
-     * @param goodsType 用户账号密码和新密码
-     * @return 修改成功的用户信息
-     * @throws Exception 修改失败
+     * @param goodsType 需要删除的商品种类
+     * @return 删除状态
+     * @throws Exception 删除失败
      */
     @PostMapping("/delete")
     @CrossOrigin
@@ -72,15 +70,14 @@ public class GoodsTypeController {
     }
 
     /**
-     * 获取公司的所有未删除供应商列表信息
+     * 获取公司的所有商品种类信息
      *
      * @param company 需要获取供应商列表的企业
-     * @return 获取供应商列表
-     * @throws Exception 获取信息失败
+     * @return 获取商品种类列表
      */
     @PostMapping("/getSupplierList")
     @CrossOrigin
-    public ReturnItem<List<GoodsType>> getSupplierList(@RequestBody Company company) throws Exception {
+    public ReturnItem<List<GoodsType>> getSupplierList(@RequestBody Company company){
         ReturnItem<List<GoodsType>> returnItem = new ReturnItem<>();
         returnItem.setT(goodsTypeService.getGoodsTypeList(company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
