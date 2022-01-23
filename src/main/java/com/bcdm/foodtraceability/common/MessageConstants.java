@@ -62,10 +62,7 @@ public class MessageConstants {
     public static final String COMPANY_USER_GET_SUCCESS = "员工信息获取成功";
 
     /** 企业图片上传成功 */
-    public static final String COMPANY_ICON_UPLOAD_SUCCESS = "企业图片上传成功";
-
-    /** 企业图片修改成功 */
-    public static final String COMPANY_ICON_MODIFY_SUCCESS = "企业图片修改成功";
+    public static final String ICON_UPLOAD_SUCCESS = "企业图片上传成功";
 
     /** 修改员工职位成功 */
     public static final String MODIFY_USER_TO_COMPANY_SUCCESS = "修改员工职位成功";
@@ -93,9 +90,6 @@ public class MessageConstants {
 
     /** 修改企业授权信息失败*/
     public static final String MODIFY_EMPOWER_FAIL = "修改企业授权信息失败";
-
-    /** 上传企业LOGO时未找到公司的注册信息 */
-    public static final String FIND_COMPANY_BY_CREATE_ICON_FAIL = "上传企业LOGO时未找到公司的注册信息";
 
     /**企业授权失败*/
     public static final String ENTERPRISE_AUTHORIZATION_FAILED = "企业授权失败";

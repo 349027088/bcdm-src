@@ -10,7 +10,6 @@ import com.bcdm.foodtraceability.mapper.CompanyMapper;
 import com.bcdm.foodtraceability.service.CompanyService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bcdm.foodtraceability.service.EmpowerService;
-import com.bcdm.foodtraceability.service.IconService;
 import com.bcdm.foodtraceability.service.JurisdictionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

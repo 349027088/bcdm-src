@@ -8,7 +8,7 @@ import com.bcdm.foodtraceability.service.JurisdictionService;
 import org.springframework.web.bind.annotation.*;
 
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_SUCCESS;
-import static com.bcdm.foodtraceability.common.MessageConstants.COMPANY_ICON_MODIFY_SUCCESS;
+import static com.bcdm.foodtraceability.common.MessageConstants.MODIFY_USER_TO_COMPANY_SUCCESS;
 
 /**
  * <p>
@@ -45,7 +45,7 @@ public class JurisdictionController {
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(jurisdictionService.modifyJurisdiction(jurisdiction, companyManagerUserId));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
-        returnItem.setHttpMessage(COMPANY_ICON_MODIFY_SUCCESS);
+        returnItem.setHttpMessage(MODIFY_USER_TO_COMPANY_SUCCESS);
         return returnItem;
     }
 }

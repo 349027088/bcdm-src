@@ -2,12 +2,11 @@ package com.bcdm.foodtraceability.controller;
 
 import com.bcdm.foodtraceability.entity.ReturnItem;
 import com.bcdm.foodtraceability.service.IconService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_SUCCESS;
-import static com.bcdm.foodtraceability.common.MessageConstants.COMPANY_ICON_UPLOAD_SUCCESS;
+import static com.bcdm.foodtraceability.common.MessageConstants.ICON_UPLOAD_SUCCESS;
 
 /**
  * <p>
@@ -19,7 +18,6 @@ import static com.bcdm.foodtraceability.common.MessageConstants.COMPANY_ICON_UPL
  */
 @RestController
 @RequestMapping("/icon")
-@Slf4j
 public class IconController {
 
     private final IconService iconService;
@@ -41,7 +39,7 @@ public class IconController {
         ReturnItem<String> returnItem = new ReturnItem<>();
         returnItem.setT(iconService.createIcon(file));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
-        returnItem.setHttpMessage(COMPANY_ICON_UPLOAD_SUCCESS);
+        returnItem.setHttpMessage(ICON_UPLOAD_SUCCESS);
         return returnItem;
     }
 }

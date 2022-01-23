@@ -2,20 +2,17 @@ package com.bcdm.foodtraceability.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bcdm.foodtraceability.common.CreateUUID;
-import com.bcdm.foodtraceability.common.FileUtil;
 import com.bcdm.foodtraceability.exception.ServiceBusinessException;
 import com.bcdm.foodtraceability.service.IconService;
 import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
-import com.qiniu.storage.BucketManager;
-import com.qiniu.storage.Configuration;
-import com.qiniu.storage.Region;
-import com.qiniu.storage.UploadManager;
+import com.qiniu.storage.*;
 import com.qiniu.util.Auth;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URLEncoder;
 import java.util.Objects;
 
 import static com.bcdm.foodtraceability.common.Constants.*;
@@ -51,10 +48,6 @@ public class IconServiceImpl implements IconService {
 
     private final UploadManager uploadManager = new UploadManager(cfg);
 
-    private final Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
-
-    private final BucketManager bucketManager = new BucketManager(auth, cfg);
-
     @Override
     public String createIcon(MultipartFile icon) throws Exception {
         return sendIconToCloud(icon);
@@ -84,7 +77,7 @@ public class IconServiceImpl implements IconService {
         }
         String fileName = CreateUUID.getUUID() + CUT_POINT + fileExt;
         try {
-            Response res = uploadManager.put(icon.getBytes(), fileName, auth.uploadToken(bucketName));
+            Response res = uploadManager.put(icon.getBytes(), fileName, Auth.create(ACCESS_KEY, SECRET_KEY).uploadToken(bucketName));
             if (res.isOK() && res.isJson()) {
                 return (String) JSONObject.parseObject(res.bodyString()).get("key");
             }
@@ -95,9 +88,9 @@ public class IconServiceImpl implements IconService {
     }
 
     private void deleteIconCloud(String URI) throws Exception {
-        try{
-            Response response = bucketManager.delete(bucketName, URI);
-        }catch (QiniuException e){
+        try {
+            new BucketManager(Auth.create(ACCESS_KEY, SECRET_KEY), cfg).delete(bucketName, URI);
+        } catch (QiniuException e) {
             throw new ServiceBusinessException(HTTP_RETURN_FAIL, e.getMessage());
         }
     }
