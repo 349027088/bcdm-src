@@ -57,6 +57,7 @@ public class EmpowerServiceImpl extends ServiceImpl<EmpowerMapper, Empower> impl
         if (null != selectEmpower) {
             UpdateWrapper<Empower> updateWrapper = new UpdateWrapper<>();
             updateWrapper
+                    .eq("empowerId",empower.getEmpowerId())
                     .eq("update_time", empower.getUpdateTime())
                     .set("manager_id", empower.getManagerId())
                     .set("company_id", empower.getCompanyId())

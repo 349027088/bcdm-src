@@ -46,6 +46,11 @@ public class Supplier implements Serializable {
     private Integer supplierLevel;
 
     /**
+     * 供应商级别
+     */
+    private Integer supplierName;
+
+    /**
      * 联系方式
      */
     @NotNull(message = "请输入正确的电话号码")

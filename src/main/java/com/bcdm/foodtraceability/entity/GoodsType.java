@@ -33,6 +33,11 @@ public class GoodsType implements Serializable {
      */
     private String goodsTypeName;
 
+    /**
+     * 企业ID
+     */
+    private Integer companyId;
+
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;

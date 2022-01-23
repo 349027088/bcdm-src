@@ -89,6 +89,24 @@ public class Constants {
     /** 待审批员工 */
     public static final Integer COMPANY_USER_3 = 3;
 
+    // -------------------------------供应商锁定确认状态--------------------------------
+
+    /** 供应商正常 */
+    public static final Integer SUPPLIER_STATUS_ON_SERVICE = 0;
+
+    /** 供应商异常 */
+    public static final Integer SUPPLIER_STATUS_OUT_OF_SERVICE = 1;
+
+    // -------------------------------供应商服务提供状态--------------------------------
+
+    /** 供应商提供服务 */
+    public static final Integer SUPPLIER_LEVEL_ON_SERVICE = 0;
+
+    /** 供应商被删除 */
+    public static final Integer SUPPLIER_LEVEL_OUT_OF_SERVICE = 1;
+
+
+
 
 
 

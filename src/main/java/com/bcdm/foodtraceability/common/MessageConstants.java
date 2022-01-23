@@ -121,4 +121,16 @@ public class MessageConstants {
     /** 正在等待企业承认您的申请 */
     public static final String USER_ADMIT_FAIL = "正在等待企业承认您的申请";
 
+    /** 获取供应商信息成功 */
+    public static final String SELECT_SUPPLIER_INFO_SUCCESS = "获取供应商信息成功";
+
+    /** 添加供应商信息成功 */
+    public static final String ADD_SUPPLIER_INFO_SUCCESS = "查询授权信息失败";
+
+    /** 修改供应商信息成功 */
+    public static final String MODIFY_SUPPLIER_INFO_SUCCESS = "修改供应商信息成功";
+
+    /** 删除供应商信息成功 */
+    public static final String DELETE_SUPPLIER_INFO_SUCCESS = "删除供应商信息成功";
+
 }
