@@ -8,6 +8,7 @@ import com.bcdm.foodtraceability.exception.ServiceBusinessException;
 import com.bcdm.foodtraceability.mapper.SupplierMapper;
 import com.bcdm.foodtraceability.service.SupplierService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -27,6 +28,7 @@ import static com.bcdm.foodtraceability.common.MessageConstants.*;
  * @since 2022-01-13
  */
 @Service
+@Slf4j
 public class SupplierServiceImpl extends ServiceImpl<SupplierMapper, Supplier> implements SupplierService {
 
     @Override
@@ -36,6 +38,7 @@ public class SupplierServiceImpl extends ServiceImpl<SupplierMapper, Supplier> i
         supplier.setSupplierLevel(SUPPLIER_LEVEL_ON_SERVICE);
         supplier.setCreateTime(now);
         supplier.setUpdateTime(now);
+        log.info(supplier.toString());
         if (!save(supplier)) {
             throw new ServiceBusinessException(HTTP_RETURN_FAIL, CREATE_SUPPLIER_FAILED);
         }
@@ -73,25 +76,21 @@ public class SupplierServiceImpl extends ServiceImpl<SupplierMapper, Supplier> i
         if (SELECT_ZERO != supplierList.size()) {
             return supplierList;
         }
-        throw new ServiceBusinessException(HTTP_RETURN_SUCCESS, INQUIRE_EMPOWER_FAIL);
+        throw new ServiceBusinessException(HTTP_RETURN_SUCCESS, SELECT_SUPPLIER_INFO_FAIL);
     }
 
     @Override
     public Boolean deleteSupplier(Supplier supplier) throws Exception {
-        LocalDateTime now = LocalDateTime.now();
-        Supplier selectSupplier = getById(supplier.getSupplierId());
-        if (null != selectSupplier) {
-            UpdateWrapper<Supplier> updateWrapper = new UpdateWrapper<>();
-            updateWrapper
-                    .eq("supplier_id", supplier.getSupplierId())
-                    .eq("update_time", supplier.getUpdateTime())
-                    .set("supplier_status", supplier.getSupplierStatus())
-                    .set("update_time", now);
-            if (update(updateWrapper)) {
-                return true;
-            }
+        UpdateWrapper<Supplier> updateWrapper = new UpdateWrapper<>();
+        updateWrapper
+                .eq("supplier_id", supplier.getSupplierId())
+                .eq("update_time", supplier.getUpdateTime())
+                .set("supplier_status", SUPPLIER_LEVEL_OUT_OF_SERVICE)
+                .set("update_time", LocalDateTime.now());
+        if (update(updateWrapper)) {
+            return true;
         }
-        throw new ServiceBusinessException(HTTP_RETURN_SUCCESS, INQUIRE_EMPOWER_FAIL);
+        throw new ServiceBusinessException(HTTP_RETURN_SUCCESS, DELETE_SUPPLIER_INFO_FAIL);
     }
 
 }

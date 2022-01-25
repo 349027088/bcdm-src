@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.bcdm.foodtraceability.common.Constants.SELECT_ZERO;
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_FAIL;
 import static com.bcdm.foodtraceability.common.MessageConstants.*;
 
@@ -29,10 +30,10 @@ import static com.bcdm.foodtraceability.common.MessageConstants.*;
 public class JurisdictionServiceImpl extends ServiceImpl<JurisdictionMapper, Jurisdiction> implements JurisdictionService {
 
     @Override
-    public List<Jurisdiction> getJurisdictionByUser(Integer userId) {
+    public Jurisdiction getJurisdictionByUser(Integer userId) {
         QueryWrapper<Jurisdiction> jurisdictionQueryWrapper = new QueryWrapper<>();
         jurisdictionQueryWrapper.eq("user_id", userId);
-        return list(jurisdictionQueryWrapper);
+        return getOne(jurisdictionQueryWrapper);
     }
 
     @Override
@@ -44,8 +45,7 @@ public class JurisdictionServiceImpl extends ServiceImpl<JurisdictionMapper, Jur
 
     @Override
     public void createJurisdiction(Integer userId, Integer companyId, Integer identity) throws Exception {
-        Jurisdiction jurisdiction = createJurisdictionEntity(userId, companyId, identity);
-        if (!save(jurisdiction)) {
+        if (!save(createJurisdictionEntity(userId, companyId, identity))) {
             throw new ServiceBusinessException(HTTP_RETURN_FAIL, CREATE_JURISDICTION_FAIL);
         }
     }
@@ -53,7 +53,7 @@ public class JurisdictionServiceImpl extends ServiceImpl<JurisdictionMapper, Jur
     @Override
     public Boolean modifyJurisdiction(Jurisdiction jurisdiction, Integer companyManagerUserId) throws Exception {
         log.info(jurisdiction.toString());
-        log.info("modifyUserId--------------------"+companyManagerUserId);
+        log.info("modifyUserId--------------------" + companyManagerUserId);
         if (jurisdictionCheck(companyManagerUserId, jurisdiction)) {
             UpdateWrapper<Jurisdiction> jurisdictionUpdateWrapper = new UpdateWrapper<>();
             jurisdictionUpdateWrapper
@@ -73,33 +73,32 @@ public class JurisdictionServiceImpl extends ServiceImpl<JurisdictionMapper, Jur
     }
 
     private boolean jurisdictionCheck(Integer companyManagerUserId, Jurisdiction jurisdiction) {
-        List<Jurisdiction> jurisdictionByUser = getJurisdictionByUser(companyManagerUserId);
-        for (Jurisdiction jurisdictionEntity : jurisdictionByUser) {
-            if (jurisdictionEntity.getCompanyId().equals(jurisdiction.getCompanyId())) {
-                Jurisdiction compareJurisdiction =
-                        getOne(new QueryWrapper<Jurisdiction>()
-                                .eq("user_id", jurisdiction.getUserId())
-                                .eq("company_id", jurisdiction.getCompanyId()));
-                if (compareJurisdiction.getJurisdiction() > jurisdictionEntity.getJurisdiction() &&
-                        jurisdiction.getJurisdiction() > jurisdictionEntity.getJurisdiction()) {
-                    return true;
-                }
+        Jurisdiction managementJurisdiction = getJurisdictionByUser(companyManagerUserId);
+        if (managementJurisdiction.getCompanyId().equals(jurisdiction.getCompanyId())) {
+            Jurisdiction compareJurisdiction =
+                    getOne(new QueryWrapper<Jurisdiction>()
+                            .eq("user_id", jurisdiction.getUserId())
+                            .eq("company_id", jurisdiction.getCompanyId()));
+            return null != compareJurisdiction && compareJurisdiction.getJurisdiction() > managementJurisdiction.getJurisdiction() &&
+                    jurisdiction.getJurisdiction() > managementJurisdiction.getJurisdiction();
 
-            }
         }
         return false;
     }
 
-    private Jurisdiction createJurisdictionEntity(Integer userId, Integer companyId, Integer identity) {
-        LocalDateTime now = LocalDateTime.now();
-        Jurisdiction jurisdiction = new Jurisdiction();
-        jurisdiction.setUserId(userId);
-        jurisdiction.setCompanyId(companyId);
-        jurisdiction.setIdentity(identity);
-        jurisdiction.setJurisdiction(identity);
-        jurisdiction.setUpdateTime(now);
-        jurisdiction.setCreateTime(now);
-        return jurisdiction;
+    private Jurisdiction createJurisdictionEntity(Integer userId, Integer companyId, Integer identity) throws Exception {
+        if (SELECT_ZERO == count(new QueryWrapper<Jurisdiction>().eq("user_id", userId))) {
+            LocalDateTime now = LocalDateTime.now();
+            Jurisdiction jurisdiction = new Jurisdiction();
+            jurisdiction.setUserId(userId);
+            jurisdiction.setCompanyId(companyId);
+            jurisdiction.setIdentity(identity);
+            jurisdiction.setJurisdiction(identity);
+            jurisdiction.setUpdateTime(now);
+            jurisdiction.setCreateTime(now);
+            return jurisdiction;
+        }
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, CREATE_JURISDICTION_FAIL);
     }
 
 }

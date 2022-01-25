@@ -28,7 +28,7 @@ import static com.bcdm.foodtraceability.common.MessageConstants.*;
 
 /**
  * <p>
- * 服务实现类
+ * 用户服务实现类
  * </p>
  *
  * @author 王

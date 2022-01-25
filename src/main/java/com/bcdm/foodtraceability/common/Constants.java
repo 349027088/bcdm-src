@@ -2,7 +2,7 @@ package com.bcdm.foodtraceability.common;
 
 /**
  * <p>
- * 常量配置类
+ * 系统常量配置类
  * </p>
  *
  * @author 王
@@ -77,6 +77,9 @@ public class Constants {
 
     // --------------------------------关联状态--------------------------------
 
+    /** 企业申请中 */
+    public static final Integer COMPANY_USER_WAIT = 99;
+
     /** 企业老板 */
     public static final Integer COMPANY_USER_0 = 0;
 
@@ -104,11 +107,4 @@ public class Constants {
 
     /** 供应商被删除 */
     public static final Integer SUPPLIER_LEVEL_OUT_OF_SERVICE = 1;
-
-
-
-
-
-
-
 }

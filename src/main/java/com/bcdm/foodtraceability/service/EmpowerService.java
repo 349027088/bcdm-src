@@ -48,7 +48,7 @@ public interface EmpowerService extends IService<Empower> {
      * @param management 查询信息的管理员
      * @return 查询所有授权信息
      */
-    List<Empower> getEmpowerList(Management management) throws Exception;
+    List<Empower> getEmpowerList(Management management);
 
 
 }

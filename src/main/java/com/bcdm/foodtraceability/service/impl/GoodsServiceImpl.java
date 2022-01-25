@@ -1,5 +1,6 @@
 package com.bcdm.foodtraceability.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bcdm.foodtraceability.entity.Company;
 import com.bcdm.foodtraceability.entity.Goods;
 import com.bcdm.foodtraceability.entity.GoodsType;
@@ -13,9 +14,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+import static com.bcdm.foodtraceability.common.Constants.SELECT_ZERO;
+
 /**
  * <p>
- *  商品服务实现类
+ * 商品服务实现类
  * </p>
  *
  * @author 王
@@ -35,8 +38,8 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     }
 
     @Override
-    public List<Goods> getGoodsListByCompany(Company company) throws Exception {
-        return null;
+    public List<Goods> getGoodsListByCompany(Integer companyId) throws Exception {
+        return list(new QueryWrapper<Goods>().eq("company_id", companyId));
     }
 
     @Override
@@ -45,13 +48,13 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     }
 
     @Override
-    public List<Goods> getGoodsListByGoodsType(Company company, GoodsType goodsType) throws Exception {
-        return null;
+    public List<Goods> getGoodsListByGoodsType(Integer companyId, Integer goodsTypeId) throws Exception {
+        return list();
     }
 
     @Override
-    public Goods createGoods(Company company, Goods goods) throws Exception {
-        return null;
+    public Boolean createGoods(Goods goods) throws Exception {
+        return SELECT_ZERO != count(new QueryWrapper<Goods>().eq("company_id", goods.getCompanyId()).eq("goods_name", goods.getGoodsName())) && save(goods);
     }
 
     @Override

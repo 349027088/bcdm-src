@@ -3,9 +3,6 @@ package com.bcdm.foodtraceability.service;
 import com.bcdm.foodtraceability.entity.Company;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.bcdm.foodtraceability.entity.User;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 /**
  * <p>
@@ -40,7 +37,7 @@ public interface CompanyService extends IService<Company> {
      * @param user 需要查询名下企业的用户
      * @return 该用户名下的企业信息
      */
-    List<Company> getCompanyByUser(User user) throws Exception;
+    Company getCompanyByUser(User user) throws Exception;
 
     /**
      * 登录员工信息到企业

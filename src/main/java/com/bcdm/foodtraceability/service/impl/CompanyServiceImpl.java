@@ -15,16 +15,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.bcdm.foodtraceability.common.Constants.*;
+import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_LOGIN_WAIT;
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_FAIL;
 import static com.bcdm.foodtraceability.common.MessageConstants.*;
 
 /**
  * <p>
- * 服务实现类
+ * 公司服务实现类
  * </p>
  *
  * @author 王
@@ -45,8 +44,8 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
 
     @Override
     public Company register(User user, Company company) throws Exception {
-        List<Company> companyList = jurisdictionGetCompanyList(user.getUserId());
-        if (companyList.size() <= COMPANY_MAX) {
+        Jurisdiction jurisdiction = jurisdictionService.getJurisdictionByUser(company.getUserId());
+        if (null != jurisdiction) {
             createNewCompanyInfo(company);
             if (!save(company)) {
                 throw new ServiceBusinessException(HTTP_RETURN_FAIL, CREATE_COMPANY_FAIL);
@@ -61,36 +60,21 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     @Override
     public Company modify(Company company) throws Exception {
         log.info(company.toString());
-        List<Company> companyList = jurisdictionGetCompanyList(company.getUserId());
-        for (Company selectCompany : companyList) {
-            if (selectCompany.getCompanyId().equals(company.getCompanyId())) {
-                UpdateWrapper<Company> companyUpdateWrapper = new UpdateWrapper<>();
-                LocalDateTime now = LocalDateTime.now();
-                companyUpdateWrapper
-                        .eq("company_id", company.getCompanyId())
-                        .eq("update_time", company.getUpdateTime())
-                        .eq("user_id", company.getUserId())
-                        .set("company_icon", company.getCompanyIcon())
-                        .set("company_name", company.getCompanyName())
-                        .set("company_info", company.getCompanyInfo())
-                        .set("company_address", company.getCompanyAddress())
-                        .set("business_license", company.getBusinessLicense())
-                        .set("health_permit", company.getHealthPermit())
-                        .set("update_time", now);
-                if (update(companyUpdateWrapper)) {
-                    return getById(company.getCompanyId());
-                }
+        Jurisdiction jurisdiction = jurisdictionService.getJurisdictionByUser(company.getUserId());
+        if (COMPANY_USER_0.equals(jurisdiction.getJurisdiction()) || COMPANY_USER_1.equals(jurisdiction.getJurisdiction())) {
+            if (modifyCompanyInfo(company)) {
+                return getById(company.getCompanyId());
             }
         }
         throw new ServiceBusinessException(HTTP_RETURN_FAIL, MODIFY_COMPANY_FAIL);
     }
 
     @Override
-    public List<Company> getCompanyByUser(User user) throws Exception {
+    public Company getCompanyByUser(User user) throws Exception {
         log.info(user.getUserId() + "---------------" + "getCompanyByUser");
-        List<Company> companyList = jurisdictionGetCompanyList(user.getUserId());
-        if (SELECT_ZERO != companyList.size()) {
-            return companyList;
+        Company company = jurisdictionGetCompany(user.getUserId());
+        if (null != company) {
+            return company;
         }
         throw new ServiceBusinessException(HTTP_RETURN_FAIL, USER_GET_COMPANY_INFO_FAIL);
     }
@@ -122,6 +106,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         log.info(company.toString());
     }
 
+
     /**
      * 获取用户关联的企业信息
      *
@@ -129,27 +114,41 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
      * @return 被查询的企业信息
      * @throws Exception 查询关联表信息失败
      */
-    private List<Company> jurisdictionGetCompanyList(Integer userId) throws Exception {
-        List<Jurisdiction> jurisdictionList = jurisdictionService.getJurisdictionByUser(userId);
-        List<Company> companyList = new ArrayList<>();
-        boolean isCompanyUser = true;
-        for (Jurisdiction jurisdiction : jurisdictionList) {
-            if (!COMPANY_USER_3.equals(jurisdiction.getJurisdiction())) {
-                log.info(jurisdiction.toString());
-                QueryWrapper<Company> companyQueryWrapper = new QueryWrapper<>();
-                companyQueryWrapper.eq("company_id", jurisdiction.getCompanyId());
-                Company company = getOne(companyQueryWrapper);
-                companyList.add(company);
-                isCompanyUser = true;
-            } else {
-                isCompanyUser = false;
-            }
+    private Company jurisdictionGetCompany(Integer userId) throws Exception {
+        Jurisdiction jurisdiction = jurisdictionService.getJurisdictionByUser(userId);
+        if (!COMPANY_USER_3.equals(jurisdiction.getJurisdiction())) {
+            log.info(jurisdiction.toString());
+            QueryWrapper<Company> companyQueryWrapper = new QueryWrapper<>();
+            companyQueryWrapper.eq("company_id", jurisdiction.getCompanyId());
+            return getOne(companyQueryWrapper);
+        } else if (!COMPANY_USER_WAIT.equals(jurisdiction.getJurisdiction())) {
+            log.info(jurisdiction.toString());
+            QueryWrapper<Company> companyQueryWrapper = new QueryWrapper<>();
+            companyQueryWrapper.eq("company_id", jurisdiction.getCompanyId());
+            return getOne(companyQueryWrapper);
+        } else {
+            throw new ServiceBusinessException(HTTP_LOGIN_WAIT, USER_ADMIT_FAIL);
         }
-        if (isCompanyUser) {
-            return companyList;
-        }
-        throw new ServiceBusinessException(HTTP_RETURN_FAIL, USER_ADMIT_FAIL);
     }
 
-
+    /**
+     * 修改公司信息
+     *
+     * @param company 需要修改的公司信息
+     * @return 修改信息结果
+     */
+    private boolean modifyCompanyInfo(Company company) {
+        UpdateWrapper<Company> companyUpdateWrapper = new UpdateWrapper<>();
+        LocalDateTime now = LocalDateTime.now();
+        companyUpdateWrapper
+                .eq("company_id", company.getCompanyId())
+                .eq("update_time", company.getUpdateTime())
+                .eq("user_id", company.getUserId())
+                .set("company_phone",company.getCompanyPhone())
+                .set("company_icon", company.getCompanyIcon())
+                .set("company_info", company.getCompanyInfo())
+                .set("company_address", company.getCompanyAddress())
+                .set("update_time", now);
+        return update(companyUpdateWrapper);
+    }
 }

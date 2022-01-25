@@ -21,7 +21,7 @@ public interface JurisdictionService extends IService<Jurisdiction> {
      * @param userId 获取信息的用户
      * @return 返回该用户相关联的企业
      */
-    List<Jurisdiction> getJurisdictionByUser(Integer userId) throws Exception;
+    Jurisdiction getJurisdictionByUser(Integer userId) throws Exception;
 
     /**
      * 获取企业的用户关联信息
@@ -37,7 +37,6 @@ public interface JurisdictionService extends IService<Jurisdiction> {
      * @param userId    需要关联的用户信息
      * @param companyId 需要关联的企业信息
      * @param identity  用户被授予的职位
-     * @return 创建成功的关联信息
      * @throws Exception 创建新的关联信息失败
      */
     void createJurisdiction(Integer userId, Integer companyId, Integer identity) throws Exception;
@@ -46,7 +45,7 @@ public interface JurisdictionService extends IService<Jurisdiction> {
      * 修改用户在公司的职位
      *
      * @param jurisdiction   需要修改职位的员工和公司信息以及新的职位
-     * @param companyManagerUserId
+     * @param companyManagerUserId 公司管理员ID
      * @return 修改信息结果
      * @throws Exception 创建新的关联信息失败
      */

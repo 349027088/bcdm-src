@@ -8,11 +8,11 @@ import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
 import com.qiniu.storage.*;
 import com.qiniu.util.Auth;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.net.URLEncoder;
 import java.util.Objects;
 
 import static com.bcdm.foodtraceability.common.Constants.*;
@@ -30,6 +30,7 @@ import static com.bcdm.foodtraceability.common.MessageConstants.ICON_UPLOAD_FAIL
  * @since 2022-01-13
  */
 @Service
+@Slf4j
 public class IconServiceImpl implements IconService {
 
     @Value("${foodTraceability.accessKey}")
@@ -67,6 +68,7 @@ public class IconServiceImpl implements IconService {
      * @throws Exception 图片发送失败
      */
     private String sendIconToCloud(MultipartFile icon) throws Exception {
+        log.info("icon--------------" + icon.toString());
         int dotPos = Objects.requireNonNull(icon.getOriginalFilename()).lastIndexOf(CUT_POINT);
         if (dotPos < 0) {
             throw new ServiceBusinessException(HTTP_RETURN_FAIL, ICON_TYPE_FORMAT_FAIL);
@@ -79,6 +81,7 @@ public class IconServiceImpl implements IconService {
         try {
             Response res = uploadManager.put(icon.getBytes(), fileName, Auth.create(ACCESS_KEY, SECRET_KEY).uploadToken(bucketName));
             if (res.isOK() && res.isJson()) {
+                log.info("key-------------" + JSONObject.parseObject(res.bodyString()).get("key"));
                 return (String) JSONObject.parseObject(res.bodyString()).get("key");
             }
         } catch (QiniuException e) {

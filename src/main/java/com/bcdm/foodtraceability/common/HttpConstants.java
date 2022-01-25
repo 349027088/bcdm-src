@@ -10,12 +10,15 @@ package com.bcdm.foodtraceability.common;
  */
 public class HttpConstants {
 
-    /**---------------------------HTTP STATUS START---------------------------**/
-
     /**
      * 成功状态码
      */
     public static final String HTTP_RETURN_SUCCESS = "200";
+
+    /**
+     * 失败状态码
+     */
+    public static final String HTTP_LOGIN_WAIT = "255";
 
     /**
      * 失败状态码
@@ -27,5 +30,4 @@ public class HttpConstants {
      */
     public static final String HTTP_RETURN_SERVER_FAIL = "500";
 
-    /**---------------------------HTTP STATUS END-----------------------------**/
 }

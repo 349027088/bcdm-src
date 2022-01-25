@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * <p>
  * 生产厂商信息载体
@@ -27,6 +29,12 @@ public class Manufacturer implements Serializable {
      */
     @TableId(type = IdType.AUTO)
     private Integer manufacturerId;
+
+    /**
+     * 企业ID
+     */
+    @NotNull(message = "公司ID不能为空")
+    private Integer companyId;
 
     /**
      * 生产厂商名称

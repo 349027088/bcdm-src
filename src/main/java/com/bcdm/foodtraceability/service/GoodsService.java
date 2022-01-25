@@ -21,11 +21,11 @@ public interface GoodsService extends IService<Goods> {
     /**
      * 获取公司的商品列表
      *
-     * @param company 需要获取商品列表的公司
+     * @param companyId 需要获取商品列表的公司ID
      * @return 获取的商品列表
      * @throws Exception 返回商品列表失败
      */
-    List<Goods> getGoodsListByCompany(Company company) throws Exception;
+    List<Goods> getGoodsListByCompany(Integer companyId) throws Exception;
 
     /**
      * 查询待审核或者审核失败的的商品列表
@@ -37,22 +37,21 @@ public interface GoodsService extends IService<Goods> {
 
     /**
      * 按照种类查询商品信息
-     * @param company 需要获取商品列表的公司
-     * @param goodsType 被查询的商品种类
+     * @param companyId 需要获取商品列表的公司ID
+     * @param goodsTypeId 被查询的商品种类ID
      * @return 被查询的商品信息
      * @throws Exception 查询信息出现错误
      */
-    List<Goods> getGoodsListByGoodsType(Company company, GoodsType goodsType) throws Exception;
+    List<Goods> getGoodsListByGoodsType(Integer companyId, Integer goodsTypeId) throws Exception;
 
     /**
-     * 公司创建一个商品
+     * 公司添加一个新的商品
      *
-     * @param company 新建一个商品的公司
      * @param goods   新建商品的信息
      * @return 创建成功的商品
      * @throws Exception 创建商品失败
      */
-    Goods createGoods(Company company, Goods goods) throws Exception;
+    Boolean createGoods(Goods goods) throws Exception;
 
     /**
      * 批量创建商品

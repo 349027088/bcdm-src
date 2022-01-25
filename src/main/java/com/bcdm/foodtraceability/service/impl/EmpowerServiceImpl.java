@@ -73,17 +73,14 @@ public class EmpowerServiceImpl extends ServiceImpl<EmpowerMapper, Empower> impl
     }
 
     @Override
-    public List<Empower> getEmpowerList(Management management) throws Exception {
-        List<Empower> empowerList = list();
-        if (SELECT_ZERO != empowerList.size()) {
-            return empowerList;
-        }
-        throw new ServiceBusinessException(HTTP_RETURN_FAIL, INQUIRE_EMPOWER_FAIL);
+    public List<Empower> getEmpowerList(Management management){
+            return list();
     }
 
     /**
-     * 新规企业创建时候附带的授权信息
+     * 创建授权信息
      *
+     * @param companyId 需要新授权的公司ID
      * @return 创建的授权信息
      */
     private Empower createEmpowerEntity(int companyId) {

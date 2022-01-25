@@ -5,12 +5,9 @@ import com.bcdm.foodtraceability.entity.Company;
 import com.bcdm.foodtraceability.entity.GoodsType;
 import com.bcdm.foodtraceability.entity.ReturnItem;
 import com.bcdm.foodtraceability.service.GoodsTypeService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
@@ -25,8 +22,9 @@ import static com.bcdm.foodtraceability.common.MessageConstants.*;
  * @author 王
  * @since 2022-01-13
  */
-@Controller
+@RestController
 @RequestMapping("/goodsType")
+@Slf4j
 public class GoodsTypeController {
 
     private final GoodsTypeService goodsTypeService;
@@ -75,9 +73,10 @@ public class GoodsTypeController {
      * @param company 需要获取供应商列表的企业
      * @return 获取商品种类列表
      */
-    @PostMapping("/getSupplierList")
+    @PostMapping("/getGoodsTypeList")
     @CrossOrigin
-    public ReturnItem<List<GoodsType>> getSupplierList(@RequestBody Company company){
+    public ReturnItem<List<GoodsType>> getGoodsTypeList(@RequestBody Company company){
+        log.info(company.toString());
         ReturnItem<List<GoodsType>> returnItem = new ReturnItem<>();
         returnItem.setT(goodsTypeService.getGoodsTypeList(company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);

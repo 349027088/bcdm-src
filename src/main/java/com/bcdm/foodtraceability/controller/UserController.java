@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.groups.Default;
 
-import java.util.List;
-
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_SUCCESS;
 import static com.bcdm.foodtraceability.common.MessageConstants.*;
 
@@ -118,8 +116,8 @@ public class UserController {
      */
     @PostMapping("/getCompanyByUser")
     @CrossOrigin
-    public ReturnItem<List<Company>> getCompanyByUser(@RequestBody User user) throws Exception {
-        ReturnItem<List<Company>> returnItem = new ReturnItem<>();
+    public ReturnItem<Company> getCompanyByUser(@RequestBody User user) throws Exception {
+        ReturnItem<Company> returnItem = new ReturnItem<>();
         returnItem.setT(companyService.getCompanyByUser(user));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
         returnItem.setHttpMessage(GET_COMPANY_INFO_SUCCESS);

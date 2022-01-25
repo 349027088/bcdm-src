@@ -44,6 +44,11 @@ public class Goods implements Serializable {
     private Integer goodsTypeId;
 
     /**
+     * 企业ID
+     */
+    private Integer companyId;
+
+    /**
      * 供应商ID
      */
     private Integer supplierId;

@@ -48,8 +48,14 @@ public class Company implements Serializable {
     /**
      * 企业名称
      */
-    @NotBlank(message = "企业名称不能为空")
+//    @NotBlank(message = "企业名称不能为空")
     private String companyName;
+
+    /**
+     * 企业名称
+     */
+//    @NotBlank(message = "企业名称不能为空")
+    private String companyPhone;
 
     /**
      * 企业图片
@@ -59,13 +65,13 @@ public class Company implements Serializable {
     /**
      * 企业地址
      */
-    @NotBlank(message = "企业地址不能为空")
+//    @NotBlank(message = "企业地址不能为空")
     private String companyAddress;
 
     /**
      * 企业信息
      */
-    @NotBlank(message = "企业信息不能为空")
+//    @NotBlank(message = "企业信息不能为空")
     private String companyInfo;
 
     /**

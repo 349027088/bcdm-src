@@ -5,6 +5,7 @@ import com.bcdm.foodtraceability.entity.Company;
 import com.bcdm.foodtraceability.entity.ReturnItem;
 import com.bcdm.foodtraceability.entity.Supplier;
 import com.bcdm.foodtraceability.service.SupplierService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -23,6 +24,7 @@ import static com.bcdm.foodtraceability.common.MessageConstants.*;
  */
 @RestController
 @RequestMapping("/supplier")
+@Slf4j
 public class SupplierController {
 
     private final SupplierService supplierService;
@@ -41,6 +43,7 @@ public class SupplierController {
     @PostMapping("/create")
     @CrossOrigin
     public ReturnItem<Boolean> create(@RequestBody Supplier supplier) throws Exception {
+        log.info(supplier.toString());
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(supplierService.createSupplier(supplier));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -58,6 +61,7 @@ public class SupplierController {
     @PostMapping("/modify")
     @CrossOrigin
     public ReturnItem<Boolean> modify(@RequestBody Supplier supplier) throws Exception {
+        log.info(supplier.toString());
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(supplierService.modifySupplier(supplier));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -75,6 +79,7 @@ public class SupplierController {
     @PostMapping("/delete")
     @CrossOrigin
     public ReturnItem<Boolean> delete(@RequestBody Supplier supplier) throws Exception {
+        log.info(supplier.toString());
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(supplierService.deleteSupplier(supplier));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -92,6 +97,7 @@ public class SupplierController {
     @PostMapping("/getSupplierList")
     @CrossOrigin
     public ReturnItem<List<Supplier>> getSupplierList(@RequestBody Company company) throws Exception {
+        log.info(company.toString());
         ReturnItem<List<Supplier>> returnItem = new ReturnItem<>();
         returnItem.setT(supplierService.getSupplierList(company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
