@@ -29,11 +29,19 @@ public interface GoodsService extends IService<Goods> {
 
     /**
      * 查询待审核或者审核失败的的商品列表
-     * @param status 需要查询商品的状态
+     * @param status 商品状态
      * @return 被查询的商品信息
      * @throws Exception 查询信息出现错误
      */
     List<Goods> getGoodsListByStatus(Integer status) throws Exception;
+
+    /**
+     * 按照供应商查询商品信息
+     * @param supplierId 供应商ID
+     * @return 被查询的商品信息
+     * @throws Exception 查询信息出现错误
+     */
+    List<Goods> getGoodsListBySupplier(Integer companyId,Integer supplierId) throws Exception;
 
     /**
      * 按照种类查询商品信息
@@ -86,12 +94,11 @@ public interface GoodsService extends IService<Goods> {
 
     /**
      * 删除一个商品信息
-     * @param company 需要删除商品信息的公司
      * @param goods 需要删除的商品信息
      * @return 删除是否成功
      * @throws Exception 删除信息失败
      */
-    boolean deleteGoods(Company company,Goods goods) throws Exception;
+    boolean deleteGoods(Goods goods) throws Exception;
 
     /**
      * 批量删除商品信息

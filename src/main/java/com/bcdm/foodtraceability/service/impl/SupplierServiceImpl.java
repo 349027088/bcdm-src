@@ -2,13 +2,11 @@ package com.bcdm.foodtraceability.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.bcdm.foodtraceability.entity.Company;
 import com.bcdm.foodtraceability.entity.Supplier;
 import com.bcdm.foodtraceability.exception.ServiceBusinessException;
 import com.bcdm.foodtraceability.mapper.SupplierMapper;
 import com.bcdm.foodtraceability.service.SupplierService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -28,7 +26,6 @@ import static com.bcdm.foodtraceability.common.MessageConstants.*;
  * @since 2022-01-13
  */
 @Service
-@Slf4j
 public class SupplierServiceImpl extends ServiceImpl<SupplierMapper, Supplier> implements SupplierService {
 
     @Override
@@ -38,7 +35,6 @@ public class SupplierServiceImpl extends ServiceImpl<SupplierMapper, Supplier> i
         supplier.setSupplierLevel(SUPPLIER_LEVEL_ON_SERVICE);
         supplier.setCreateTime(now);
         supplier.setUpdateTime(now);
-        log.info(supplier.toString());
         if (!save(supplier)) {
             throw new ServiceBusinessException(HTTP_RETURN_FAIL, CREATE_SUPPLIER_FAILED);
         }
@@ -67,10 +63,10 @@ public class SupplierServiceImpl extends ServiceImpl<SupplierMapper, Supplier> i
     }
 
     @Override
-    public List<Supplier> getSupplierList(Company company) throws Exception {
+    public List<Supplier> getSupplierList(Integer companyId) throws Exception {
         QueryWrapper<Supplier> queryWrapper = new QueryWrapper<>();
         queryWrapper
-                .eq("company_id", company.getCompanyId())
+                .eq("company_id", companyId)
                 .eq("supplier_status", SUPPLIER_STATUS_ON_SERVICE);
         List<Supplier> supplierList = list(queryWrapper);
         if (SELECT_ZERO != supplierList.size()) {

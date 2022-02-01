@@ -37,11 +37,11 @@ public interface SupplierService extends IService<Supplier> {
     /**
      * 获取供应商信息列表
      *
-     * @param company 需要查询供应商的企业
+     * @param companyId 需要查询供应商的企业
      * @return 所有供应商的信息
      * @throws Exception 查询供应商信息失败
      */
-    List<Supplier> getSupplierList(Company company) throws Exception;
+    List<Supplier> getSupplierList(Integer companyId) throws Exception;
 
     /**
      * 删除供应商信息

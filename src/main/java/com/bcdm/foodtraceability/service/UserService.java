@@ -1,6 +1,7 @@
 package com.bcdm.foodtraceability.service;
 
 import com.bcdm.foodtraceability.entity.Company;
+import com.bcdm.foodtraceability.entity.ModifyPassword;
 import com.bcdm.foodtraceability.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.bcdm.foodtraceability.entity.UserModel;
@@ -35,10 +36,10 @@ public interface UserService extends IService<User> {
     /**
      * 修改密码
      *
-     * @param user 修改用登录信息
+     * @param userLoginInfo 修改用登录信息
      * @return 用户信息
      */
-    User modifyPassword(User user, String newPassword) throws Exception;
+    User modifyPassword(ModifyPassword userLoginInfo) throws Exception;
 
     /**
      * 修改用户信息

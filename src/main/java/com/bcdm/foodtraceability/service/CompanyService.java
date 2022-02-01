@@ -20,7 +20,7 @@ public interface CompanyService extends IService<Company> {
      * @param company 需要创建的企业信息
      * @return 创建成功的企业信息
      */
-    Company register(User user, Company company) throws Exception;
+    Company register(Company company) throws Exception;
 
 
     /**
@@ -42,10 +42,9 @@ public interface CompanyService extends IService<Company> {
     /**
      * 登录员工信息到企业
      *
-     * @param user_id 需要登录的员工信息
-     * @param company 需要被登录到的企业信息
+     * @param company 需要被登录到的企业信息和员工的信息
      * @return 被登录的企业信息
      * @throws Exception 登录员工信息失败
      */
-    Company createUserToCompany(Integer user_id, Company company) throws Exception;
+    Company createUserToCompany(Company company) throws Exception;
 }

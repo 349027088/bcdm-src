@@ -1,16 +1,17 @@
 package com.bcdm.foodtraceability.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.bcdm.foodtraceability.entity.Company;
+import com.bcdm.foodtraceability.entity.ModifyPassword;
 import com.bcdm.foodtraceability.entity.ReturnItem;
 import com.bcdm.foodtraceability.entity.User;
 import com.bcdm.foodtraceability.service.CompanyService;
 import com.bcdm.foodtraceability.service.UserService;
+import com.bcdm.foodtraceability.validatedgroup.CreateGroup;
+import com.bcdm.foodtraceability.validatedgroup.GetInfoGroup;
+import com.bcdm.foodtraceability.validatedgroup.ModifyGroup;
 import com.bcdm.foodtraceability.validatedgroup.RegisterGroup;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.groups.Default;
 
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_SUCCESS;
 import static com.bcdm.foodtraceability.common.MessageConstants.*;
@@ -45,7 +46,8 @@ public class UserController {
      */
     @PostMapping("/register")
     @CrossOrigin
-    public ReturnItem<User> register(@Validated({RegisterGroup.class, Default.class}) @RequestBody User user) throws Exception {
+    public ReturnItem<User> register(@Validated({RegisterGroup.class})
+                                     @RequestBody User user) throws Exception {
         ReturnItem<User> returnItem = new ReturnItem<>();
         returnItem.setT(userService.register(user));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -62,7 +64,8 @@ public class UserController {
      */
     @PostMapping("/login")
     @CrossOrigin
-    public ReturnItem<User> login(@Validated @RequestBody User user) throws Exception {
+    public ReturnItem<User> login(@Validated({GetInfoGroup.class})
+                                  @RequestBody User user) throws Exception {
         ReturnItem<User> returnItem = new ReturnItem<>();
         returnItem.setT(userService.login(user));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -79,7 +82,8 @@ public class UserController {
      */
     @PostMapping("/modify")
     @CrossOrigin
-    public ReturnItem<User> modify(@Validated({RegisterGroup.class, Default.class}) @RequestBody User user) throws Exception {
+    public ReturnItem<User> modify(@Validated({ModifyGroup.class})
+                                   @RequestBody User user) throws Exception {
         ReturnItem<User> returnItem = new ReturnItem<>();
         returnItem.setT(userService.modifyUserInfo(user));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -90,18 +94,16 @@ public class UserController {
     /**
      * 修改密码Controller
      *
-     * @param passwordInfo 用户账号密码和新密码
+     * @param userLoginInfo 用户账号密码和新密码
      * @return 修改成功用户信息
      * @throws Exception 修改失败
      */
     @PostMapping("/modifyPassword")
     @CrossOrigin
-    public ReturnItem<User> modifyPassword(@Validated @RequestBody String passwordInfo) throws Exception {
-        JSONObject jsonObject = JSONObject.parseObject(passwordInfo);
-        String newPassword = jsonObject.getString("newPassword");
-        User user = jsonObject.getObject("user", User.class);
+    public ReturnItem<User> modifyPassword(@Validated({ModifyGroup.class})
+                                           @RequestBody ModifyPassword userLoginInfo) throws Exception {
         ReturnItem<User> returnItem = new ReturnItem<>();
-        returnItem.setT(userService.modifyPassword(user, newPassword));
+        returnItem.setT(userService.modifyPassword(userLoginInfo));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
         returnItem.setHttpMessage(MODIFY_PASSWORD_SUCCESS);
         return returnItem;
@@ -116,7 +118,8 @@ public class UserController {
      */
     @PostMapping("/getCompanyByUser")
     @CrossOrigin
-    public ReturnItem<Company> getCompanyByUser(@RequestBody User user) throws Exception {
+    public ReturnItem<Company> getCompanyByUser(@Validated({CreateGroup.class})
+                                                @RequestBody User user) throws Exception {
         ReturnItem<Company> returnItem = new ReturnItem<>();
         returnItem.setT(companyService.getCompanyByUser(user));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);

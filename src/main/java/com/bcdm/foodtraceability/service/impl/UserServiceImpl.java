@@ -3,10 +3,7 @@ package com.bcdm.foodtraceability.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bcdm.foodtraceability.entity.Company;
-import com.bcdm.foodtraceability.entity.Jurisdiction;
-import com.bcdm.foodtraceability.entity.User;
-import com.bcdm.foodtraceability.entity.UserModel;
+import com.bcdm.foodtraceability.entity.*;
 import com.bcdm.foodtraceability.exception.ServiceBusinessException;
 import com.bcdm.foodtraceability.mapper.UserMapper;
 import com.bcdm.foodtraceability.service.JurisdictionService;
@@ -69,8 +66,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (0 == count(queryWrapper)) {
             user.setSalt(getUUID());
             String password = user.getPassword();
-            String stringBuffer = user.getPassword() + user.getSalt();
-            user.setPassword(Md5encode(stringBuffer));
+            user.setPassword(Md5encode(user.getPassword() + user.getSalt()));
             LocalDateTime now = LocalDateTime.now();
             user.setUserStatus(USER_STATUS_UNLOCK);
             user.setCreateTime(now);
@@ -85,10 +81,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public User modifyPassword(User user, String newPassword) throws Exception {
-        log.info(user.getLoginId() + "-------修改密码");
-        User targetUser = login(user);
-        String stringBuffer = newPassword + targetUser.getSalt();
+    public User modifyPassword(ModifyPassword userLoginInfo) throws Exception {
+        log.info(userLoginInfo.getLoginId() + "-------修改密码");
+        User targetUser = new User();
+        BeanUtils.copyProperties(userLoginInfo,targetUser);
+        targetUser = login(targetUser);
+        String stringBuffer = userLoginInfo.getNewPassword() + targetUser.getSalt();
         targetUser.setPassword(Md5encode(stringBuffer));
         return getUser(targetUser, MODIFY_PASSWORD_FAIL);
     }

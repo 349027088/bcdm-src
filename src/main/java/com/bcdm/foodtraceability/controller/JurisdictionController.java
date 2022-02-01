@@ -12,7 +12,7 @@ import static com.bcdm.foodtraceability.common.MessageConstants.MODIFY_USER_TO_C
 
 /**
  * <p>
- * 前端控制器
+ * 企业用户关联前端控制器
  * </p>
  *
  * @author 王

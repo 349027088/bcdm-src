@@ -8,5 +8,5 @@ package com.bcdm.foodtraceability.validatedgroup;
  * @author 王
  * @since 2022-01-30
  */
-public interface RegisterGroup {
+public interface CreateGroup {
 }

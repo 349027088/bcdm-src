@@ -1,12 +1,14 @@
 package com.bcdm.foodtraceability.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.bcdm.foodtraceability.entity.*;
 import com.bcdm.foodtraceability.service.CompanyService;
 import com.bcdm.foodtraceability.service.UserService;
+import com.bcdm.foodtraceability.validatedgroup.GetInfoGroup;
+import com.bcdm.foodtraceability.validatedgroup.ModifyGroup;
+import com.bcdm.foodtraceability.validatedgroup.RegisterGroup;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -38,18 +40,17 @@ public class CompanyController {
     /**
      * 企业登录Controller
      *
-     * @param jsonInfo 新建企业的信息和新建企业的用户
+     * @param company 新建企业的信息和新建企业的用户
      * @return 创建成功的企业信息
      * @throws Exception 创建失败
      */
     @PostMapping("/register")
     @CrossOrigin
-    public ReturnItem<Company> register(@RequestBody String jsonInfo) throws Exception {
-        JSONObject jsonObject = JSONObject.parseObject(jsonInfo);
-        User user = jsonObject.getObject("user", User.class);
-        Company company = jsonObject.getObject("company", Company.class);
+    public ReturnItem<Company> register(@Validated({RegisterGroup.class})
+                                        @RequestBody Company company) throws Exception {
+        log.info("用户" + company.getUserId() + "-----创建新的企业");
         ReturnItem<Company> returnItem = new ReturnItem<>();
-        returnItem.setT(companyService.register(user, company));
+        returnItem.setT(companyService.register(company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
         returnItem.setHttpMessage(CREATE_COMPANY_SUCCESS);
         return returnItem;
@@ -64,7 +65,9 @@ public class CompanyController {
      */
     @PostMapping("/modify")
     @CrossOrigin
-    public ReturnItem<Company> modify(@RequestBody Company company) throws Exception {
+    public ReturnItem<Company> modify(@Validated({ModifyGroup.class})
+                                      @RequestBody Company company) throws Exception {
+        log.info("用户" + company.getUserId() + "-----修改" + company.getCompanyId() + "企业的信息");
         ReturnItem<Company> returnItem = new ReturnItem<>();
         returnItem.setT(companyService.modify(company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -81,7 +84,9 @@ public class CompanyController {
      */
     @PostMapping("/getUserByCompany")
     @CrossOrigin
-    public ReturnItem<List<UserModel>> getUserByCompany(@RequestBody Company company) throws Exception {
+    public ReturnItem<List<UserModel>> getUserByCompany(@Validated({GetInfoGroup.class})
+                                                        @RequestBody Company company) throws Exception {
+        log.info("用户" + company.getUserId() + "-----获取" + company.getCompanyId() + "企业的所有员工信息");
         ReturnItem<List<UserModel>> returnItem = new ReturnItem<>();
         returnItem.setT(userService.getUserByCompany(company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -92,18 +97,17 @@ public class CompanyController {
     /**
      * 登录员工到企业
      *
-     * @param jsonInfo 登录的员工和企业信息
+     * @param company 登录的员工和企业信息
      * @return 被登录的企业信息
      * @throws Exception 登录员工到企业失败
      */
     @PostMapping("createUserToCompany")
     @CrossOrigin
-    public ReturnItem<Company> createUserToCompany(@RequestBody String jsonInfo) throws Exception {
-        JSONObject jsonObject = JSONObject.parseObject(jsonInfo);
-        Company company = jsonObject.getObject("company", Company.class);
-        Integer user_id = jsonObject.getInteger("userId");
+    public ReturnItem<Company> createUserToCompany(@Validated({GetInfoGroup.class})
+                                                   @RequestBody Company company) throws Exception {
+        log.info("用户" + company.getUserId() + "-----被添加到" + company.getCompanyId() + "企业");
         ReturnItem<Company> returnItem = new ReturnItem<>();
-        returnItem.setT(companyService.createUserToCompany(user_id, company));
+        returnItem.setT(companyService.createUserToCompany(company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
         returnItem.setHttpMessage(CREATE_USER_TO_COMPANY_SUCCESS);
         return returnItem;

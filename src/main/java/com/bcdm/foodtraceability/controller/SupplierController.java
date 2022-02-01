@@ -5,7 +5,9 @@ import com.bcdm.foodtraceability.entity.Company;
 import com.bcdm.foodtraceability.entity.ReturnItem;
 import com.bcdm.foodtraceability.entity.Supplier;
 import com.bcdm.foodtraceability.service.SupplierService;
+import com.bcdm.foodtraceability.validatedgroup.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -42,8 +44,9 @@ public class SupplierController {
      */
     @PostMapping("/create")
     @CrossOrigin
-    public ReturnItem<Boolean> create(@RequestBody Supplier supplier) throws Exception {
-        log.info(supplier.toString());
+    public ReturnItem<Boolean> create(@Validated({CreateGroup.class})
+                                      @RequestBody Supplier supplier) throws Exception {
+        log.info("企业" + supplier.getCompanyId() + "-----添加供应商" + supplier.getSupplierId());
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(supplierService.createSupplier(supplier));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -60,8 +63,9 @@ public class SupplierController {
      */
     @PostMapping("/modify")
     @CrossOrigin
-    public ReturnItem<Boolean> modify(@RequestBody Supplier supplier) throws Exception {
-        log.info(supplier.toString());
+    public ReturnItem<Boolean> modify(@Validated({ModifyGroup.class})
+                                      @RequestBody Supplier supplier) throws Exception {
+        log.info("企业" + supplier.getCompanyId() + "-----修改供应商" + supplier.getSupplierId());
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(supplierService.modifySupplier(supplier));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -78,8 +82,9 @@ public class SupplierController {
      */
     @PostMapping("/delete")
     @CrossOrigin
-    public ReturnItem<Boolean> delete(@RequestBody Supplier supplier) throws Exception {
-        log.info(supplier.toString());
+    public ReturnItem<Boolean> delete(@Validated({DeleteGroup.class})
+                                      @RequestBody Supplier supplier) throws Exception {
+        log.info("企业" + supplier.getCompanyId() + "-----删除供应商" + supplier.getSupplierId());
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(supplierService.deleteSupplier(supplier));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -90,16 +95,17 @@ public class SupplierController {
     /**
      * 获取公司的所有未删除供应商列表信息
      *
-     * @param company 需要获取供应商列表的企业
+     * @param supplier 需要获取供应商列表的企业
      * @return 获取供应商列表
      * @throws Exception 获取信息失败
      */
     @PostMapping("/getSupplierList")
     @CrossOrigin
-    public ReturnItem<List<Supplier>> getSupplierList(@RequestBody Company company) throws Exception {
-        log.info(company.toString());
+    public ReturnItem<List<Supplier>> getSupplierList(@Validated({GetInfoGroup.class})
+                                                      @RequestBody Supplier supplier) throws Exception {
+        log.info("企业" + supplier.getCompanyId() + "-----获取所有供应商信息");
         ReturnItem<List<Supplier>> returnItem = new ReturnItem<>();
-        returnItem.setT(supplierService.getSupplierList(company));
+        returnItem.setT(supplierService.getSupplierList(supplier.getCompanyId()));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
         returnItem.setHttpMessage(SELECT_SUPPLIER_INFO_SUCCESS);
         return returnItem;

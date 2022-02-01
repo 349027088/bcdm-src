@@ -43,14 +43,14 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     }
 
     @Override
-    public Company register(User user, Company company) throws Exception {
+    public Company register(Company company) throws Exception {
         Jurisdiction jurisdiction = jurisdictionService.getJurisdictionByUser(company.getUserId());
         if (null != jurisdiction) {
             createNewCompanyInfo(company);
             if (!save(company)) {
                 throw new ServiceBusinessException(HTTP_RETURN_FAIL, CREATE_COMPANY_FAIL);
             }
-            jurisdictionService.createJurisdiction(user.getUserId(), company.getCompanyId(), COMPANY_USER_0);
+            jurisdictionService.createJurisdiction(company.getUserId(), company.getCompanyId(), COMPANY_USER_0);
             empowerService.createCompanyServiceEmpower(company);
             return company;
         }
@@ -80,7 +80,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     }
 
     @Override
-    public Company createUserToCompany(Integer user_id, Company company) throws Exception {
+    public Company createUserToCompany(Company company) throws Exception {
         if (null == company.getCompanyId()) {
             QueryWrapper<Company> companyQueryWrapper = new QueryWrapper<>();
             companyQueryWrapper.eq("company_name", company.getCompanyName());
@@ -88,7 +88,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         } else {
             company = getById(company.getCompanyId());
         }
-        jurisdictionService.createJurisdiction(user_id, company.getCompanyId(), COMPANY_USER_3);
+        jurisdictionService.createJurisdiction(company.getUserId(), company.getCompanyId(), COMPANY_USER_3);
         return company;
     }
 

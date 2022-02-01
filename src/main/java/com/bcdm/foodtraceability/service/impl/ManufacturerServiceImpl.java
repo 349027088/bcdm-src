@@ -5,6 +5,7 @@ import com.bcdm.foodtraceability.entity.Manufacturer;
 import com.bcdm.foodtraceability.mapper.ManufacturerMapper;
 import com.bcdm.foodtraceability.service.ManufacturerService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,6 +22,7 @@ import static com.bcdm.foodtraceability.common.Constants.SELECT_ZERO;
  * @since 2022-01-13
  */
 @Service
+@Slf4j
 public class ManufacturerServiceImpl extends ServiceImpl<ManufacturerMapper, Manufacturer> implements ManufacturerService {
 
 
@@ -34,11 +36,12 @@ public class ManufacturerServiceImpl extends ServiceImpl<ManufacturerMapper, Man
         LocalDateTime now = LocalDateTime.now();
         manufacturer.setCreateTime(now);
         manufacturer.setUpdateTime(now);
-        return SELECT_ZERO != count(new QueryWrapper<Manufacturer>().eq("company_id", manufacturer.getCompanyId()).eq("manufacturer_name",manufacturer.getManufacturerName())) && save(manufacturer);
+        log.info(manufacturer.toString());
+        return SELECT_ZERO == count(new QueryWrapper<Manufacturer>().eq("company_id", manufacturer.getCompanyId()).eq("manufacturer_name", manufacturer.getManufacturerName())) && save(manufacturer);
     }
 
     @Override
     public Boolean deleteManufacturer(Manufacturer manufacturer) {
-        return SELECT_ZERO != count(new QueryWrapper<Manufacturer>().eq("company_id", manufacturer.getCompanyId())) && removeById(manufacturer.getManufacturerId());
+        return removeById(manufacturer.getManufacturerId());
     }
 }

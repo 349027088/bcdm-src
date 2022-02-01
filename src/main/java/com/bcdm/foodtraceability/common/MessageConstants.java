@@ -23,7 +23,7 @@ public class MessageConstants {
     public static final String LOGIN_SUCCESS = "登录成功";
 
     /** 账号密码错误 */
-    public static final String LOGIN_FAIL = "账号密码错误";
+    public static final String LOGIN_FAIL = "当前账号不存在或者输入的密码有误";
 
     /** 注册成功 */
     public static final String REGISTER_SUCCESS = "注册成功";
@@ -136,10 +136,33 @@ public class MessageConstants {
     /** 删除供应商信息成功 */
     public static final String DELETE_SUPPLIER_INFO_SUCCESS = "删除供应商信息成功";
 
-    /** 删除供应商信息成功 */
-    public static final String   ADD_GOODSTYPE_FAILED = "删除供应商信息成功";
+    /** 添加商品种类信息失败 */
+    public static final String ADD_GOODS_TYPE_FAIL = "添加商品种类信息失败";
 
-    /** 删除供应商信息成功 */
-    public static final String   DELETE_GOODSTYPE_FAILED = "删除供应商信息成功";
+    /** 删除商品种类信息失败 */
+    public static final String DELETE_GOODS_TYPE_FAIL = "删除商品种类信息失败";
 
+    /** 获取商品种类信息成功 */
+    public static final String SELECT_GOODS_TYPE_INFO_SUCCESS = "获取商品种类信息成功";
+
+    /** 获取商品种类信息失败或者查出0条 */
+    public static final String SELECT_GOODS_TYPE_INFO_FAIL = "获取商品种类信息失败或当前没有设置商品种类信息";
+
+    /** 删除商品种类信息成功 */
+    public static final String DELETE_GOODS_TYPE_SUCCESS = "删除商品种类信息成功";
+
+    /** 增加商品种类信息成功 */
+    public static final String ADD_GOODS_TYPE_SUCCESS = "增加商品种类信息成功";
+
+    /** 修改商品种类信息成功 */
+    public static final String MODIFY_GOODS_TYPE_SUCCESS = "修改商品种类信息成功";
+
+    /** 当前种类名称不存在 */
+    public static final String FIND_GOODS_TYPE_NAME_BY_COMPANY_FAIL1 = "当前种类名称不存在";
+
+    /** 当前种类名称已经存在 */
+    public static final String FIND_GOODS_TYPE_NAME_BY_COMPANY_FAIL2 = "当前种类名称已经存在";
+
+    /** 修改种类名称失败 */
+    public static final String MODIFY_GOODS_TYPE_FAIL = "修改种类名称失败";
 }

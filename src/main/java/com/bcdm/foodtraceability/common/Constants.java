@@ -10,6 +10,15 @@ package com.bcdm.foodtraceability.common;
  */
 public class Constants {
 
+
+    public static final Integer SELECT_CHECK_PARAM_CREATE = 1;
+
+    public static final Integer SELECT_CHECK_PARAM_MODIFY = 2;
+
+    public static final Integer SELECT_CHECK_PARAM_DELETE = 3;
+
+    public static final Integer SELECT_CHECK_PARAM_GET = 4;
+
     /** 性别男  */
     public static final Integer USER_SEX_MAN = 1;
 
@@ -24,6 +33,9 @@ public class Constants {
 
     /** 查询结果为0  */
     public static final Integer SELECT_ZERO = 0;
+
+    /** 插入一条数据  */
+    public static final Integer GET_ONE = 1;
 
     /** 单个用户公司创建上限 */
     public static final Integer COMPANY_MAX = 3;
@@ -107,4 +119,20 @@ public class Constants {
 
     /** 供应商被删除 */
     public static final Integer SUPPLIER_LEVEL_OUT_OF_SERVICE = 1;
+
+    // -------------------------------商品状态--------------------------------
+
+    /** 商品上架 */
+    public static final Integer GOODS_STATUS_ON_SERVICE = 0;
+
+    /** 商品下架 */
+    public static final Integer GOODS_STATUS_OUT_OF_SERVICE = 1;
+
+    // -------------------------------商品级别--------------------------------
+
+    /** 商品级别0 */
+    public static final Integer GOODS_LEVEL_ZERO = 0;
+
+    /** 商品级别1 */
+    public static final Integer GOODS_LEVEL_ONE = 1;
 }
