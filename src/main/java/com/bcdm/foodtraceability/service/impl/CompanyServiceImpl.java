@@ -10,8 +10,8 @@ import com.bcdm.foodtraceability.mapper.CompanyMapper;
 import com.bcdm.foodtraceability.service.CompanyService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bcdm.foodtraceability.service.EmpowerService;
+import com.bcdm.foodtraceability.service.IconService;
 import com.bcdm.foodtraceability.service.JurisdictionService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -30,16 +30,18 @@ import static com.bcdm.foodtraceability.common.MessageConstants.*;
  * @since 2022-01-13
  */
 @Service
-@Slf4j
 public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> implements CompanyService {
 
     private final JurisdictionService jurisdictionService;
 
     private final EmpowerService empowerService;
 
-    public CompanyServiceImpl(JurisdictionService jurisdictionService, EmpowerService empowerService) {
+    private final IconService iconService;
+
+    public CompanyServiceImpl(JurisdictionService jurisdictionService, EmpowerService empowerService, IconService iconService) {
         this.jurisdictionService = jurisdictionService;
         this.empowerService = empowerService;
+        this.iconService = iconService;
     }
 
     @Override
@@ -59,9 +61,9 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
 
     @Override
     public Company modify(Company company) throws Exception {
-        log.info(company.toString());
         Jurisdiction jurisdiction = jurisdictionService.getJurisdictionByUser(company.getUserId());
         if (COMPANY_USER_0.equals(jurisdiction.getJurisdiction()) || COMPANY_USER_1.equals(jurisdiction.getJurisdiction())) {
+            iconDelete(company);
             if (modifyCompanyInfo(company)) {
                 return getById(company.getCompanyId());
             }
@@ -71,7 +73,6 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
 
     @Override
     public Company getCompanyByUser(User user) throws Exception {
-        log.info(user.getUserId() + "---------------" + "getCompanyByUser");
         Company company = jurisdictionGetCompany(user.getUserId());
         if (null != company) {
             return company;
@@ -103,7 +104,6 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         company.setUpdateTime(now);
         company.setCompanyLevel(COMPANY_LEVEL_NORMAL);
         company.setCompanyStatus(COMPANY_STATUS_OUT_OF_SERVICE);
-        log.info(company.toString());
     }
 
 
@@ -116,13 +116,8 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
      */
     private Company jurisdictionGetCompany(Integer userId) throws Exception {
         Jurisdiction jurisdiction = jurisdictionService.getJurisdictionByUser(userId);
+        //如果用户为非申请中的员工返回公司信息
         if (!COMPANY_USER_3.equals(jurisdiction.getJurisdiction())) {
-            log.info(jurisdiction.toString());
-            QueryWrapper<Company> companyQueryWrapper = new QueryWrapper<>();
-            companyQueryWrapper.eq("company_id", jurisdiction.getCompanyId());
-            return getOne(companyQueryWrapper);
-        } else if (!COMPANY_USER_WAIT.equals(jurisdiction.getJurisdiction())) {
-            log.info(jurisdiction.toString());
             QueryWrapper<Company> companyQueryWrapper = new QueryWrapper<>();
             companyQueryWrapper.eq("company_id", jurisdiction.getCompanyId());
             return getOne(companyQueryWrapper);
@@ -132,7 +127,26 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     }
 
     /**
-     * 修改公司信息
+     * 更新信息包含图片的时候删除旧图片释放七牛云空间
+     *
+     * @param company 需要更新的公司信息
+     * @throws Exception 删除图片发生异常
+     */
+    private void iconDelete(Company company) throws Exception {
+        Company compareCompany = getById(company.getCompanyId());
+        if (null == compareCompany.getCompanyIcon() || !compareCompany.getCompanyIcon().equals(company.getCompanyIcon())){
+            iconService.deleteIcon(compareCompany.getCompanyIcon());
+        }
+        if (null == compareCompany.getBusinessLicense() || !compareCompany.getBusinessLicense().equals(company.getBusinessLicense())){
+            iconService.deleteIcon(compareCompany.getBusinessLicense());
+        }
+        if (null == compareCompany.getHealthPermit() || !compareCompany.getHealthPermit().equals(company.getHealthPermit())){
+            iconService.deleteIcon(compareCompany.getHealthPermit());
+        }
+    }
+
+    /**
+     * 修改公司信息SQL
      *
      * @param company 需要修改的公司信息
      * @return 修改信息结果
@@ -144,7 +158,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
                 .eq("company_id", company.getCompanyId())
                 .eq("update_time", company.getUpdateTime())
                 .eq("user_id", company.getUserId())
-                .set("company_phone",company.getCompanyPhone())
+                .set("company_phone", company.getCompanyPhone())
                 .set("company_icon", company.getCompanyIcon())
                 .set("company_info", company.getCompanyInfo())
                 .set("company_address", company.getCompanyAddress())

@@ -23,7 +23,7 @@ public interface UserService extends IService<User> {
      *
      * @return 用户信息
      */
-    User login(User user) throws Exception;
+    Company login(User user) throws Exception;
 
     /**
      * 用于用户注册

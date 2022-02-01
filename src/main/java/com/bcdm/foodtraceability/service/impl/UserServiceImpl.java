@@ -6,10 +6,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bcdm.foodtraceability.entity.*;
 import com.bcdm.foodtraceability.exception.ServiceBusinessException;
 import com.bcdm.foodtraceability.mapper.UserMapper;
+import com.bcdm.foodtraceability.service.CompanyService;
 import com.bcdm.foodtraceability.service.JurisdictionService;
 import com.bcdm.foodtraceability.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -37,25 +37,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     private final JurisdictionService jurisdictionService;
 
-    public UserServiceImpl(JurisdictionService jurisdictionService) {
+    private final CompanyService companyService;
+
+    public UserServiceImpl(JurisdictionService jurisdictionService, CompanyService companyService) {
         this.jurisdictionService = jurisdictionService;
+        this.companyService = companyService;
     }
 
     @Override
-    public User login(User user) throws Exception {
-        log.info(user.getLoginId() + "-------登录");
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("login_id", user.getLoginId());
-        User selectUser = getOne(queryWrapper);
-        if (!(null == selectUser)) {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(user.getPassword());
-            stringBuilder.append(selectUser.getSalt());
-            if (Md5encode(stringBuilder.toString()).equals(selectUser.getPassword())) {
-                return selectUser;
-            }
+    public Company login(User user) throws Exception {
+        Company companyByUser = companyService.getCompanyByUser(loginByUser(user));
+        if (null != companyByUser && !COMPANY_STATUS_OUT_OF_SERVICE.equals(companyByUser.getCompanyStatus())){
+            companyByUser.setUserId(user.getUserId());
+            return companyByUser;
         }
-        throw new ServiceBusinessException(HTTP_RETURN_FAIL, LOGIN_FAIL);
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL,LOGIN_STOP_BY_COMPANY);
     }
 
     @Override
@@ -75,7 +71,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 throw new ServiceBusinessException(HTTP_RETURN_FAIL, REGISTER_FAIL);
             }
             user.setPassword(password);
-            return login(user);
+            return loginByUser(user);
         }
         throw new ServiceBusinessException(HTTP_RETURN_FAIL, REGISTER_FAIL);
     }
@@ -84,8 +80,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public User modifyPassword(ModifyPassword userLoginInfo) throws Exception {
         log.info(userLoginInfo.getLoginId() + "-------修改密码");
         User targetUser = new User();
-        BeanUtils.copyProperties(userLoginInfo,targetUser);
-        targetUser = login(targetUser);
+        BeanUtils.copyProperties(userLoginInfo, targetUser);
+        targetUser = loginByUser(targetUser);
         String stringBuffer = userLoginInfo.getNewPassword() + targetUser.getSalt();
         targetUser.setPassword(Md5encode(stringBuffer));
         return getUser(targetUser, MODIFY_PASSWORD_FAIL);
@@ -167,6 +163,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         throw new ServiceBusinessException(HTTP_RETURN_FAIL, modifyUserinfoFail);
     }
 
+    /**
+     * 使用公司编号查找关联的所有用户信息
+     *
+     * @param CompanyId 需要查找用户的公司ID
+     * @return 公司的所有公司模板的用户信息
+     * @throws Exception 获取关联信息失败
+     */
     private List<UserModel> jurisdictionGetUserList(Integer CompanyId) throws Exception {
         List<Jurisdiction> jurisdictionList = jurisdictionService.getJurisdictionByCompany(CompanyId);
         List<UserModel> userList = new ArrayList<>();
@@ -194,4 +197,28 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         userModel.setJurisdictionUpdateTime(jurisdiction.getUpdateTime());
         return userModel;
     }
+
+    /**
+     * 按照用户的账号密码获取用户信息
+     *
+     * @param user 储存用户的账号密码信息
+     * @return 查找结果的用户信息
+     * @throws Exception 查找用户失败
+     */
+    private User loginByUser(User user) throws Exception {
+        log.info(user.getLoginId() + "-------登录");
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("login_id", user.getLoginId());
+        User selectUser = getOne(queryWrapper);
+        if (!(null == selectUser)) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(user.getPassword());
+            stringBuilder.append(selectUser.getSalt());
+            if (Md5encode(stringBuilder.toString()).equals(selectUser.getPassword())) {
+                return selectUser;
+            }
+        }
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, LOGIN_FAIL);
+    }
+
 }

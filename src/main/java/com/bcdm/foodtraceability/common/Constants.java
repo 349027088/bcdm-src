@@ -10,13 +10,16 @@ package com.bcdm.foodtraceability.common;
  */
 public class Constants {
 
-
+    /** 查询条件分组 创建*/
     public static final Integer SELECT_CHECK_PARAM_CREATE = 1;
 
+    /** 查询条件分组 修改*/
     public static final Integer SELECT_CHECK_PARAM_MODIFY = 2;
 
+    /** 查询条件分组 删除*/
     public static final Integer SELECT_CHECK_PARAM_DELETE = 3;
 
+    /** 查询条件分组 查询 */
     public static final Integer SELECT_CHECK_PARAM_GET = 4;
 
     /** 性别男  */
@@ -25,20 +28,11 @@ public class Constants {
     /** 性别女  */
     public static final Integer USER_SEX_WOMEN = 0;
 
-    /** 普通管理员级别  */
-    public static final Integer MANAGEMENT_NORMAL_LEVEL = 1;
-
-    /** 管理员全级别  */
-    public static final Integer MANAGEMENT_HIGH_LEVEL = 2;
-
     /** 查询结果为0  */
     public static final Integer SELECT_ZERO = 0;
 
     /** 插入一条数据  */
     public static final Integer GET_ONE = 1;
-
-    /** 单个用户公司创建上限 */
-    public static final Integer COMPANY_MAX = 3;
 
     /** . */
     public static final String CUT_POINT = ".";
@@ -54,6 +48,12 @@ public class Constants {
 
 
     // --------------------------------管理员状态--------------------------------
+
+    /** 普通管理员级别  */
+    public static final Integer MANAGEMENT_NORMAL_LEVEL = 1;
+
+    /** 管理员全级别  */
+    public static final Integer MANAGEMENT_HIGH_LEVEL = 2;
 
     /** 解锁状态  */
     public static final Integer MANAGEMENT_STATUS_UNLOCK = 0;
@@ -73,11 +73,14 @@ public class Constants {
     /** 企业状态：正在提供服务 */
     public static final Integer COMPANY_STATUS_ON_SERVICE = 1;
 
-    /** 企业状态：企业正在被锁定 */
+    /** 企业状态：企业服务到期 */
     public static final Integer COMPANY_STATUS_IS_LOCK = 2;
 
+    /** 企业状态：企业正在被锁定 */
+    public static final Integer COMPANY_STATUS_TIME_STOP = 3;
+
     /** 企业状态：企业关闭 */
-    public static final Integer COMPANY_STATUS_CLOSE = 3;
+    public static final Integer COMPANY_STATUS_CLOSE = 4;
 
     // --------------------------------企业状态--------------------------------
 
@@ -88,9 +91,6 @@ public class Constants {
     public static final Integer COMPANY_LEVEL_HIGH_ = 1;
 
     // --------------------------------关联状态--------------------------------
-
-    /** 企业申请中 */
-    public static final Integer COMPANY_USER_WAIT = 99;
 
     /** 企业老板 */
     public static final Integer COMPANY_USER_0 = 0;

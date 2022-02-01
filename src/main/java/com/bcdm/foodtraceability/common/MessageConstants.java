@@ -124,11 +124,29 @@ public class MessageConstants {
     /** 正在等待企业承认您的申请 */
     public static final String USER_ADMIT_FAIL = "正在等待企业承认您的申请";
 
-    /** 获取供应商信息成功 */
-    public static final String SELECT_SUPPLIER_INFO_SUCCESS = "获取供应商信息成功";
+    /** 添加商品种类信息失败 */
+    public static final String ADD_GOODS_TYPE_FAIL = "添加商品种类信息失败";
+
+    /** 添加生产厂商信息失败 */
+    public static final String ADD_MANUFACTURER_FAIL = "添加生产厂商信息失败";
+
+    /** 删除商品种类信息失败 */
+    public static final String DELETE_GOODS_TYPE_FAIL = "删除商品种类信息失败";
+
+    /** 删除生产厂商信息失败 */
+    public static final String DELETE_MANUFACTURER_FAIL = "删除生产厂商信息失败";
+
+    /** 获取商品种类信息失败或者查出0条 */
+    public static final String SELECT_GOODS_TYPE_INFO_FAIL = "获取商品种类信息失败或当前没有设置商品种类信息";
+
+    /** 获取生产厂商信息失败或者查出0条 */
+    public static final String SELECT_MANUFACTURER_INFO_FAIL = "获取生产厂商信息失败或当前没有设置生产厂商信息";
 
     /** 添加供应商信息成功 */
-    public static final String ADD_SUPPLIER_INFO_SUCCESS = "查询授权信息失败";
+    public static final String ADD_SUPPLIER_INFO_SUCCESS = "添加供应商信息成功";
+
+    /** 获取供应商信息成功 */
+    public static final String SELECT_SUPPLIER_INFO_SUCCESS = "获取供应商信息成功";
 
     /** 修改供应商信息成功 */
     public static final String MODIFY_SUPPLIER_INFO_SUCCESS = "修改供应商信息成功";
@@ -136,33 +154,48 @@ public class MessageConstants {
     /** 删除供应商信息成功 */
     public static final String DELETE_SUPPLIER_INFO_SUCCESS = "删除供应商信息成功";
 
-    /** 添加商品种类信息失败 */
-    public static final String ADD_GOODS_TYPE_FAIL = "添加商品种类信息失败";
+    /** 添加生产厂商信息成功 */
+    public static final String ADD_MANUFACTURER_SUCCESS = "添加生产厂商信息成功";
 
-    /** 删除商品种类信息失败 */
-    public static final String DELETE_GOODS_TYPE_FAIL = "删除商品种类信息失败";
+    /** 获取生产厂商信息成功 */
+    public static final String SELECT_MANUFACTURER_SUCCESS = "获取生产厂商信息成功";
 
-    /** 获取商品种类信息成功 */
-    public static final String SELECT_GOODS_TYPE_INFO_SUCCESS = "获取商品种类信息成功";
+    /** 修改生产厂商信息成功 */
+    public static final String MODIFY_MANUFACTURER_SUCCESS = "修改生产厂商信息成功";
 
-    /** 获取商品种类信息失败或者查出0条 */
-    public static final String SELECT_GOODS_TYPE_INFO_FAIL = "获取商品种类信息失败或当前没有设置商品种类信息";
-
-    /** 删除商品种类信息成功 */
-    public static final String DELETE_GOODS_TYPE_SUCCESS = "删除商品种类信息成功";
+    /** 删除生产厂商信息成功 */
+    public static final String DELETE_MANUFACTURER_SUCCESS = "删除生产厂商信息成功";
 
     /** 增加商品种类信息成功 */
     public static final String ADD_GOODS_TYPE_SUCCESS = "增加商品种类信息成功";
 
+    /** 获取商品种类信息成功 */
+    public static final String SELECT_GOODS_TYPE_INFO_SUCCESS = "获取商品种类信息成功";
+
     /** 修改商品种类信息成功 */
     public static final String MODIFY_GOODS_TYPE_SUCCESS = "修改商品种类信息成功";
 
+    /** 删除商品种类信息成功 */
+    public static final String DELETE_GOODS_TYPE_SUCCESS = "删除商品种类信息成功";
+
     /** 当前种类名称不存在 */
     public static final String FIND_GOODS_TYPE_NAME_BY_COMPANY_FAIL1 = "当前种类名称不存在";
+
+    /** 当前生产厂商不存在 */
+    public static final String FIND_MANUFACTURER_NAME_BY_COMPANY_FAIL1 = "当前生产厂商不存在";
+
+    /** 当前生产厂商已经存在 */
+    public static final String FIND_MANUFACTURER_NAME_BY_COMPANY_FAIL2 = "当前生产厂商已经存在";
 
     /** 当前种类名称已经存在 */
     public static final String FIND_GOODS_TYPE_NAME_BY_COMPANY_FAIL2 = "当前种类名称已经存在";
 
     /** 修改种类名称失败 */
     public static final String MODIFY_GOODS_TYPE_FAIL = "修改种类名称失败";
+
+    /** 修改生产厂商失败 */
+    public static final String MODIFY_MANUFACTURER_FAIL = "修改生产厂商失败";
+
+    /** 当前公司正在审核中 */
+    public static final String LOGIN_STOP_BY_COMPANY = "当前公司正在审核中";
 }

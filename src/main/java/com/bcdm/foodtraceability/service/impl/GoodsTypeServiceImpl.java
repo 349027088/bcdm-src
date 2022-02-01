@@ -14,7 +14,6 @@ import java.util.List;
 
 import static com.bcdm.foodtraceability.common.Constants.*;
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_FAIL;
-import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_SERVER_FAIL;
 import static com.bcdm.foodtraceability.common.MessageConstants.*;
 
 /**
@@ -40,22 +39,27 @@ public class GoodsTypeServiceImpl extends ServiceImpl<GoodsTypeMapper, GoodsType
 
     @Override
     public Boolean createGoodsType(GoodsType goodsType) throws Exception {
-        LocalDateTime now = LocalDateTime.now();
-        goodsType.setUpdateTime(now);
-        goodsType.setCreateTime(now);
-        if (Boolean.FALSE.equals(checkGoodsType(goodsType, SELECT_CHECK_PARAM_CREATE)) && save(goodsType)) {
-            return true;
+        if (Boolean.FALSE.equals(checkGoodsType(goodsType, SELECT_CHECK_PARAM_CREATE))) {
+            LocalDateTime now = LocalDateTime.now();
+            goodsType.setUpdateTime(now);
+            goodsType.setCreateTime(now);
+            if (save(goodsType)) {
+                return true;
+            }
+            throw new ServiceBusinessException(HTTP_RETURN_FAIL, ADD_GOODS_TYPE_FAIL);
         }
-        throw new ServiceBusinessException(HTTP_RETURN_FAIL, ADD_GOODS_TYPE_FAIL);
-
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, FIND_GOODS_TYPE_NAME_BY_COMPANY_FAIL2);
     }
 
     @Override
     public Boolean deleteGoodsType(GoodsType goodsType) throws Exception {
-        if (Boolean.TRUE.equals(checkGoodsType(goodsType, SELECT_CHECK_PARAM_DELETE)) &&removeById(goodsType.getGoodsTypeId())){
-            return true;
+        if (Boolean.TRUE.equals(checkGoodsType(goodsType, SELECT_CHECK_PARAM_DELETE))) {
+            if (removeById(goodsType.getGoodsTypeId())) {
+                return true;
+            }
+            throw new ServiceBusinessException(HTTP_RETURN_FAIL, DELETE_GOODS_TYPE_FAIL);
         }
-        throw new ServiceBusinessException(HTTP_RETURN_FAIL, DELETE_GOODS_TYPE_FAIL);
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, FIND_GOODS_TYPE_NAME_BY_COMPANY_FAIL1);
     }
 
     @Override
@@ -80,7 +84,7 @@ public class GoodsTypeServiceImpl extends ServiceImpl<GoodsTypeMapper, GoodsType
      * 查询传入公司ID和商品种类的名称是否在该公司存在
      *
      * @param goodsType 希望操作的增删改查商品种类信息
-     * @param selectId 操作ID create 1 modify 2 delete 3
+     * @param selectId  操作ID create 1 modify 2 delete 3
      * @return 查询结果为0返回false，查询结果大于0返回true
      */
     private Boolean checkGoodsType(GoodsType goodsType, Integer selectId) {

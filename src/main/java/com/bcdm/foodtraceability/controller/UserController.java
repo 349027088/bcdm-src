@@ -4,9 +4,7 @@ import com.bcdm.foodtraceability.entity.Company;
 import com.bcdm.foodtraceability.entity.ModifyPassword;
 import com.bcdm.foodtraceability.entity.ReturnItem;
 import com.bcdm.foodtraceability.entity.User;
-import com.bcdm.foodtraceability.service.CompanyService;
 import com.bcdm.foodtraceability.service.UserService;
-import com.bcdm.foodtraceability.validatedgroup.CreateGroup;
 import com.bcdm.foodtraceability.validatedgroup.GetInfoGroup;
 import com.bcdm.foodtraceability.validatedgroup.ModifyGroup;
 import com.bcdm.foodtraceability.validatedgroup.RegisterGroup;
@@ -30,11 +28,8 @@ public class UserController {
 
     private final UserService userService;
 
-    private final CompanyService companyService;
-
-    public UserController(UserService userService, CompanyService companyService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.companyService = companyService;
     }
 
     /**
@@ -64,9 +59,9 @@ public class UserController {
      */
     @PostMapping("/login")
     @CrossOrigin
-    public ReturnItem<User> login(@Validated({GetInfoGroup.class})
+    public ReturnItem<Company> login(@Validated({GetInfoGroup.class})
                                   @RequestBody User user) throws Exception {
-        ReturnItem<User> returnItem = new ReturnItem<>();
+        ReturnItem<Company> returnItem = new ReturnItem<>();
         returnItem.setT(userService.login(user));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
         returnItem.setHttpMessage(LOGIN_SUCCESS);
@@ -108,24 +103,24 @@ public class UserController {
         returnItem.setHttpMessage(MODIFY_PASSWORD_SUCCESS);
         return returnItem;
     }
-
-    /**
-     * 获得用户的所有公司信息
-     *
-     * @param user 获取公司信息的用户
-     * @return 该用户所属公司信息
-     * @throws Exception 查询公司信息失败
-     */
-    @PostMapping("/getCompanyByUser")
-    @CrossOrigin
-    public ReturnItem<Company> getCompanyByUser(@Validated({CreateGroup.class})
-                                                @RequestBody User user) throws Exception {
-        ReturnItem<Company> returnItem = new ReturnItem<>();
-        returnItem.setT(companyService.getCompanyByUser(user));
-        returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
-        returnItem.setHttpMessage(GET_COMPANY_INFO_SUCCESS);
-        return returnItem;
-    }
+//
+//    /**
+//     * 获得用户的所有公司信息
+//     *
+//     * @param user 获取公司信息的用户
+//     * @return 该用户所属公司信息
+//     * @throws Exception 查询公司信息失败
+//     */
+//    @PostMapping("/getCompanyByUser")
+//    @CrossOrigin
+//    public ReturnItem<Company> getCompanyByUser(@Validated({CreateGroup.class})
+//                                                @RequestBody User user) throws Exception {
+//        ReturnItem<Company> returnItem = new ReturnItem<>();
+//        returnItem.setT(companyService.getCompanyByUser(user));
+//        returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
+//        returnItem.setHttpMessage(GET_COMPANY_INFO_SUCCESS);
+//        return returnItem;
+//    }
 
 }
 
