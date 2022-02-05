@@ -2,15 +2,17 @@ package com.bcdm.foodtraceability.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.bcdm.foodtraceability.entity.GoodsType;
+import com.bcdm.foodtraceability.entity.SelectPageEntity;
 import com.bcdm.foodtraceability.exception.ServiceBusinessException;
 import com.bcdm.foodtraceability.mapper.GoodsTypeMapper;
 import com.bcdm.foodtraceability.service.GoodsTypeService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static com.bcdm.foodtraceability.common.Constants.*;
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_FAIL;
@@ -28,14 +30,29 @@ import static com.bcdm.foodtraceability.common.MessageConstants.*;
 public class GoodsTypeServiceImpl extends ServiceImpl<GoodsTypeMapper, GoodsType> implements GoodsTypeService {
 
     @Override
-    public List<GoodsType> getGoodsTypeList(Integer companyId) throws Exception {
-        List<GoodsType> goodsTypeList = list(new QueryWrapper<GoodsType>().eq("company_id", companyId));
-        if (SELECT_ZERO == goodsTypeList.size()) {
+    public IPage<GoodsType> getGoodsTypeList(SelectPageEntity<GoodsType> selectInfo) throws Exception {
+        QueryWrapper<GoodsType> goodsTypeQueryWrapper = new QueryWrapper<>();
+        if (!StringUtils.isEmpty(selectInfo.getSelectName())) {
+            goodsTypeQueryWrapper.likeRight("goods_type_name", selectInfo.getSelectName());
+        }
+        goodsTypeQueryWrapper.eq("company_id", selectInfo.getCompanyId());
+        selectInfo.setPageInfo(page(selectInfo.getPageInfo(), goodsTypeQueryWrapper));
+        if (SELECT_ZERO == selectInfo.getPageInfo().getTotal()) {
             throw new ServiceBusinessException(HTTP_RETURN_FAIL, SELECT_GOODS_TYPE_INFO_FAIL);
         }
-        return goodsTypeList;
+        return selectInfo.getPageInfo();
     }
 
+    @Override
+    public GoodsType getGoodsTypeById(GoodsType getOneInfo) throws Exception {
+        GoodsType goodsType = getOne(new QueryWrapper<GoodsType>()
+                .eq("company_id", getOneInfo.getCompanyId())
+                .eq("goods_type_id", getOneInfo.getGoodsTypeId()));
+        if (null != goodsType) {
+            return goodsType;
+        }
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, SELECT_GOODS_TYPE_INFO_FAIL);
+    }
 
     @Override
     public Boolean createGoodsType(GoodsType goodsType) throws Exception {
@@ -59,7 +76,7 @@ public class GoodsTypeServiceImpl extends ServiceImpl<GoodsTypeMapper, GoodsType
             }
             throw new ServiceBusinessException(HTTP_RETURN_FAIL, DELETE_GOODS_TYPE_FAIL);
         }
-        throw new ServiceBusinessException(HTTP_RETURN_FAIL, FIND_GOODS_TYPE_NAME_BY_COMPANY_FAIL1);
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, FIND_GOODS_TYPE_NAME_BY_COMPANY_FAIL3);
     }
 
     @Override
@@ -90,8 +107,10 @@ public class GoodsTypeServiceImpl extends ServiceImpl<GoodsTypeMapper, GoodsType
     private Boolean checkGoodsType(GoodsType goodsType, Integer selectId) {
         switch (selectId) {
             case 1:
-            case 2:
                 return SELECT_ZERO < count(new QueryWrapper<GoodsType>().eq("company_id", goodsType.getCompanyId()).eq("goods_type_name", goodsType.getGoodsTypeName()));
+            case 2:
+                return GET_ONE == count(new QueryWrapper<GoodsType>().eq("company_id", goodsType.getCompanyId()).eq("goods_type_id", goodsType.getGoodsTypeId())) &&
+                        SELECT_ZERO == count(new QueryWrapper<GoodsType>().eq("company_id", goodsType.getCompanyId()).eq("goods_type_name", goodsType.getGoodsTypeName()));
             case 3:
                 return GET_ONE == count(new QueryWrapper<GoodsType>().eq("company_id", goodsType.getCompanyId()).eq("goods_type_id", goodsType.getGoodsTypeId()));
         }

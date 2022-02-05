@@ -1,12 +1,14 @@
 package com.bcdm.foodtraceability.controller;
 
-
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.bcdm.foodtraceability.entity.Manufacturer;
 import com.bcdm.foodtraceability.entity.ReturnItem;
+import com.bcdm.foodtraceability.entity.SelectPageEntity;
 import com.bcdm.foodtraceability.service.ManufacturerService;
+import com.bcdm.foodtraceability.validatedgroup.*;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_SUCCESS;
 import static com.bcdm.foodtraceability.common.MessageConstants.*;
@@ -21,8 +23,8 @@ import static com.bcdm.foodtraceability.common.MessageConstants.*;
  */
 @RestController
 @RequestMapping("/manufacturer")
+@Slf4j
 public class ManufacturerController {
-
 
     private final ManufacturerService manufacturerService;
 
@@ -31,15 +33,55 @@ public class ManufacturerController {
     }
 
     /**
+     * 获取某条件的公司生产厂商信息
+     *
+     * @param selectInfo 查询条件
+     * @return 获取生产厂商列表
+     * @throws Exception 查询信息失败或者结果为0条信息
+     */
+    @PostMapping("/getManufacturerList")
+    @CrossOrigin
+    public ReturnItem<IPage<Manufacturer>> getManufacturerList(@RequestBody String selectInfo) throws Exception {
+        SelectPageEntity<Manufacturer> selectPageEntity = new SelectPageEntity<>(selectInfo);
+        log.info("企业" + selectPageEntity.getCompanyId() + "-----获取所有生产厂商信息");
+        ReturnItem<IPage<Manufacturer>> returnItem = new ReturnItem<>();
+        returnItem.setT(manufacturerService.getManufacturerList(selectPageEntity));
+        returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
+        returnItem.setHttpMessage(SELECT_MANUFACTURER_SUCCESS);
+        return returnItem;
+    }
+
+    /**
+     * 获取公司的指定生产厂商信息
+     *
+     * @param getOneInfo 获取公司的指定商品种类的Id和公司Id
+     * @return 指定ID的生产厂商信息
+     * @throws Exception 查询失败
+     */
+    @PostMapping("/getManufacturerById")
+    @CrossOrigin
+    public ReturnItem<Manufacturer> getManufacturerById(@Validated({GetInfoGroup.class})
+                                                        @RequestBody Manufacturer getOneInfo) throws Exception {
+        log.info("企业" + getOneInfo.getCompanyId() + "-----获取编号:" + getOneInfo.getManufacturerId() + "的生产厂商信息");
+        ReturnItem<Manufacturer> returnItem = new ReturnItem<>();
+        returnItem.setT(manufacturerService.getManufacturerById(getOneInfo));
+        returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
+        returnItem.setHttpMessage(SELECT_MANUFACTURER_SUCCESS);
+        return returnItem;
+    }
+
+    /**
      * 增加生产厂商信息Controller
      *
      * @param manufacturer 需要添加的生产厂商信息
-     * @return true 成功执行
-     * @throws Exception 增加生产厂商信息失败
+     * @return true 创建成功
+     * @throws Exception 创建失败
      */
     @PostMapping("/create")
     @CrossOrigin
-    public ReturnItem<Boolean> create(@RequestBody Manufacturer manufacturer) throws Exception {
+    public ReturnItem<Boolean> create(@Validated({CreateGroup.class})
+                                      @RequestBody Manufacturer manufacturer) throws Exception {
+        log.info("企业" + manufacturer.getCompanyId() + "-----创建新生产厂商:" + manufacturer.getManufacturerName());
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(manufacturerService.createManufacturer(manufacturer));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -51,12 +93,14 @@ public class ManufacturerController {
      * 修改生产厂商信息Controller
      *
      * @param manufacturer 需要修改的生产厂商
-     * @return true 成功执行
-     * @throws Exception 修改生产厂商信息失败
+     * @return true 修改成功
+     * @throws Exception 修改失败
      */
     @PostMapping("/modify")
     @CrossOrigin
-    public ReturnItem<Boolean> modify(@RequestBody Manufacturer manufacturer) throws Exception {
+    public ReturnItem<Boolean> modify(@Validated(ModifyGroup.class)
+                                      @RequestBody Manufacturer manufacturer) throws Exception {
+        log.info("企业" + manufacturer.getCompanyId() + "-----修改生产厂商编号:" + manufacturer.getManufacturerId() + "-----名称:" + manufacturer.getManufacturerName());
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(manufacturerService.modifyManufacturer(manufacturer));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -68,33 +112,18 @@ public class ManufacturerController {
      * 删除生产厂商信息Controller
      *
      * @param manufacturer 需要删除的生产厂商
-     * @return true 成功执行
-     * @throws Exception 删除生产厂商失败
+     * @return true 删除成功
+     * @throws Exception 删除失败
      */
     @PostMapping("/delete")
     @CrossOrigin
-    public ReturnItem<Boolean> delete(@RequestBody Manufacturer manufacturer) throws Exception {
+    public ReturnItem<Boolean> delete(@Validated(DeleteGroup.class)
+                                      @RequestBody Manufacturer manufacturer) throws Exception {
+        log.info("企业" + manufacturer.getCompanyId() + "-----删除生产厂商:" + manufacturer.getManufacturerName());
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(manufacturerService.deleteManufacturer(manufacturer));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
         returnItem.setHttpMessage(DELETE_MANUFACTURER_SUCCESS);
-        return returnItem;
-    }
-
-    /**
-     * 获取公司的所有生产厂商信息
-     *
-     * @param manufacturer 包含需要获取供应商列表的企业信息
-     * @return 获取生产厂商列表
-     * @throws Exception 获取生产厂商信息失败或者没有生产厂商的信息
-     */
-    @PostMapping("/getManufacturerList")
-    @CrossOrigin
-    public ReturnItem<List<Manufacturer>> getManufacturerList(@RequestBody Manufacturer manufacturer) throws Exception {
-        ReturnItem<List<Manufacturer>> returnItem = new ReturnItem<>();
-        returnItem.setT(manufacturerService.getManufacturerList(manufacturer.getCompanyId()));
-        returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
-        returnItem.setHttpMessage(SELECT_MANUFACTURER_SUCCESS);
         return returnItem;
     }
 

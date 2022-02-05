@@ -2,15 +2,17 @@ package com.bcdm.foodtraceability.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.bcdm.foodtraceability.entity.Manufacturer;
+import com.bcdm.foodtraceability.entity.SelectPageEntity;
 import com.bcdm.foodtraceability.exception.ServiceBusinessException;
 import com.bcdm.foodtraceability.mapper.ManufacturerMapper;
 import com.bcdm.foodtraceability.service.ManufacturerService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static com.bcdm.foodtraceability.common.Constants.*;
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_FAIL;
@@ -27,14 +29,29 @@ import static com.bcdm.foodtraceability.common.MessageConstants.*;
 @Service
 public class ManufacturerServiceImpl extends ServiceImpl<ManufacturerMapper, Manufacturer> implements ManufacturerService {
 
-
     @Override
-    public List<Manufacturer> getManufacturerList(Integer companyId) throws Exception {
-        List<Manufacturer> manufacturerList = list(new QueryWrapper<Manufacturer>().eq("company_id", companyId));
-        if (SELECT_ZERO == manufacturerList.size()) {
+    public IPage<Manufacturer> getManufacturerList(SelectPageEntity<Manufacturer> selectInfo) throws Exception {
+        QueryWrapper<Manufacturer> manufacturerQueryWrapper = new QueryWrapper<>();
+        if (!StringUtils.isEmpty(selectInfo.getSelectName())) {
+            manufacturerQueryWrapper.likeRight("manufacturer_name", selectInfo.getSelectName());
+        }
+        manufacturerQueryWrapper.eq("company_id", selectInfo.getCompanyId());
+        selectInfo.setPageInfo(page(selectInfo.getPageInfo(), manufacturerQueryWrapper));
+        if (SELECT_ZERO == selectInfo.getPageInfo().getTotal()) {
             throw new ServiceBusinessException(HTTP_RETURN_FAIL, SELECT_MANUFACTURER_INFO_FAIL);
         }
-        return manufacturerList;
+        return selectInfo.getPageInfo();
+    }
+
+    @Override
+    public Manufacturer getManufacturerById(Manufacturer getOneInfo) throws Exception {
+        Manufacturer manufacturer = getOne(new QueryWrapper<Manufacturer>()
+                .eq("company_id", getOneInfo.getCompanyId())
+                .eq("manufacturer_id", getOneInfo.getManufacturerId()));
+        if (null != manufacturer) {
+            return manufacturer;
+        }
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, SELECT_MANUFACTURER_INFO_FAIL);
     }
 
     @Override
@@ -77,23 +94,25 @@ public class ManufacturerServiceImpl extends ServiceImpl<ManufacturerMapper, Man
             }
             throw new ServiceBusinessException(HTTP_RETURN_FAIL, MODIFY_MANUFACTURER_FAIL);
         }
-        throw new ServiceBusinessException(HTTP_RETURN_FAIL, FIND_MANUFACTURER_NAME_BY_COMPANY_FAIL1);
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, FIND_MANUFACTURER_NAME_BY_COMPANY_FAIL3);
     }
 
     /**
      * 查询传入公司ID和生产厂商的名称是否在该公司存在
      *
      * @param manufacturer 希望操作的增删改查生产厂商信息
-     * @param selectId  操作ID create 1 modify 2 delete 3
+     * @param selectId     操作ID create 1 modify 2 delete 3
      * @return 查询结果为0返回false，查询结果大于0返回true
      */
     private Boolean checkManufacturer(Manufacturer manufacturer, Integer selectId) {
         switch (selectId) {
             case 1:
-            case 2:
                 return SELECT_ZERO < count(new QueryWrapper<Manufacturer>().eq("company_id", manufacturer.getCompanyId()).eq("manufacturer_name", manufacturer.getManufacturerName()));
+            case 2:
+                return GET_ONE == count(new QueryWrapper<Manufacturer>().eq("company_id", manufacturer.getCompanyId()).eq("manufacturer_id", manufacturer.getManufacturerName())) &&
+                        SELECT_ZERO == count(new QueryWrapper<Manufacturer>().eq("company_id", manufacturer.getCompanyId()).eq("manufacturer_name", manufacturer.getManufacturerName()));
             case 3:
-                return GET_ONE == count(new QueryWrapper<Manufacturer>().eq("company_id", manufacturer.getCompanyId()).eq("manufacturer_name", manufacturer.getManufacturerName()));
+                return GET_ONE == count(new QueryWrapper<Manufacturer>().eq("company_id", manufacturer.getCompanyId()).eq("manufacturer_id", manufacturer.getManufacturerName()));
         }
         return null;
     }

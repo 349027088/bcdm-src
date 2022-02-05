@@ -83,7 +83,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     }
 
     @Override
-    public Goods modifyGoods(Company company, Goods goods, MultipartFile icon) throws Exception {
+    public Boolean modifyGoods(Goods goods) throws Exception {
         return null;
     }
 

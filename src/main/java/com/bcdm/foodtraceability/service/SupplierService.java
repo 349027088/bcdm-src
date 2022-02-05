@@ -1,9 +1,9 @@
 package com.bcdm.foodtraceability.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.bcdm.foodtraceability.entity.SelectPageEntity;
 import com.bcdm.foodtraceability.entity.Supplier;
 import com.baomidou.mybatisplus.extension.service.IService;
-
-import java.util.List;
 
 /**
  * <p>
@@ -16,11 +16,29 @@ import java.util.List;
 public interface SupplierService extends IService<Supplier> {
 
     /**
+     * 获取某条件的公司未删除供应商信息
+     *
+     * @param selectInfo 查询条件内容
+     * @return 查询结果
+     * @throws Exception 查找供应商信息失败或未查到
+     */
+    IPage<Supplier> getSupplierList(SelectPageEntity<Supplier> selectInfo) throws Exception;
+
+    /**
+     * 获取指定的供应商信息
+     *
+     * @param supplier 获取公司的指定供应商的Id和公司Id
+     * @return 获取的指定供应商信息
+     * @throws Exception 获取信息失败
+     */
+    Supplier getSupplierById(Supplier supplier) throws Exception;
+
+    /**
      * 创建一个供应商
      *
      * @param supplier 需要创建的供应商信息
-     * @return 处理状态
-     * @throws Exception 创建供应商失败
+     * @return true 添加成功
+     * @throws Exception 添加供应商信息失败
      */
     Boolean createSupplier(Supplier supplier) throws Exception;
 
@@ -28,25 +46,17 @@ public interface SupplierService extends IService<Supplier> {
      * 修改供应商信息
      *
      * @param supplier 需要修改的供应商信息
-     * @return 处理状态
-     * @throws Exception 修改供应商信息失败
+     * @return true 删除成功
+     * @throws Exception 删除供应商信息失败
      */
     Boolean modifySupplier(Supplier supplier) throws Exception;
-
-    /**
-     * 获取供应商信息列表
-     *
-     * @param companyId 需要查询供应商的企业
-     * @return 所有供应商的信息
-     * @throws Exception 查询供应商信息失败
-     */
-    List<Supplier> getSupplierList(Integer companyId) throws Exception;
 
     /**
      * 删除供应商信息
      *
      * @param supplier 需要删除的供应商信息
-     * @return 处理状态
+     * @return true 修改成功
+     * @throws Exception 修改供应商信息失败
      */
     Boolean deleteSupplier(Supplier supplier) throws Exception;
 }

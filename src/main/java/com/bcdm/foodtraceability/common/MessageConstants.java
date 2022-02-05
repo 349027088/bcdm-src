@@ -107,10 +107,10 @@ public class MessageConstants {
     public static final String MODIFY_JURISDICTION_LEVEL_FAIL = "修改权限级别不足";
 
     /** 创建供应商失败 */
-    public static final String CREATE_SUPPLIER_FAILED = "创建供应商失败";
+    public static final String CREATE_SUPPLIER_FAIL = "创建供应商失败";
 
     /** 修改供应商信息失败 */
-    public static final String MODIFY_SUPPLIER_FAILED = "修改供应商信息失败";
+    public static final String MODIFY_SUPPLIER_FAIL = "修改供应商信息失败";
 
     /** 查询授权信息失败 */
     public static final String SELECT_EMPOWER_FAIL = "查询授权信息失败";
@@ -178,17 +178,32 @@ public class MessageConstants {
     /** 删除商品种类信息成功 */
     public static final String DELETE_GOODS_TYPE_SUCCESS = "删除商品种类信息成功";
 
-    /** 当前种类名称不存在 */
-    public static final String FIND_GOODS_TYPE_NAME_BY_COMPANY_FAIL1 = "当前种类名称不存在";
+    /** 当前修改种类名称重复或已被修改 */
+    public static final String FIND_GOODS_TYPE_NAME_BY_COMPANY_FAIL1 = "当前修改种类名称重复或已被修改";
 
-    /** 当前生产厂商不存在 */
-    public static final String FIND_MANUFACTURER_NAME_BY_COMPANY_FAIL1 = "当前生产厂商不存在";
+    /** 当前修改生产厂商名称重复或已被修改 */
+    public static final String FIND_MANUFACTURER_NAME_BY_COMPANY_FAIL1 = "当前修改生产厂商名称重复或已被修改";
+
+    /** 当前修改供应商名称重复或已被修改 */
+    public static final String FIND_SUPPLIER_NAME_BY_COMPANY_FAIL1 = "当前修改供应商名称重复或已被修改";
 
     /** 当前生产厂商已经存在 */
     public static final String FIND_MANUFACTURER_NAME_BY_COMPANY_FAIL2 = "当前生产厂商已经存在";
 
+    /** 当前供应商名称已经存在 */
+    public static final String FIND_SUPPLIER_NAME_BY_COMPANY_FAIL2 = "当前供应商名称已经存在";
+
     /** 当前种类名称已经存在 */
     public static final String FIND_GOODS_TYPE_NAME_BY_COMPANY_FAIL2 = "当前种类名称已经存在";
+
+    /** 当前生产厂商不存在 */
+    public static final String FIND_MANUFACTURER_NAME_BY_COMPANY_FAIL3 = "当前生产厂商不存在";
+
+    /** 当前供应商不存在 */
+    public static final String FIND_SUPPLIER_NAME_BY_COMPANY_FAIL3 = "当前供应商不存在";
+
+    /** 当前种类不存在 */
+    public static final String FIND_GOODS_TYPE_NAME_BY_COMPANY_FAIL3 = "当前种类不存在";
 
     /** 修改种类名称失败 */
     public static final String MODIFY_GOODS_TYPE_FAIL = "修改种类名称失败";

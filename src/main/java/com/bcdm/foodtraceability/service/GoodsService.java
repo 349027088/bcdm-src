@@ -84,13 +84,11 @@ public interface GoodsService extends IService<Goods> {
     /**
      * 需要修改的商品信息
      *
-     * @param company 修改商品信息的公司
      * @param goods 需要修改的商品信息
-     * @param icon 需要上传的商品图片
      * @return 修改成功的商品信息
      * @throws Exception 修改商品信息失败
      */
-    Goods modifyGoods(Company company, Goods goods,MultipartFile icon) throws Exception;
+    Boolean modifyGoods(Goods goods) throws Exception;
 
     /**
      * 删除一个商品信息
