@@ -2,6 +2,7 @@ package com.bcdm.foodtraceability.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bcdm.foodtraceability.entity.*;
 import com.bcdm.foodtraceability.exception.ServiceBusinessException;
@@ -47,11 +48,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Company login(User user) throws Exception {
         Company companyByUser = companyService.getCompanyByUser(loginByUser(user));
-        if (null != companyByUser && !COMPANY_STATUS_OUT_OF_SERVICE.equals(companyByUser.getCompanyStatus())){
+        if (null != companyByUser && !COMPANY_STATUS_OUT_OF_SERVICE.equals(companyByUser.getCompanyStatus())) {
             companyByUser.setUserId(user.getUserId());
             return companyByUser;
         }
-        throw new ServiceBusinessException(HTTP_RETURN_FAIL,LOGIN_STOP_BY_COMPANY);
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, LOGIN_STOP_BY_COMPANY);
     }
 
     @Override
@@ -119,10 +120,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public List<UserModel> getUserByCompany(Company company) throws Exception {
-        List<UserModel> userList = jurisdictionGetUserList(company.getCompanyId());
+    public IPage<UserModel> getUserByCompany(SelectPageEntity<UserModel> selectInfo) throws Exception {
+        List<UserModel> userList = jurisdictionGetUserList(selectInfo.getCompanyId());
         if (SELECT_ZERO != userList.size()) {
-            return userList;
+            int start = (int) (selectInfo.getPageInfo().getSize() * selectInfo.getPageInfo().getCurrent());
+            int end = userList.size() >= selectInfo.getPageInfo().getSize() * (selectInfo.getPageInfo().getCurrent() + 1L) ?
+                    (int) (selectInfo.getPageInfo().getSize() * (selectInfo.getPageInfo().getCurrent() + 1L)) : userList.size();
+            selectInfo.getPageInfo().setTotal(userList.size());
+            for (int i = start; i < end; i++) {
+                selectInfo.getPageInfo().getRecords().add(userList.get(i));
+            }
         }
         throw new ServiceBusinessException(HTTP_RETURN_FAIL, COMPANY_GET_USER_INFO_FAIL);
     }

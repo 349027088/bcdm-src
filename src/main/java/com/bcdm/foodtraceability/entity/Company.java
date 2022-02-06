@@ -8,8 +8,9 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.bcdm.foodtraceability.validatedgroup.GetInfoGroup;
 import com.bcdm.foodtraceability.validatedgroup.ModifyGroup;
 import com.bcdm.foodtraceability.validatedgroup.RegisterGroup;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
@@ -23,7 +24,8 @@ import javax.validation.constraints.NotNull;
  * @author 王
  * @since 2022-01-13
  */
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = false)
 public class Company implements Serializable {
 

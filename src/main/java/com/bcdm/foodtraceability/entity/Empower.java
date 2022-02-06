@@ -6,8 +6,9 @@ import java.io.Serializable;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * <p>
@@ -17,7 +18,8 @@ import lombok.EqualsAndHashCode;
  * @author 王
  * @since 2022-01-13
  */
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = false)
 public class Empower implements Serializable {
 

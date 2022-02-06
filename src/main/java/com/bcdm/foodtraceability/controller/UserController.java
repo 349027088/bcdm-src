@@ -103,24 +103,6 @@ public class UserController {
         returnItem.setHttpMessage(MODIFY_PASSWORD_SUCCESS);
         return returnItem;
     }
-//
-//    /**
-//     * 获得用户的所有公司信息
-//     *
-//     * @param user 获取公司信息的用户
-//     * @return 该用户所属公司信息
-//     * @throws Exception 查询公司信息失败
-//     */
-//    @PostMapping("/getCompanyByUser")
-//    @CrossOrigin
-//    public ReturnItem<Company> getCompanyByUser(@Validated({CreateGroup.class})
-//                                                @RequestBody User user) throws Exception {
-//        ReturnItem<Company> returnItem = new ReturnItem<>();
-//        returnItem.setT(companyService.getCompanyByUser(user));
-//        returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
-//        returnItem.setHttpMessage(GET_COMPANY_INFO_SUCCESS);
-//        return returnItem;
-//    }
 
 }
 

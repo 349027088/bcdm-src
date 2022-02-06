@@ -1,10 +1,8 @@
 package com.bcdm.foodtraceability.service;
 
-import com.bcdm.foodtraceability.entity.Company;
-import com.bcdm.foodtraceability.entity.ModifyPassword;
-import com.bcdm.foodtraceability.entity.User;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.bcdm.foodtraceability.entity.*;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.bcdm.foodtraceability.entity.UserModel;
 
 import java.util.List;
 
@@ -68,9 +66,9 @@ public interface UserService extends IService<User> {
     /**
      * 获取企业的所有员工
      *
-     * @param company 需要获取员工的企业
+     * @param selectInfo 需要获取员工的企业
      * @return 取得的员工列表
      */
-    List<UserModel> getUserByCompany(Company company) throws Exception;
+    IPage<UserModel> getUserByCompany(SelectPageEntity<UserModel> selectInfo) throws Exception;
 
 }

@@ -3,6 +3,7 @@ package com.bcdm.foodtraceability.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.bcdm.foodtraceability.validatedgroup.RegisterGroup;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = false)
 public class UserModel {
 
     /**

@@ -10,8 +10,9 @@ import com.bcdm.foodtraceability.validatedgroup.CreateGroup;
 import com.bcdm.foodtraceability.validatedgroup.DeleteGroup;
 import com.bcdm.foodtraceability.validatedgroup.GetInfoGroup;
 import com.bcdm.foodtraceability.validatedgroup.ModifyGroup;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
@@ -26,7 +27,8 @@ import javax.validation.constraints.Pattern;
  * @author 王
  * @since 2022-01-13
  */
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = false)
 public class Supplier implements Serializable {
 

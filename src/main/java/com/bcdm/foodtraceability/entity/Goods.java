@@ -7,8 +7,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * <p>
@@ -18,7 +19,8 @@ import lombok.EqualsAndHashCode;
  * @author 王
  * @since 2022-01-13
  */
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = false)
 public class Goods implements Serializable {
 

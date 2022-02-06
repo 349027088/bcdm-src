@@ -1,5 +1,6 @@
 package com.bcdm.foodtraceability.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.bcdm.foodtraceability.entity.*;
 import com.bcdm.foodtraceability.service.CompanyService;
 import com.bcdm.foodtraceability.service.UserService;
@@ -78,17 +79,17 @@ public class CompanyController {
     /**
      * 获得公司的用户所有信息
      *
-     * @param company 获取用户信息的公司
+     * @param selectInfo 获取用户信息的公司
      * @return 该公司的用户信息
      * @throws Exception 查询用户信息失败
      */
     @PostMapping("/getUserByCompany")
     @CrossOrigin
-    public ReturnItem<List<UserModel>> getUserByCompany(@Validated({GetInfoGroup.class})
-                                                        @RequestBody Company company) throws Exception {
-        log.info("用户" + company.getUserId() + "-----获取" + company.getCompanyId() + "企业的所有员工信息");
-        ReturnItem<List<UserModel>> returnItem = new ReturnItem<>();
-        returnItem.setT(userService.getUserByCompany(company));
+    public ReturnItem<IPage<UserModel>> getUserByCompany(@RequestBody String selectInfo) throws Exception {
+        SelectPageEntity<UserModel> selectPageEntity = new SelectPageEntity<>(selectInfo);
+        log.info("用户" + selectPageEntity.getUserId() + "-----获取" + selectPageEntity.getCompanyId() + "企业的所有员工信息");
+        ReturnItem<IPage<UserModel>> returnItem = new ReturnItem<>();
+        returnItem.setT(userService.getUserByCompany(selectPageEntity));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
         returnItem.setHttpMessage(COMPANY_USER_GET_SUCCESS);
         return returnItem;
