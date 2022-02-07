@@ -52,10 +52,10 @@ public class SupplierController {
     }
 
     /**
-     * 获取公司的所有未删除供应商列表信息
+     * 获取指定的供应商列表信息
      *
-     * @param supplier 需要获取供应商列表的企业
-     * @return 指定ID的供应商信息
+     * @param supplier 需要获取供应商信息的企业
+     * @return 查询到的供应商信息
      * @throws Exception 查询失败
      */
     @PostMapping("/getSupplierById")

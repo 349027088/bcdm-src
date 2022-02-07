@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.bcdm.foodtraceability.validatedgroup.CreateGroup;
 import com.bcdm.foodtraceability.validatedgroup.DeleteGroup;
+import com.bcdm.foodtraceability.validatedgroup.GetInfoGroup;
 import com.bcdm.foodtraceability.validatedgroup.ModifyGroup;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -29,26 +30,26 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(callSuper = false)
 public class Manufacturer implements Serializable {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 生产厂商ID
      */
     @TableId(type = IdType.AUTO)
-    @NotNull(message = "当前生产厂商信息异常，请重新读取列表后再试", groups = {ModifyGroup.class, DeleteGroup.class})
+    @NotNull(message = "当前生产厂商信息异常，请重新读取列表后再试", groups = {GetInfoGroup.class, ModifyGroup.class, DeleteGroup.class})
     private Integer manufacturerId;
 
     /**
      * 企业ID
      */
-    @NotNull(message = "当年公司信息异常，请重新登录后再试", groups = {DeleteGroup.class, ModifyGroup.class, CreateGroup.class})
+    @NotNull(message = "当年公司信息异常，请重新登录后再试", groups = {GetInfoGroup.class, DeleteGroup.class, ModifyGroup.class, CreateGroup.class})
     private Integer companyId;
 
     /**
      * 生产厂商名称
      */
-    @Length(min = 1, max = 40, message = "生产厂商名称长度请控制在40以下", groups = {ModifyGroup.class, DeleteGroup.class})
-    @NotBlank(message = "生产厂商名称不能为空", groups = {CreateGroup.class})
+    @Length(min = 1, max = 40, message = "生产厂商名称长度请控制在40以下", groups = {CreateGroup.class,ModifyGroup.class})
+    @NotBlank(message = "生产厂商名称不能为空", groups = {CreateGroup.class,ModifyGroup.class})
     private String manufacturerName;
 
     private LocalDateTime createTime;

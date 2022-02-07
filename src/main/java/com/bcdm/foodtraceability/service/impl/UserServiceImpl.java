@@ -11,12 +11,15 @@ import com.bcdm.foodtraceability.service.CompanyService;
 import com.bcdm.foodtraceability.service.JurisdictionService;
 import com.bcdm.foodtraceability.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.bcdm.foodtraceability.common.Constants.*;
 import static com.bcdm.foodtraceability.common.CreateMD5.Md5encode;
@@ -46,11 +49,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public Company login(User user) throws Exception {
-        Company companyByUser = companyService.getCompanyByUser(loginByUser(user));
+    public Map<String, Object> login(User user) throws Exception {
+        Map<String,Object> loginInfo = new HashMap<>();
+        User loginUser = loginByUser(user);
+        Company companyByUser = companyService.getCompanyByUser(loginUser);
         if (null != companyByUser && !COMPANY_STATUS_OUT_OF_SERVICE.equals(companyByUser.getCompanyStatus())) {
-            companyByUser.setUserId(user.getUserId());
-            return companyByUser;
+            companyByUser.setUserId(loginUser.getUserId());
+            loginInfo.put("user",loginUser);
+            loginInfo.put("company",companyByUser);
+            return loginInfo;
         }
         throw new ServiceBusinessException(HTTP_RETURN_FAIL, LOGIN_STOP_BY_COMPANY);
     }
@@ -121,15 +128,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public IPage<UserModel> getUserByCompany(SelectPageEntity<UserModel> selectInfo) throws Exception {
-        List<UserModel> userList = jurisdictionGetUserList(selectInfo.getCompanyId());
+        List<UserModel> userList = jurisdictionGetUserList(selectInfo);
         if (SELECT_ZERO != userList.size()) {
-            int start = (int) (selectInfo.getPageInfo().getSize() * selectInfo.getPageInfo().getCurrent());
-            int end = userList.size() >= selectInfo.getPageInfo().getSize() * (selectInfo.getPageInfo().getCurrent() + 1L) ?
-                    (int) (selectInfo.getPageInfo().getSize() * (selectInfo.getPageInfo().getCurrent() + 1L)) : userList.size();
+            int start = (int) (selectInfo.getPageInfo().getSize() * (selectInfo.getPageInfo().getCurrent()-1L));
+            int end = userList.size() >= selectInfo.getPageInfo().getSize() * (selectInfo.getPageInfo().getCurrent()) ?
+                    (int) (selectInfo.getPageInfo().getSize() * (selectInfo.getPageInfo().getCurrent())) : userList.size();
+            selectInfo.getPageInfo().setRecords(new ArrayList<>());
             selectInfo.getPageInfo().setTotal(userList.size());
             for (int i = start; i < end; i++) {
                 selectInfo.getPageInfo().getRecords().add(userList.get(i));
             }
+            return selectInfo.getPageInfo();
         }
         throw new ServiceBusinessException(HTTP_RETURN_FAIL, COMPANY_GET_USER_INFO_FAIL);
     }
@@ -173,21 +182,43 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     /**
      * 使用公司编号查找关联的所有用户信息
      *
-     * @param CompanyId 需要查找用户的公司ID
+     * @param selectInfo 需要查找用户的公司ID和員工種別
      * @return 公司的所有公司模板的用户信息
      * @throws Exception 获取关联信息失败
      */
-    private List<UserModel> jurisdictionGetUserList(Integer CompanyId) throws Exception {
-        List<Jurisdiction> jurisdictionList = jurisdictionService.getJurisdictionByCompany(CompanyId);
+    private List<UserModel> jurisdictionGetUserList(SelectPageEntity<UserModel> selectInfo) throws Exception {
+        List<Jurisdiction> jurisdictionList = jurisdictionService.getJurisdictionByCompany(selectInfo.getCompanyId());
         List<UserModel> userList = new ArrayList<>();
         for (Jurisdiction jurisdiction : jurisdictionList) {
-            QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-            userQueryWrapper.eq("user_id", jurisdiction.getUserId());
-            User user = getOne(userQueryWrapper);
+            if (COMPANY_USER_3.equals(selectInfo.getCheckParam()) && COMPANY_USER_3.equals(jurisdiction.getJurisdiction())){
+                userAdd(selectInfo, userList, jurisdiction);
+            }
+            if (!COMPANY_USER_3.equals(selectInfo.getCheckParam()) && !COMPANY_USER_3.equals(jurisdiction.getJurisdiction())){
+                userAdd(selectInfo, userList, jurisdiction);
+            }
+
+        }
+        return userList;
+    }
+
+    /**
+     * 用户查询筛选
+     *
+     * @param selectInfo 筛选条件
+     * @param userList 查询结果
+     * @param jurisdiction 关联信息
+     */
+    private void userAdd(SelectPageEntity<UserModel> selectInfo, List<UserModel> userList, Jurisdiction jurisdiction) {
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("user_id", jurisdiction.getUserId());
+        if (!StringUtils.isEmpty(selectInfo.getSelectName())){
+            userQueryWrapper.likeRight("user_name",selectInfo.getSelectName());
+        }
+        User user = getOne(userQueryWrapper);
+        if (null!=user){
             UserModel userModel = createUserModel(user, jurisdiction);
             userList.add(userModel);
         }
-        return userList;
     }
 
     /**

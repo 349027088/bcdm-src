@@ -6,10 +6,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
+@ToString
 public class SelectPageEntity <T>{
 
     /**
@@ -32,6 +34,11 @@ public class SelectPageEntity <T>{
      */
     private String selectName;
 
+    /**
+     * 判斷參數
+     */
+    private Integer checkParam;
+
     public SelectPageEntity(String jsonInfo) {
         JSONObject selectInfo = JSONObject.parseObject(jsonInfo);
         pageInfo = new Page<>();
@@ -40,5 +47,6 @@ public class SelectPageEntity <T>{
         this.companyId = selectInfo.getInteger("companyId");
         this.userId = selectInfo.getInteger("userId");
         this.selectName = selectInfo.getString("selectName");
+        this.checkParam = selectInfo.getInteger("checkParam");
     }
 }

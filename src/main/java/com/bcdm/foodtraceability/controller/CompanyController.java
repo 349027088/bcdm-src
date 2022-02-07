@@ -87,7 +87,7 @@ public class CompanyController {
     @CrossOrigin
     public ReturnItem<IPage<UserModel>> getUserByCompany(@RequestBody String selectInfo) throws Exception {
         SelectPageEntity<UserModel> selectPageEntity = new SelectPageEntity<>(selectInfo);
-        log.info("用户" + selectPageEntity.getUserId() + "-----获取" + selectPageEntity.getCompanyId() + "企业的所有员工信息");
+        log.info("用户" + selectPageEntity.getUserId() + "-----获取" + selectPageEntity.getCompanyId() + "企业的员工信息");
         ReturnItem<IPage<UserModel>> returnItem = new ReturnItem<>();
         returnItem.setT(userService.getUserByCompany(selectPageEntity));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);

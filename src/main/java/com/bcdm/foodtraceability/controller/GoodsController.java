@@ -1,6 +1,7 @@
 package com.bcdm.foodtraceability.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.bcdm.foodtraceability.entity.Company;
 import com.bcdm.foodtraceability.entity.Goods;
 import com.bcdm.foodtraceability.entity.ReturnItem;
@@ -31,6 +32,24 @@ public class GoodsController {
         this.goodsService = goodsService;
     }
 
+
+    /**
+     * 获取公司的所有商品种类信息
+     *
+     * @param company 需要获取商品种类列表的企业
+     * @return 获取商品种类列表
+     */
+    @PostMapping("/getGoodsList")
+    @CrossOrigin
+    public ReturnItem<IPage<Goods>> getGoodsTypeList(@RequestBody Company company)throws Exception{
+        ReturnItem<IPage<Goods>> returnItem = new ReturnItem<>();
+        returnItem.setT(goodsService.getGoodsListByCompany(company.getCompanyId()));
+        returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
+        returnItem.setHttpMessage(SELECT_GOODS_INFO_SUCCESS);
+        return returnItem;
+    }
+
+
     /**
      * 增加商品种类信息Controller
      *
@@ -44,24 +63,7 @@ public class GoodsController {
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(goodsService.createGoods(goods));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
-        returnItem.setHttpMessage(ADD_SUPPLIER_INFO_SUCCESS);
-        return returnItem;
-    }
-
-    /**
-     * 删除商品信息Controller
-     *
-     * @param goods 需要删除的商品信息
-     * @return true 删除成功
-     * @throws Exception 删除失败
-     */
-    @PostMapping("/delete")
-    @CrossOrigin
-    public ReturnItem<Boolean> delete(@RequestBody Goods goods) throws Exception {
-        ReturnItem<Boolean> returnItem = new ReturnItem<>();
-        returnItem.setT(goodsService.deleteGoods(goods));
-        returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
-        returnItem.setHttpMessage(DELETE_SUPPLIER_INFO_SUCCESS);
+        returnItem.setHttpMessage(ADD_GOODS_INFO_SUCCESS);
         return returnItem;
     }
 
@@ -78,27 +80,25 @@ public class GoodsController {
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(goodsService.modifyGoods(goods));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
-        returnItem.setHttpMessage(DELETE_SUPPLIER_INFO_SUCCESS);
+        returnItem.setHttpMessage(MODIFY_GOODS_INFO_SUCCESS);
         return returnItem;
     }
-
     /**
-     * 获取公司的所有商品种类信息
+     * 删除商品信息Controller
      *
-     * @param company 需要获取商品种类列表的企业
-     * @return 获取商品种类列表
+     * @param goods 需要删除的商品信息
+     * @return true 删除成功
+     * @throws Exception 删除失败
      */
-    @PostMapping("/getGoodsList")
+    @PostMapping("/delete")
     @CrossOrigin
-    public ReturnItem<List<Goods>> getGoodsTypeList(@RequestBody Company company)throws Exception{
-        ReturnItem<List<Goods>> returnItem = new ReturnItem<>();
-        returnItem.setT(goodsService.getGoodsListByCompany(company.getCompanyId()));
+    public ReturnItem<Boolean> delete(@RequestBody Goods goods) throws Exception {
+        ReturnItem<Boolean> returnItem = new ReturnItem<>();
+        returnItem.setT(goodsService.deleteGoods(goods));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
-        returnItem.setHttpMessage(SELECT_SUPPLIER_INFO_SUCCESS);
+        returnItem.setHttpMessage(DELETE_GOODS_INFO_SUCCESS);
         return returnItem;
     }
-
-
 
 }
 

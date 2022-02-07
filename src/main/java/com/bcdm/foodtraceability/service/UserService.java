@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.bcdm.foodtraceability.entity.*;
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -21,7 +21,7 @@ public interface UserService extends IService<User> {
      *
      * @return 用户信息
      */
-    Company login(User user) throws Exception;
+    Map<String, Object> login(User user) throws Exception;
 
     /**
      * 用于用户注册

@@ -1,6 +1,7 @@
 package com.bcdm.foodtraceability.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.bcdm.foodtraceability.common.CreateUUID;
 import com.bcdm.foodtraceability.entity.Company;
 import com.bcdm.foodtraceability.entity.Goods;
@@ -40,8 +41,9 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     }
 
     @Override
-    public List<Goods> getGoodsListByCompany(Integer companyId) throws Exception {
-        return list(new QueryWrapper<Goods>().eq("company_id", companyId));
+    public IPage<Goods> getGoodsListByCompany(Integer companyId) throws Exception {
+//        return list(new QueryWrapper<Goods>().eq("company_id", companyId));
+        return null;
     }
 
     @Override

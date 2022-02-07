@@ -49,8 +49,8 @@ public class MessageConstants {
     /** 没有获得用户绑定的公司信息 */
     public static final String USER_GET_COMPANY_INFO_FAIL = "没有获得用户绑定的公司信息";
 
-    /** 员工信息获取失败 */
-    public static final String COMPANY_GET_USER_INFO_FAIL = "员工信息获取失败";
+    /** 没有对应的员工信息 */
+    public static final String COMPANY_GET_USER_INFO_FAIL = "没有对应的员工信息";
 
     /** 企业登录成功 */
     public static final String CREATE_COMPANY_SUCCESS = "企业登录成功";
@@ -147,6 +147,18 @@ public class MessageConstants {
 
     /** 获取供应商信息成功 */
     public static final String SELECT_SUPPLIER_INFO_SUCCESS = "获取供应商信息成功";
+
+    /** 获取商品信息成功 */
+    public static final String SELECT_GOODS_INFO_SUCCESS = "获取商品信息成功";
+
+    /** 添加商品信息成功 */
+    public static final String ADD_GOODS_INFO_SUCCESS = "添加商品信息成功";
+
+    /** 修改商品信息成功 */
+    public static final String MODIFY_GOODS_INFO_SUCCESS = "修改商品信息成功";
+
+    /** 删除商品信息成功 */
+    public static final String DELETE_GOODS_INFO_SUCCESS = "删除商品信息成功";
 
     /** 修改供应商信息成功 */
     public static final String MODIFY_SUPPLIER_INFO_SUCCESS = "修改供应商信息成功";

@@ -11,6 +11,8 @@ import com.bcdm.foodtraceability.validatedgroup.RegisterGroup;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_SUCCESS;
 import static com.bcdm.foodtraceability.common.MessageConstants.*;
 
@@ -59,9 +61,9 @@ public class UserController {
      */
     @PostMapping("/login")
     @CrossOrigin
-    public ReturnItem<Company> login(@Validated({GetInfoGroup.class})
+    public ReturnItem<Map<String,Object>> login(@Validated({GetInfoGroup.class})
                                   @RequestBody User user) throws Exception {
-        ReturnItem<Company> returnItem = new ReturnItem<>();
+        ReturnItem<Map<String,Object>> returnItem = new ReturnItem<>();
         returnItem.setT(userService.login(user));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
         returnItem.setHttpMessage(LOGIN_SUCCESS);

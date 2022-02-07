@@ -1,10 +1,9 @@
 package com.bcdm.foodtraceability.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.bcdm.foodtraceability.entity.Company;
 import com.bcdm.foodtraceability.entity.Goods;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.bcdm.foodtraceability.entity.GoodsType;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -25,7 +24,7 @@ public interface GoodsService extends IService<Goods> {
      * @return 获取的商品列表
      * @throws Exception 返回商品列表失败
      */
-    List<Goods> getGoodsListByCompany(Integer companyId) throws Exception;
+    IPage<Goods> getGoodsListByCompany(Integer companyId) throws Exception;
 
     /**
      * 查询待审核或者审核失败的的商品列表
