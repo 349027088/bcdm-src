@@ -39,6 +39,11 @@ public class SelectPageEntity <T>{
      */
     private Integer checkParam;
 
+    /**
+     * 查询信息载体
+     */
+    private T selectInfo;
+
     public SelectPageEntity(String jsonInfo) {
         JSONObject selectInfo = JSONObject.parseObject(jsonInfo);
         pageInfo = new Page<>();

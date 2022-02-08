@@ -35,7 +35,7 @@ public class Company implements Serializable {
      * 企业ID
      */
     @TableId(type = IdType.AUTO)
-    @NotNull(message = "当前企业信息出现错误，请登录后重试", groups = {ModifyGroup.class, GetInfoGroup.class})
+    @NotNull(message = "当前企业信息出现错误，请登录后重试", groups = {ModifyGroup.class})
     private Integer companyId;
 
     /**

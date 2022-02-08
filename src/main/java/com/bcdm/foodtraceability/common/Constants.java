@@ -87,7 +87,7 @@ public class Constants {
     /** 企业状态：未提供服务 */
     public static final Integer COMPANY_LEVEL_NORMAL = 0;
 
-    /** 企业状态：未提供服务 */
+    /** 企业状态：提供服务 */
     public static final Integer COMPANY_LEVEL_HIGH_ = 1;
 
     // --------------------------------关联状态--------------------------------

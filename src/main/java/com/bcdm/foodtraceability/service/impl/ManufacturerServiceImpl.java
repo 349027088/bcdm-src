@@ -109,10 +109,10 @@ public class ManufacturerServiceImpl extends ServiceImpl<ManufacturerMapper, Man
             case 1:
                 return SELECT_ZERO < count(new QueryWrapper<Manufacturer>().eq("company_id", manufacturer.getCompanyId()).eq("manufacturer_name", manufacturer.getManufacturerName()));
             case 2:
-                return GET_ONE == count(new QueryWrapper<Manufacturer>().eq("company_id", manufacturer.getCompanyId()).eq("manufacturer_id", manufacturer.getManufacturerName())) &&
+                return GET_ONE == count(new QueryWrapper<Manufacturer>().eq("company_id", manufacturer.getCompanyId()).eq("manufacturer_id", manufacturer.getManufacturerId())) &&
                         SELECT_ZERO == count(new QueryWrapper<Manufacturer>().eq("company_id", manufacturer.getCompanyId()).eq("manufacturer_name", manufacturer.getManufacturerName()));
             case 3:
-                return GET_ONE == count(new QueryWrapper<Manufacturer>().eq("company_id", manufacturer.getCompanyId()).eq("manufacturer_id", manufacturer.getManufacturerName()));
+                return GET_ONE == count(new QueryWrapper<Manufacturer>().eq("company_id", manufacturer.getCompanyId()).eq("manufacturer_id", manufacturer.getManufacturerId()));
         }
         return null;
     }

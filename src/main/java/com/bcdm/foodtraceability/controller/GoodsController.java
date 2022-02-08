@@ -1,15 +1,12 @@
 package com.bcdm.foodtraceability.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.bcdm.foodtraceability.entity.Company;
-import com.bcdm.foodtraceability.entity.Goods;
-import com.bcdm.foodtraceability.entity.ReturnItem;
+import com.bcdm.foodtraceability.entity.*;
 import com.bcdm.foodtraceability.service.GoodsService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
-
-import java.util.List;
 
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_SUCCESS;
 import static com.bcdm.foodtraceability.common.MessageConstants.*;
@@ -24,6 +21,7 @@ import static com.bcdm.foodtraceability.common.MessageConstants.*;
  */
 @RestController
 @RequestMapping("/goods")
+@Slf4j
 public class GoodsController {
 
     private final GoodsService goodsService;
@@ -32,23 +30,25 @@ public class GoodsController {
         this.goodsService = goodsService;
     }
 
-
     /**
-     * 获取公司的所有商品种类信息
+     * 获取公司的所有商品信息
      *
-     * @param company 需要获取商品种类列表的企业
+     * @param selectInfo 需要获取商品列表的企业
      * @return 获取商品种类列表
      */
     @PostMapping("/getGoodsList")
     @CrossOrigin
-    public ReturnItem<IPage<Goods>> getGoodsTypeList(@RequestBody Company company)throws Exception{
-        ReturnItem<IPage<Goods>> returnItem = new ReturnItem<>();
-        returnItem.setT(goodsService.getGoodsListByCompany(company.getCompanyId()));
+    public ReturnItem<IPage<GoodsModel>> getGoodsTypeList(@RequestBody String selectInfo) throws Exception {
+        SelectPageEntity<GoodsModel> selectPageEntity = new SelectPageEntity<>(selectInfo);
+        JSONObject selectPageInfo = JSONObject.parseObject(selectInfo);
+        selectPageEntity.setSelectInfo(selectPageInfo.getObject("goods",GoodsModel.class));
+        log.info("企业" + selectPageEntity.getCompanyId() + "-----获取商品信息");
+        ReturnItem<IPage<GoodsModel>> returnItem = new ReturnItem<>();
+        returnItem.setT(goodsService.getGoodsListByCompany(selectPageEntity));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
         returnItem.setHttpMessage(SELECT_GOODS_INFO_SUCCESS);
         return returnItem;
     }
-
 
     /**
      * 增加商品种类信息Controller
@@ -83,6 +83,7 @@ public class GoodsController {
         returnItem.setHttpMessage(MODIFY_GOODS_INFO_SUCCESS);
         return returnItem;
     }
+
     /**
      * 删除商品信息Controller
      *

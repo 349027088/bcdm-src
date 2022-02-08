@@ -47,7 +47,16 @@ public class MessageConstants {
     public static final String UNLOCK_USER_FAIL = "用户解锁失败";
 
     /** 没有获得用户绑定的公司信息 */
-    public static final String USER_GET_COMPANY_INFO_FAIL = "没有获得用户绑定的公司信息";
+    public static final String USER_GET_COMPANY_INFO_FAIL1 = "没有获得用户绑定的公司信息";
+
+    /** 公司正在审核中 */
+    public static final String USER_GET_COMPANY_INFO_FAIL2 = "您申请的公司正在审核中";
+
+    /** 公司锁定 */
+    public static final String USER_GET_COMPANY_INFO_FAIL3 = "您的公司已经被锁定，请联系官方咨询详细信息";
+
+    /** 当前企业已关闭 */
+    public static final String USER_GET_COMPANY_INFO_FAIL4 = "当前企业已关闭";
 
     /** 没有对应的员工信息 */
     public static final String COMPANY_GET_USER_INFO_FAIL = "没有对应的员工信息";
@@ -223,6 +232,15 @@ public class MessageConstants {
     /** 修改生产厂商失败 */
     public static final String MODIFY_MANUFACTURER_FAIL = "修改生产厂商失败";
 
-    /** 当前公司正在审核中 */
-    public static final String LOGIN_STOP_BY_COMPANY = "当前公司正在审核中";
+    /** 获取指定的商品信息失败 */
+    public static final String SELECT_GOODS_INFO_FAIL = "当前没有指定的商品信息";
+
+    /** 增加商品信息失败 */
+    public static final String ADD_GOODS_INFO_FAIL = "增加商品信息失败";
+
+    /** 修改商品信息失败 */
+    public static final String MODIFY_GOODS_INFO_FAIL = "修改商品信息失败";
+
+    /** 删除商品信息失败 */
+    public static final String DELETE_GOODS_INFO_FAIL = "删除商品信息失败";
 }

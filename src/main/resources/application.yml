@@ -33,5 +33,9 @@ foodTraceability:
  secretKey: IqqgqouCykKzidSS0wlhN785z2t7BEgoBr9CCxjp
  bucket: bcdm
 
+mybatis-plus:
+ type-aliases-package: com.bcdm.foodtraceability.entity
+ mapper-locations: classpath:/mapper/*.xml
+
 
 

@@ -43,18 +43,21 @@ public class ExceptionConfigController {
     // 专门用来捕获和处理Controller层的空指针异常
     @ExceptionHandler(NullPointerException.class)
     public ModelAndView nullPointerExceptionHandler(NullPointerException e){
+        e.printStackTrace();
         return serviceBusinessExceptionHandler(new ServiceBusinessException(HTTP_RETURN_SERVER_FAIL,NOT_POINT_ERROR));
     }
 
     // 专门用来捕获和处理Controller层的运行时异常
     @ExceptionHandler(RuntimeException.class)
     public ModelAndView runtimeExceptionHandler(RuntimeException e){
+        e.printStackTrace();
         return serviceBusinessExceptionHandler(new ServiceBusinessException(HTTP_RETURN_SERVER_FAIL,RUNTIME_ERROR));
     }
 
     // 专门用来捕获和处理Controller层的异常
     @ExceptionHandler(Exception.class)
     public ModelAndView exceptionHandler(Exception e){
+        e.printStackTrace();
         return serviceBusinessExceptionHandler(new ServiceBusinessException(HTTP_RETURN_SERVER_FAIL,SEVER_ERROR));
     }
 }

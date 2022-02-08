@@ -106,7 +106,7 @@ public class CompanyController {
     @CrossOrigin
     public ReturnItem<Company> createUserToCompany(@Validated({GetInfoGroup.class})
                                                    @RequestBody Company company) throws Exception {
-        log.info("用户" + company.getUserId() + "-----被添加到" + company.getCompanyId() + "企业");
+        log.info("用户" + company.getUserId() + "-----申请加入" + company.getCompanyId() + "企业");
         ReturnItem<Company> returnItem = new ReturnItem<>();
         returnItem.setT(companyService.createUserToCompany(company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);

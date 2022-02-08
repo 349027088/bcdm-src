@@ -52,14 +52,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public Map<String, Object> login(User user) throws Exception {
         Map<String,Object> loginInfo = new HashMap<>();
         User loginUser = loginByUser(user);
+        loginInfo.put("user",loginUser);
         Company companyByUser = companyService.getCompanyByUser(loginUser);
-        if (null != companyByUser && !COMPANY_STATUS_OUT_OF_SERVICE.equals(companyByUser.getCompanyStatus())) {
-            companyByUser.setUserId(loginUser.getUserId());
-            loginInfo.put("user",loginUser);
+        if (null != companyByUser && COMPANY_STATUS_ON_SERVICE.equals(companyByUser.getCompanyStatus())) {
             loginInfo.put("company",companyByUser);
-            return loginInfo;
         }
-        throw new ServiceBusinessException(HTTP_RETURN_FAIL, LOGIN_STOP_BY_COMPANY);
+        return loginInfo;
     }
 
     @Override

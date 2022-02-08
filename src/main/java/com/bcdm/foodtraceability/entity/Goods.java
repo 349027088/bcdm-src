@@ -10,6 +10,7 @@ import java.io.Serializable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * <p>
@@ -21,6 +22,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@ToString
 @EqualsAndHashCode(callSuper = false)
 public class Goods implements Serializable {
 
@@ -101,6 +103,5 @@ public class Goods implements Serializable {
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
-
 
 }

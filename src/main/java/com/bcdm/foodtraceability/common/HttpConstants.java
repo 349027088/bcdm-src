@@ -18,11 +18,6 @@ public class HttpConstants {
     /**
      * 失败状态码
      */
-    public static final String HTTP_LOGIN_WAIT = "255";
-
-    /**
-     * 失败状态码
-     */
     public static final String HTTP_RETURN_FAIL = "400";
 
     /**

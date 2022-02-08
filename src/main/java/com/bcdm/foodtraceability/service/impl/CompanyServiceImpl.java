@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 import static com.bcdm.foodtraceability.common.Constants.*;
-import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_LOGIN_WAIT;
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_FAIL;
 import static com.bcdm.foodtraceability.common.MessageConstants.*;
 
@@ -75,13 +74,20 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     public Company getCompanyByUser(User user) throws Exception {
         Company company = jurisdictionGetCompany(user.getUserId());
         if (null != company) {
-            return company;
+            if (COMPANY_STATUS_OUT_OF_SERVICE.equals(company.getCompanyStatus())) {
+                throw new ServiceBusinessException(HTTP_RETURN_FAIL, USER_GET_COMPANY_INFO_FAIL2);
+            } else if (COMPANY_STATUS_IS_LOCK.equals(company.getCompanyStatus())) {
+                throw new ServiceBusinessException(HTTP_RETURN_FAIL, USER_GET_COMPANY_INFO_FAIL3);
+            } else if (COMPANY_STATUS_TIME_STOP.equals(company.getCompanyStatus())) {
+                throw new ServiceBusinessException(HTTP_RETURN_FAIL, USER_GET_COMPANY_INFO_FAIL4);
+            }
         }
-        throw new ServiceBusinessException(HTTP_RETURN_FAIL, USER_GET_COMPANY_INFO_FAIL);
+        return company;
     }
 
     @Override
     public Company createUserToCompany(Company company) throws Exception {
+        Integer userId = company.getUserId();
         if (null == company.getCompanyId()) {
             QueryWrapper<Company> companyQueryWrapper = new QueryWrapper<>();
             companyQueryWrapper.eq("company_name", company.getCompanyName());
@@ -89,7 +95,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         } else {
             company = getById(company.getCompanyId());
         }
-        jurisdictionService.createJurisdiction(company.getUserId(), company.getCompanyId(), COMPANY_USER_3);
+        jurisdictionService.createJurisdiction(userId, company.getCompanyId(), COMPANY_USER_3);
         return company;
     }
 
@@ -117,12 +123,14 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     private Company jurisdictionGetCompany(Integer userId) throws Exception {
         Jurisdiction jurisdiction = jurisdictionService.getJurisdictionByUser(userId);
         //如果用户为非申请中的员工返回公司信息
-        if (!COMPANY_USER_3.equals(jurisdiction.getJurisdiction())) {
+        if (null != jurisdiction && !COMPANY_USER_3.equals(jurisdiction.getJurisdiction())) {
             QueryWrapper<Company> companyQueryWrapper = new QueryWrapper<>();
             companyQueryWrapper.eq("company_id", jurisdiction.getCompanyId());
             return getOne(companyQueryWrapper);
+        } else if (null != jurisdiction && COMPANY_USER_3.equals(jurisdiction.getJurisdiction())) {
+            throw new ServiceBusinessException(HTTP_RETURN_FAIL, USER_ADMIT_FAIL);
         } else {
-            throw new ServiceBusinessException(HTTP_LOGIN_WAIT, USER_ADMIT_FAIL);
+            return null;
         }
     }
 
@@ -134,13 +142,13 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
      */
     private void iconDelete(Company company) throws Exception {
         Company compareCompany = getById(company.getCompanyId());
-        if (null == compareCompany.getCompanyIcon() || !compareCompany.getCompanyIcon().equals(company.getCompanyIcon())){
+        if (null == compareCompany.getCompanyIcon() || !compareCompany.getCompanyIcon().equals(company.getCompanyIcon())) {
             iconService.deleteIcon(compareCompany.getCompanyIcon());
         }
-        if (null == compareCompany.getBusinessLicense() || !compareCompany.getBusinessLicense().equals(company.getBusinessLicense())){
+        if (null == compareCompany.getBusinessLicense() || !compareCompany.getBusinessLicense().equals(company.getBusinessLicense())) {
             iconService.deleteIcon(compareCompany.getBusinessLicense());
         }
-        if (null == compareCompany.getHealthPermit() || !compareCompany.getHealthPermit().equals(company.getHealthPermit())){
+        if (null == compareCompany.getHealthPermit() || !compareCompany.getHealthPermit().equals(company.getHealthPermit())) {
             iconService.deleteIcon(compareCompany.getHealthPermit());
         }
     }

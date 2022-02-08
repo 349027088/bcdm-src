@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.bcdm.foodtraceability.entity.Company;
 import com.bcdm.foodtraceability.entity.Goods;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.bcdm.foodtraceability.entity.GoodsModel;
+import com.bcdm.foodtraceability.entity.SelectPageEntity;
 
 import java.util.List;
 
@@ -20,36 +22,11 @@ public interface GoodsService extends IService<Goods> {
     /**
      * 获取公司的商品列表
      *
-     * @param companyId 需要获取商品列表的公司ID
+     * @param selectInfo 需要获取商品列表的公司ID
      * @return 获取的商品列表
      * @throws Exception 返回商品列表失败
      */
-    IPage<Goods> getGoodsListByCompany(Integer companyId) throws Exception;
-
-    /**
-     * 查询待审核或者审核失败的的商品列表
-     * @param status 商品状态
-     * @return 被查询的商品信息
-     * @throws Exception 查询信息出现错误
-     */
-    List<Goods> getGoodsListByStatus(Integer status) throws Exception;
-
-    /**
-     * 按照供应商查询商品信息
-     * @param supplierId 供应商ID
-     * @return 被查询的商品信息
-     * @throws Exception 查询信息出现错误
-     */
-    List<Goods> getGoodsListBySupplier(Integer companyId,Integer supplierId) throws Exception;
-
-    /**
-     * 按照种类查询商品信息
-     * @param companyId 需要获取商品列表的公司ID
-     * @param goodsTypeId 被查询的商品种类ID
-     * @return 被查询的商品信息
-     * @throws Exception 查询信息出现错误
-     */
-    List<Goods> getGoodsListByGoodsType(Integer companyId, Integer goodsTypeId) throws Exception;
+    IPage<GoodsModel> getGoodsListByCompany(SelectPageEntity<GoodsModel> selectInfo) throws Exception;
 
     /**
      * 公司添加一个新的商品
