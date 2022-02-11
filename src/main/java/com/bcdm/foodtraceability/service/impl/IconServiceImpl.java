@@ -17,9 +17,9 @@ import java.util.Objects;
 
 import static com.bcdm.foodtraceability.common.Constants.*;
 import static com.bcdm.foodtraceability.common.FileUtil.isFileAllowed;
+import static com.bcdm.foodtraceability.common.FileUtil.isFileSizeOver;
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_FAIL;
-import static com.bcdm.foodtraceability.common.MessageConstants.ICON_TYPE_FORMAT_FAIL;
-import static com.bcdm.foodtraceability.common.MessageConstants.ICON_UPLOAD_FAIL;
+import static com.bcdm.foodtraceability.common.MessageConstants.*;
 
 /**
  * <p>
@@ -41,9 +41,6 @@ public class IconServiceImpl implements IconService {
 
     @Value("${foodTraceability.bucket}")
     private String bucketName;
-
-    @Value("${foodTraceability.bucket}")
-    private String iconServiceLink;
 
     private final Configuration cfg = new Configuration(Region.region0());
 
@@ -68,7 +65,6 @@ public class IconServiceImpl implements IconService {
      * @throws Exception 图片发送失败
      */
     private String sendIconToCloud(MultipartFile icon) throws Exception {
-        log.info("icon--------------" + icon.toString());
         int dotPos = Objects.requireNonNull(icon.getOriginalFilename()).lastIndexOf(CUT_POINT);
         if (dotPos < 0) {
             throw new ServiceBusinessException(HTTP_RETURN_FAIL, ICON_TYPE_FORMAT_FAIL);
@@ -77,11 +73,13 @@ public class IconServiceImpl implements IconService {
         if (!isFileAllowed(fileExt)) {
             throw new ServiceBusinessException(HTTP_RETURN_FAIL, ICON_TYPE_FORMAT_FAIL);
         }
+        if (!isFileSizeOver(icon.getSize(),2,"M")){
+            throw new ServiceBusinessException(HTTP_RETURN_FAIL, ICON_SIZE_FAIL);
+        }
         String fileName = CreateUUID.getUUID() + CUT_POINT + fileExt;
         try {
             Response res = uploadManager.put(icon.getBytes(), fileName, Auth.create(ACCESS_KEY, SECRET_KEY).uploadToken(bucketName));
             if (res.isOK() && res.isJson()) {
-                log.info("key-------------" + JSONObject.parseObject(res.bodyString()).get("key"));
                 return (String) JSONObject.parseObject(res.bodyString()).get("key");
             }
         } catch (QiniuException e) {

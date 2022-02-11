@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bcdm.foodtraceability.mapper.GoodsMapper">
 
-    <select id="selectGoodsPage" resultType="com.bcdm.foodtraceability.entity.GoodsModel" parameterType="com.bcdm.foodtraceability.entity.GoodsModel">
+    <select id="selectGoodsPage" resultType="com.bcdm.foodtraceability.entity.GoodsModel"
+            parameterType="com.bcdm.foodtraceability.entity.GoodsModel">
         SELECT
         T1.goods_id AS goodsId,
         T1.goods_status AS goodsStatus,
@@ -40,19 +41,19 @@
         T1.manufacturer_id = T4.manufacturer_id AND
         T1.company_id = T4.company_id
         WHERE T1.company_id = #{goodsModel.companyId}
-        <if test="goodsModel.goodsName != null">
-            AND T1.goods_name like #{goodsModel.goodsName}
+        <if test="goodsModel != null and goodsModel.goodsName != null">
+            AND T1.goods_name like CONCAT(#{goodsModel.goodsName},'%')
         </if>
-        <if test="goodsModel.goodsTypeId != null">
+        <if test="goodsModel != null and goodsModel.goodsTypeId != null">
             AND T1.goods_type_id = #{goodsModel.goodsTypeId}
         </if>
-        <if test="goodsModel.manufacturerId != null">
+        <if test="goodsModel != null and goodsModel.manufacturerId != null">
             AND T1.manufacturer_id = #{goodsModel.manufacturerId}
         </if>
-        <if test="goodsModel.goodsStatus != null">
+        <if test="goodsModel != null and goodsModel.goodsStatus != null">
             AND T1.goods_status = #{goodsModel.goodsStatus}
         </if>
-        <if test="goodsModel.supplierId != null">
+        <if test="goodsModel != null and goodsModel.supplierId != null">
             AND T1.supplier_id = #{goodsModel.supplierId}
         </if>
     </select>
@@ -62,16 +63,13 @@
         FROM goods_type AS T1
                  INNER JOIN
              supplier AS T2
-             ON
-                 T1.company_id = T2.company_id
+             ON T1.company_id = T2.company_id
                  INNER JOIN
              manufacturer AS T3
-             ON
-                 T1.company_id = T3.company_id
+             ON T1.company_id = T3.company_id
                  INNER JOIN
              company AS T4
-             ON
-                 T1.company_id = T4.company_id
+             ON T1.company_id = T4.company_id
         WHERE T1.goods_type_id = #{goodsTypeId}
           AND T2.supplier_id = #{supplierId}
           AND T3.manufacturer_id = #{manufacturerId}

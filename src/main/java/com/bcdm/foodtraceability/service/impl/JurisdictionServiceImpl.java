@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.bcdm.foodtraceability.common.Constants.COMPANY_USER_99;
 import static com.bcdm.foodtraceability.common.Constants.SELECT_ZERO;
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_FAIL;
 import static com.bcdm.foodtraceability.common.MessageConstants.*;
@@ -52,8 +53,23 @@ public class JurisdictionServiceImpl extends ServiceImpl<JurisdictionMapper, Jur
 
     @Override
     public Boolean modifyJurisdiction(Jurisdiction jurisdiction, Integer companyManagerUserId) throws Exception {
-        log.info(jurisdiction.toString());
-        log.info("modifyUserId--------------------" + companyManagerUserId);
+        if (jurisdictionCheck(companyManagerUserId, jurisdiction)) {
+            QueryWrapper<Jurisdiction> jurisdictionUpdateWrapper = new QueryWrapper<>();
+            jurisdictionUpdateWrapper
+                    .eq("user_id", jurisdiction.getUserId())
+                    .eq("company_id", jurisdiction.getCompanyId())
+                    .eq("update_time", jurisdiction.getUpdateTime());
+            if (!remove(jurisdictionUpdateWrapper)) {
+                throw new ServiceBusinessException(HTTP_RETURN_FAIL, MODIFY_JURISDICTION_FAIL);
+            }
+        } else {
+            throw new ServiceBusinessException(HTTP_RETURN_FAIL, MODIFY_JURISDICTION_LEVEL_FAIL);
+        }
+        return true;
+    }
+
+    @Override
+    public Boolean deleteJurisdiction(Jurisdiction jurisdiction, Integer companyManagerUserId) throws Exception {
         if (jurisdictionCheck(companyManagerUserId, jurisdiction)) {
             UpdateWrapper<Jurisdiction> jurisdictionUpdateWrapper = new UpdateWrapper<>();
             jurisdictionUpdateWrapper
@@ -61,13 +77,13 @@ public class JurisdictionServiceImpl extends ServiceImpl<JurisdictionMapper, Jur
                     .eq("company_id", jurisdiction.getCompanyId())
                     .eq("update_time", jurisdiction.getUpdateTime())
                     .set("update_time", LocalDateTime.now())
-                    .set("jurisdiction", jurisdiction.getIdentity())
-                    .set("identity", jurisdiction.getIdentity());
+                    .set("jurisdiction", COMPANY_USER_99)
+                    .set("identity", COMPANY_USER_99);
             if (!update(jurisdictionUpdateWrapper)) {
-                throw new ServiceBusinessException(HTTP_RETURN_FAIL, MODIFY_JURISDICTION_FAIL);
+                throw new ServiceBusinessException(HTTP_RETURN_FAIL, DELETE_JURISDICTION_FAIL);
             }
         } else {
-            throw new ServiceBusinessException(HTTP_RETURN_FAIL, MODIFY_JURISDICTION_LEVEL_FAIL);
+            throw new ServiceBusinessException(HTTP_RETURN_FAIL, DELETE_JURISDICTION_LEVEL_FAIL);
         }
         return true;
     }

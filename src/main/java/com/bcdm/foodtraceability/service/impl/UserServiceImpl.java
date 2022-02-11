@@ -52,11 +52,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public Map<String, Object> login(User user) throws Exception {
         Map<String,Object> loginInfo = new HashMap<>();
         User loginUser = loginByUser(user);
-        loginInfo.put("user",loginUser);
-        Company companyByUser = companyService.getCompanyByUser(loginUser);
-        if (null != companyByUser && COMPANY_STATUS_ON_SERVICE.equals(companyByUser.getCompanyStatus())) {
-            loginInfo.put("company",companyByUser);
+        Map<String,Object> companyByUser = companyService.getCompanyByUser(loginUser);
+        if (null != companyByUser.get(COMPANY) && COMPANY_STATUS_ON_SERVICE.equals(((Company)companyByUser.get(COMPANY)).getCompanyStatus())) {
+            loginInfo.put(COMPANY,companyByUser.get(COMPANY));
         }
+        UserModel loginUserInfo = createUserModel(loginUser,(Jurisdiction) companyByUser.get(JURISDICTION));
+        loginInfo.put(USER,loginUserInfo);
         return loginInfo;
     }
 

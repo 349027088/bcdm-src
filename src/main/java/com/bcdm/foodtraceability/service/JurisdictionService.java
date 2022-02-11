@@ -47,8 +47,17 @@ public interface JurisdictionService extends IService<Jurisdiction> {
      * @param jurisdiction   需要修改职位的员工和公司信息以及新的职位
      * @param companyManagerUserId 公司管理员ID
      * @return 修改信息结果
-     * @throws Exception 创建新的关联信息失败
+     * @throws Exception 修改关联信息失败
      */
     Boolean modifyJurisdiction(Jurisdiction jurisdiction, Integer companyManagerUserId) throws Exception;
 
+    /**
+     * 删除用户在公司的职位
+     *
+     * @param jurisdiction   删除对应的关联信息
+     * @param companyManagerUserId 公司管理员ID
+     * @return 删除信息结果
+     * @throws Exception 删除关联信息失败
+     */
+    Boolean deleteJurisdiction(Jurisdiction jurisdiction, Integer companyManagerUserId) throws Exception;
 }

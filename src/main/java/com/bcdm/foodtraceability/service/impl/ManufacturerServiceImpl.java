@@ -69,17 +69,6 @@ public class ManufacturerServiceImpl extends ServiceImpl<ManufacturerMapper, Man
     }
 
     @Override
-    public Boolean deleteManufacturer(Manufacturer manufacturer) throws Exception {
-        if (Boolean.TRUE.equals(checkManufacturer(manufacturer, SELECT_CHECK_PARAM_DELETE))) {
-            if (removeById(manufacturer.getManufacturerId())) {
-                return true;
-            }
-            throw new ServiceBusinessException(HTTP_RETURN_FAIL, DELETE_MANUFACTURER_FAIL);
-        }
-        throw new ServiceBusinessException(HTTP_RETURN_FAIL, FIND_MANUFACTURER_NAME_BY_COMPANY_FAIL1);
-    }
-
-    @Override
     public Boolean modifyManufacturer(Manufacturer manufacturer) throws Exception {
         if (Boolean.TRUE.equals(checkManufacturer(manufacturer, SELECT_CHECK_PARAM_MODIFY))) {
             UpdateWrapper<Manufacturer> goodsTypeQueryWrapper = new UpdateWrapper<>();
@@ -93,6 +82,17 @@ public class ManufacturerServiceImpl extends ServiceImpl<ManufacturerMapper, Man
                 return true;
             }
             throw new ServiceBusinessException(HTTP_RETURN_FAIL, MODIFY_MANUFACTURER_FAIL);
+        }
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, FIND_MANUFACTURER_NAME_BY_COMPANY_FAIL1);
+    }
+
+    @Override
+    public Boolean deleteManufacturer(Manufacturer manufacturer) throws Exception {
+        if (Boolean.TRUE.equals(checkManufacturer(manufacturer, SELECT_CHECK_PARAM_DELETE))) {
+            if (removeById(manufacturer.getManufacturerId())) {
+                return true;
+            }
+            throw new ServiceBusinessException(HTTP_RETURN_FAIL, DELETE_MANUFACTURER_FAIL);
         }
         throw new ServiceBusinessException(HTTP_RETURN_FAIL, FIND_MANUFACTURER_NAME_BY_COMPANY_FAIL3);
     }

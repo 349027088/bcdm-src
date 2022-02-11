@@ -48,5 +48,25 @@ public class JurisdictionController {
         returnItem.setHttpMessage(MODIFY_USER_TO_COMPANY_SUCCESS);
         return returnItem;
     }
+
+    /**
+     * 删除关联用户权限
+     *
+     * @param jsonInfo 需要刪除的員工关联信息
+     * @return 删除关联信息成功状态
+     * @throws Exception 删除信息失败
+     */
+    @PostMapping("delete")
+    @CrossOrigin
+    public ReturnItem<Boolean> deleteJurisdiction(@RequestBody String jsonInfo) throws Exception {
+        JSONObject jsonObject = JSONObject.parseObject(jsonInfo);
+        Jurisdiction jurisdiction = jsonObject.getObject("jurisdiction", Jurisdiction.class);
+        Integer companyManagerUserId = jsonObject.getInteger("userId");
+        ReturnItem<Boolean> returnItem = new ReturnItem<>();
+        returnItem.setT(jurisdictionService.deleteJurisdiction(jurisdiction, companyManagerUserId));
+        returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
+        returnItem.setHttpMessage(MODIFY_USER_TO_COMPANY_SUCCESS);
+        return returnItem;
+    }
 }
 

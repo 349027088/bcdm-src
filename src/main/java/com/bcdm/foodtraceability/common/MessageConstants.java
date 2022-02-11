@@ -82,6 +82,9 @@ public class MessageConstants {
     /** 添加企业信息失败 */
     public static final String CREATE_COMPANY_FAIL = "添加企业信息失败";
 
+    /** 企业信息获取失败 */
+    public static final String GET_COMPANY_INFO_FAIL = "当前企业服务已到期，无法查询到该公司的信息";
+
     /** 企业信息获取成功 */
     public static final String GET_COMPANY_INFO_SUCCESS = "企业信息获取成功";
 
@@ -110,10 +113,16 @@ public class MessageConstants {
     public static final String CREATE_JURISDICTION_FAIL = "创建关联信息失败";
 
     /** 修改权限信息失败 */
-    public static final String MODIFY_JURISDICTION_FAIL = "修改权限信息失败";
+    public static final String MODIFY_JURISDICTION_FAIL = "修改职位失败";
 
     /** 修改权限级别不足 */
     public static final String MODIFY_JURISDICTION_LEVEL_FAIL = "修改权限级别不足";
+
+    /** 修改权限信息失败 */
+    public static final String DELETE_JURISDICTION_FAIL = "删除员工失败";
+
+    /** 删除员工级别不足 */
+    public static final String DELETE_JURISDICTION_LEVEL_FAIL = "删除员工级别不足";
 
     /** 创建供应商失败 */
     public static final String CREATE_SUPPLIER_FAIL = "创建供应商失败";
@@ -234,6 +243,15 @@ public class MessageConstants {
 
     /** 获取指定的商品信息失败 */
     public static final String SELECT_GOODS_INFO_FAIL = "当前没有指定的商品信息";
+
+    /** 该供应商里这个商品名称已经存在 */
+    public static final String FIND_GOODS_NAME_BY_COMPANY_FAIL1 = "该供应商里这个商品名称已经存在";
+
+    /** 当前商品已经存在 */
+    public static final String FIND_GOODS_NAME_BY_COMPANY_FAIL2 = "当前商品已经存在";
+
+    /** 当前商品不存在 */
+    public static final String FIND_GOODS_NAME_BY_COMPANY_FAIL3 = "当前商品不存在";
 
     /** 增加商品信息失败 */
     public static final String ADD_GOODS_INFO_FAIL = "增加商品信息失败";

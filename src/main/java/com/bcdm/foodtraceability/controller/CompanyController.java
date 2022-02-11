@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.bcdm.foodtraceability.entity.*;
 import com.bcdm.foodtraceability.service.CompanyService;
 import com.bcdm.foodtraceability.service.UserService;
+import com.bcdm.foodtraceability.validatedgroup.CreateGroup;
 import com.bcdm.foodtraceability.validatedgroup.GetInfoGroup;
 import com.bcdm.foodtraceability.validatedgroup.ModifyGroup;
 import com.bcdm.foodtraceability.validatedgroup.RegisterGroup;
@@ -92,6 +93,25 @@ public class CompanyController {
         returnItem.setT(userService.getUserByCompany(selectPageEntity));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
         returnItem.setHttpMessage(COMPANY_USER_GET_SUCCESS);
+        return returnItem;
+    }
+
+    /**
+     * 获得对应的公司信息
+     *
+     * @param company 获取需要公司的信息
+     * @return 找到的对应的公司信息
+     * @throws Exception 查询用户信息失败
+     */
+    @PostMapping("/getCompanyInfo")
+    @CrossOrigin
+    public ReturnItem<Company> getCompanyInfo(@Validated({CreateGroup.class})
+                                                             @RequestBody Company company) throws Exception {
+        log.info("获取-----" + company.getCompanyId() + "企业的信息");
+        ReturnItem<Company> returnItem = new ReturnItem<>();
+        returnItem.setT(companyService.getCompanyInfo(company));
+        returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
+        returnItem.setHttpMessage(GET_COMPANY_INFO_SUCCESS);
         return returnItem;
     }
 

@@ -15,6 +15,8 @@ import com.bcdm.foodtraceability.service.JurisdictionService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.bcdm.foodtraceability.common.Constants.*;
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_FAIL;
@@ -71,18 +73,27 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     }
 
     @Override
-    public Company getCompanyByUser(User user) throws Exception {
-        Company company = jurisdictionGetCompany(user.getUserId());
-        if (null != company) {
-            if (COMPANY_STATUS_OUT_OF_SERVICE.equals(company.getCompanyStatus())) {
+    public Company getCompanyInfo(Company company) throws Exception {
+        Company selectCompany = getById(company.getCompanyId());
+        if (null != selectCompany && COMPANY_STATUS_ON_SERVICE.equals(selectCompany.getCompanyStatus())) {
+            return selectCompany;
+        }
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, GET_COMPANY_INFO_FAIL);
+    }
+
+    @Override
+    public Map<String,Object> getCompanyByUser(User user) throws Exception {
+        Map<String,Object> companyInfoMap = jurisdictionGetCompany(user.getUserId());
+        if (null != companyInfoMap.get(COMPANY)) {
+            if (COMPANY_STATUS_OUT_OF_SERVICE.equals(((Company)companyInfoMap.get(COMPANY)).getCompanyStatus())) {
                 throw new ServiceBusinessException(HTTP_RETURN_FAIL, USER_GET_COMPANY_INFO_FAIL2);
-            } else if (COMPANY_STATUS_IS_LOCK.equals(company.getCompanyStatus())) {
+            } else if (COMPANY_STATUS_IS_LOCK.equals(((Company)companyInfoMap.get(COMPANY)).getCompanyStatus())) {
                 throw new ServiceBusinessException(HTTP_RETURN_FAIL, USER_GET_COMPANY_INFO_FAIL3);
-            } else if (COMPANY_STATUS_TIME_STOP.equals(company.getCompanyStatus())) {
+            } else if (COMPANY_STATUS_TIME_STOP.equals(((Company)companyInfoMap.get(COMPANY)).getCompanyStatus())) {
                 throw new ServiceBusinessException(HTTP_RETURN_FAIL, USER_GET_COMPANY_INFO_FAIL4);
             }
         }
-        return company;
+        return companyInfoMap;
     }
 
     @Override
@@ -120,13 +131,16 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
      * @return 被查询的企业信息
      * @throws Exception 查询关联表信息失败
      */
-    private Company jurisdictionGetCompany(Integer userId) throws Exception {
+    private Map<String,Object> jurisdictionGetCompany(Integer userId) throws Exception {
         Jurisdiction jurisdiction = jurisdictionService.getJurisdictionByUser(userId);
         //如果用户为非申请中的员工返回公司信息
         if (null != jurisdiction && !COMPANY_USER_3.equals(jurisdiction.getJurisdiction())) {
             QueryWrapper<Company> companyQueryWrapper = new QueryWrapper<>();
             companyQueryWrapper.eq("company_id", jurisdiction.getCompanyId());
-            return getOne(companyQueryWrapper);
+            Map<String,Object> companyInfoMap = new HashMap<>();
+            companyInfoMap.put(COMPANY,getOne(companyQueryWrapper));
+            companyInfoMap.put(JURISDICTION,jurisdiction);
+            return companyInfoMap;
         } else if (null != jurisdiction && COMPANY_USER_3.equals(jurisdiction.getJurisdiction())) {
             throw new ServiceBusinessException(HTTP_RETURN_FAIL, USER_ADMIT_FAIL);
         } else {
@@ -142,13 +156,13 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
      */
     private void iconDelete(Company company) throws Exception {
         Company compareCompany = getById(company.getCompanyId());
-        if (null == compareCompany.getCompanyIcon() || !compareCompany.getCompanyIcon().equals(company.getCompanyIcon())) {
+        if (null != company.getCompanyIcon() && !company.getCompanyIcon().equals(compareCompany.getCompanyIcon())) {
             iconService.deleteIcon(compareCompany.getCompanyIcon());
         }
-        if (null == compareCompany.getBusinessLicense() || !compareCompany.getBusinessLicense().equals(company.getBusinessLicense())) {
+        if (null != company.getBusinessLicense() && !company.getBusinessLicense().equals(compareCompany.getBusinessLicense())) {
             iconService.deleteIcon(compareCompany.getBusinessLicense());
         }
-        if (null == compareCompany.getHealthPermit() || !compareCompany.getHealthPermit().equals(company.getHealthPermit())) {
+        if (null != company.getHealthPermit() && !company.getHealthPermit().equals(compareCompany.getHealthPermit())) {
             iconService.deleteIcon(compareCompany.getHealthPermit());
         }
     }
@@ -164,8 +178,8 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         LocalDateTime now = LocalDateTime.now();
         companyUpdateWrapper
                 .eq("company_id", company.getCompanyId())
-                .eq("update_time", company.getUpdateTime())
                 .eq("user_id", company.getUserId())
+                .eq("update_time", company.getUpdateTime())
                 .set("company_phone", company.getCompanyPhone())
                 .set("company_icon", company.getCompanyIcon())
                 .set("company_info", company.getCompanyInfo())

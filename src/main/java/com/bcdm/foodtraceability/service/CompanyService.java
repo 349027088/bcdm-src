@@ -4,6 +4,8 @@ import com.bcdm.foodtraceability.entity.Company;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.bcdm.foodtraceability.entity.User;
 
+import java.util.Map;
+
 /**
  * <p>
  * 企业服务类
@@ -32,12 +34,20 @@ public interface CompanyService extends IService<Company> {
     Company modify(Company company) throws Exception;
 
     /**
+     * 获取企业信息
+     *
+     * @param company 需要获取的企业编号
+     * @return 对应的企业信息
+     */
+    Company getCompanyInfo(Company company) throws Exception;
+
+    /**
      * 获取用户的企业信息
      *
      * @param user 需要查询名下企业的用户
      * @return 该用户名下的企业信息
      */
-    Company getCompanyByUser(User user) throws Exception;
+    Map<String,Object> getCompanyByUser(User user) throws Exception;
 
     /**
      * 登录员工信息到企业

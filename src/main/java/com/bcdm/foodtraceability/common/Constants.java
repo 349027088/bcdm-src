@@ -10,6 +10,18 @@ package com.bcdm.foodtraceability.common;
  */
 public class Constants {
 
+    /** 公司 **/
+    public static final String COMPANY = "company";
+
+    /** 用户 **/
+    public static final String USER = "user";
+
+    /** 关联信息 **/
+    public static final String JURISDICTION = "jurisdiction";
+
+    /** 供应商信息 **/
+    public static final String SUPPLIER = "supplier";
+
     /** 查询条件分组 创建*/
     public static final Integer SELECT_CHECK_PARAM_CREATE = 1;
 
@@ -45,7 +57,6 @@ public class Constants {
 
     /** 默认启动时限 */
     public static final Integer DEFAULT_USAGE_TIME = 31;
-
 
     // --------------------------------管理员状态--------------------------------
 
@@ -104,6 +115,9 @@ public class Constants {
     /** 待审批员工 */
     public static final Integer COMPANY_USER_3 = 3;
 
+    /** 辞退员工 */
+    public static final Integer COMPANY_USER_99 = 99;
+
     // -------------------------------供应商锁定确认状态--------------------------------
 
     /** 供应商正常 */
@@ -130,9 +144,15 @@ public class Constants {
 
     // -------------------------------商品级别--------------------------------
 
-    /** 商品级别0 */
+    /** 商品审核中 */
     public static final Integer GOODS_LEVEL_ZERO = 0;
 
-    /** 商品级别1 */
+    /** 商品审核成功 */
     public static final Integer GOODS_LEVEL_ONE = 1;
+
+    /** 商品审核失败 */
+    public static final Integer GOODS_LEVEL_TWO = 2;
+
+    /** 商品 */
+    public static final Integer GOODS_LEVEL_THREE = 3;
 }

@@ -42,4 +42,5 @@ public class IconController {
         returnItem.setHttpMessage(ICON_UPLOAD_SUCCESS);
         return returnItem;
     }
+
 }

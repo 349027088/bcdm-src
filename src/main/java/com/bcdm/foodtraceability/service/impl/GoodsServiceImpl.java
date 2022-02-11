@@ -1,6 +1,7 @@
 package com.bcdm.foodtraceability.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bcdm.foodtraceability.common.CreateUUID;
@@ -39,11 +40,13 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
 
     @Override
     public IPage<GoodsModel> getGoodsListByCompany(SelectPageEntity<GoodsModel> selectInfo) throws Exception {
-        selectInfo.setPageInfo(goodsMapper.selectGoodsPage((Page<GoodsModel>) selectInfo.getPageInfo(), selectInfo.getSelectInfo()));
-        if (SELECT_ZERO == selectInfo.getPageInfo().getTotal()) {
-            throw new ServiceBusinessException(HTTP_RETURN_FAIL, SELECT_GOODS_INFO_FAIL);
+        if (null != selectInfo.getSelectInfo()) {
+            selectInfo.setPageInfo(goodsMapper.selectGoodsPage((Page<GoodsModel>) selectInfo.getPageInfo(), selectInfo.getSelectInfo()));
+            if (SELECT_ZERO != selectInfo.getPageInfo().getTotal()) {
+                return selectInfo.getPageInfo();
+            }
         }
-        return selectInfo.getPageInfo();
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, SELECT_GOODS_INFO_FAIL);
     }
 
     @Override
@@ -58,14 +61,27 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
             if (save(goods)) {
                 return true;
             }
-            throw new ServiceBusinessException(HTTP_RETURN_FAIL, ADD_MANUFACTURER_FAIL);
+            throw new ServiceBusinessException(HTTP_RETURN_FAIL, ADD_GOODS_INFO_FAIL);
         }
-        throw new ServiceBusinessException(HTTP_RETURN_FAIL, FIND_MANUFACTURER_NAME_BY_COMPANY_FAIL2);
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, FIND_GOODS_NAME_BY_COMPANY_FAIL2);
     }
 
     @Override
     public Boolean modifyGoods(Goods goods) throws Exception {
-        return null;
+        if (Boolean.TRUE.equals(checkSubInfo(goods)) && Boolean.TRUE.equals(checkGoods(goods, SELECT_CHECK_PARAM_MODIFY))) {
+            UpdateWrapper<Goods> goodsTypeQueryWrapper = new UpdateWrapper<>();
+            goodsTypeQueryWrapper
+                    .eq("company_id", goods.getCompanyId())
+                    .eq("goods_id", goods.getGoodsId())
+                    .eq("update_time", goods.getUpdateTime())
+                    .setEntity(goods)
+                    .set("update_time", LocalDateTime.now());
+            if (update(goodsTypeQueryWrapper)) {
+                return true;
+            }
+            throw new ServiceBusinessException(HTTP_RETURN_FAIL, MODIFY_GOODS_INFO_FAIL);
+        }
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, FIND_GOODS_NAME_BY_COMPANY_FAIL1);
     }
 
     @Override
@@ -74,9 +90,9 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
             if (removeById(goods.getGoodsId())) {
                 return true;
             }
-            throw new ServiceBusinessException(HTTP_RETURN_FAIL, DELETE_MANUFACTURER_FAIL);
+            throw new ServiceBusinessException(HTTP_RETURN_FAIL, DELETE_GOODS_INFO_FAIL);
         }
-        throw new ServiceBusinessException(HTTP_RETURN_FAIL, FIND_MANUFACTURER_NAME_BY_COMPANY_FAIL1);
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, FIND_GOODS_NAME_BY_COMPANY_FAIL3);
     }
 
     @Override

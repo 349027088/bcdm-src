@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.bcdm.foodtraceability.validatedgroup.CreateGroup;
 import com.bcdm.foodtraceability.validatedgroup.GetInfoGroup;
 import com.bcdm.foodtraceability.validatedgroup.ModifyGroup;
 import com.bcdm.foodtraceability.validatedgroup.RegisterGroup;
@@ -35,7 +36,7 @@ public class Company implements Serializable {
      * 企业ID
      */
     @TableId(type = IdType.AUTO)
-    @NotNull(message = "当前企业信息出现错误，请登录后重试", groups = {ModifyGroup.class})
+    @NotNull(message = "当前企业信息出现错误，请登录后重试", groups = {ModifyGroup.class, CreateGroup.class})
     private Integer companyId;
 
     /**
