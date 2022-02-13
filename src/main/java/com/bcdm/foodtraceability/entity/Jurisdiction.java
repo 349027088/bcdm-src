@@ -45,6 +45,11 @@ public class Jurisdiction implements Serializable {
      */
     private Integer jurisdiction;
 
+    /**
+     * 通知读取判断
+     */
+    private Integer notice_check;
+
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;

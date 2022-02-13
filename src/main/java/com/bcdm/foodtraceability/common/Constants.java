@@ -65,9 +65,6 @@ public class Constants {
 
     /** 管理员全级别  */
     public static final Integer MANAGEMENT_HIGH_LEVEL = 2;
-
-    /** 解锁状态  */
-    public static final Integer MANAGEMENT_STATUS_UNLOCK = 0;
     // --------------------------------用户状态--------------------------------
 
     /** 解锁状态  */
@@ -155,4 +152,5 @@ public class Constants {
 
     /** 商品 */
     public static final Integer GOODS_LEVEL_THREE = 3;
+
 }

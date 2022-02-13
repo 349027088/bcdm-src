@@ -82,6 +82,9 @@ public class MessageConstants {
     /** 添加企业信息失败 */
     public static final String CREATE_COMPANY_FAIL = "添加企业信息失败";
 
+    /** 获取企业信息失败 */
+    public static final String GET_COMPANY_LIST_FAIL = "获取企业信息失败";
+
     /** 企业信息获取失败 */
     public static final String GET_COMPANY_INFO_FAIL = "当前企业服务已到期，无法查询到该公司的信息";
 
@@ -261,4 +264,19 @@ public class MessageConstants {
 
     /** 删除商品信息失败 */
     public static final String DELETE_GOODS_INFO_FAIL = "删除商品信息失败";
+
+    /** 创建商品二维码失败 */
+    public static final String CREATE_BARCODE_FAIL = "创建商品二维码失败";
+
+    /** 创建商品二维码成功 */
+    public static final String CREATE_BARCODE_SUCCESS = "创建商品二维码成功";
+
+    /** 发布新的通知成功 */
+    public static final String CREATE_NOTICE_SUCCESS = "发布新的通知成功";
+
+    /** 获取城市信息成功 */
+    public static final String GET_CITY_LIST_SUCCESS = "获取城市信息成功";
+
+    /** 获取城市信息失败 */
+    public static final String GET_CITY_LIST_FAIL = "获取城市信息失败";
 }

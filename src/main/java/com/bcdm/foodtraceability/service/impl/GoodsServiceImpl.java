@@ -4,13 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.bcdm.foodtraceability.common.CreateUUID;
 import com.bcdm.foodtraceability.entity.*;
 import com.bcdm.foodtraceability.exception.ServiceBusinessException;
 import com.bcdm.foodtraceability.mapper.GoodsMapper;
+import com.bcdm.foodtraceability.service.BarcodeService;
 import com.bcdm.foodtraceability.service.GoodsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -29,13 +28,15 @@ import static com.bcdm.foodtraceability.common.MessageConstants.*;
  * @since 2022-01-13
  */
 @Service
-@Slf4j
 public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements GoodsService {
 
     private final GoodsMapper goodsMapper;
 
-    public GoodsServiceImpl(GoodsMapper goodsMapper) {
+    private final BarcodeService barcodeService;
+
+    public GoodsServiceImpl(GoodsMapper goodsMapper, BarcodeService barcodeService) {
         this.goodsMapper = goodsMapper;
+        this.barcodeService = barcodeService;
     }
 
     @Override
@@ -57,8 +58,8 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
             goods.setGoodsStatus(GOODS_STATUS_ON_SERVICE);
             goods.setCreateTime(now);
             goods.setUpdateTime(now);
-            goods.setBarcodeNumber(CreateUUID.getUUID());
             if (save(goods)) {
+                barcodeService.createBarcode(goods.getGoodsId());
                 return true;
             }
             throw new ServiceBusinessException(HTTP_RETURN_FAIL, ADD_GOODS_INFO_FAIL);
@@ -74,8 +75,17 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
                     .eq("company_id", goods.getCompanyId())
                     .eq("goods_id", goods.getGoodsId())
                     .eq("update_time", goods.getUpdateTime())
-                    .setEntity(goods)
-                    .set("update_time", LocalDateTime.now());
+                    .set("update_time", LocalDateTime.now())
+                    .set("goods_type_id", goods.getGoodsTypeId())
+                    .set("supplier_id", goods.getSupplierId())
+                    .set("manufacturer_id", goods.getManufacturerId())
+                    .set("goods_name", goods.getGoodsName())
+                    .set("goods_explain", goods.getGoodsExplain())
+                    .set("raw_material", goods.getRawMaterial())
+                    .set("place_of_production", goods.getPlaceOfProduction())
+                    .set("quality_guarantee", goods.getQualityGuarantee())
+                    .set("manufacture_date", goods.getManufactureDate())
+                    .set("product_icon", goods.getProductIcon());
             if (update(goodsTypeQueryWrapper)) {
                 return true;
             }
@@ -129,13 +139,21 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
                         .eq("supplier_id", goods.getSupplierId())
                         .eq("goods_name", goods.getGoodsName()));
             case 2:
-                return GET_ONE == count(new QueryWrapper<Goods>()
+                Goods selectGoods = getOne(new QueryWrapper<Goods>()
                         .eq("company_id", goods.getCompanyId())
-                        .eq("goods_id", goods.getGoodsId())) &&
-                        SELECT_ZERO == count(new QueryWrapper<Goods>()
-                                .eq("company_id", goods.getCompanyId())
-                                .eq("supplier_id", goods.getSupplierId())
-                                .eq("goods_name", goods.getGoodsName()));
+                        .eq("goods_id", goods.getGoodsId()));
+                if (null != selectGoods) {
+                    if (selectGoods.getGoodsName().equals(goods.getGoodsName())) {
+                        return true;
+                    }
+                } else {
+                    return false;
+
+                }
+                return SELECT_ZERO == count(new QueryWrapper<Goods>()
+                        .eq("company_id", goods.getCompanyId())
+                        .eq("supplier_id", goods.getSupplierId())
+                        .eq("goods_name", goods.getGoodsName()));
             case 3:
                 return GET_ONE == count(new QueryWrapper<Goods>()
                         .eq("company_id", goods.getCompanyId())

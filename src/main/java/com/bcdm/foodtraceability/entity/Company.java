@@ -94,8 +94,9 @@ public class Company implements Serializable {
     private String businessLicense;
 
     /**
-     * 卫生许可
+     * 经营许可证
      */
+    @NotBlank(message = "请上传经营许可证", groups = {RegisterGroup.class, ModifyGroup.class})
     private String healthPermit;
 
     private LocalDateTime createTime;

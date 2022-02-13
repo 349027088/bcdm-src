@@ -10,7 +10,6 @@ import com.bcdm.foodtraceability.mapper.UserMapper;
 import com.bcdm.foodtraceability.service.CompanyService;
 import com.bcdm.foodtraceability.service.JurisdictionService;
 import com.bcdm.foodtraceability.service.UserService;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -36,7 +35,6 @@ import static com.bcdm.foodtraceability.common.MessageConstants.*;
  * @since 2022-01-13
  */
 @Service
-@Slf4j
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     private final JurisdictionService jurisdictionService;
@@ -63,7 +61,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public User register(User user) throws Exception {
-        log.info(user.getLoginId() + "-------注册");
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("login_id", user.getLoginId());
         if (0 == count(queryWrapper)) {
@@ -85,7 +82,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public User modifyPassword(ModifyPassword userLoginInfo) throws Exception {
-        log.info(userLoginInfo.getLoginId() + "-------修改密码");
         User targetUser = new User();
         BeanUtils.copyProperties(userLoginInfo, targetUser);
         targetUser = loginByUser(targetUser);
@@ -96,13 +92,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public User modifyUserInfo(User user) throws Exception {
-        log.info(user.getLoginId() + "-------修改用户信息");
         return getUser(user, MODIFY_USERINFO_FAIL);
     }
 
     @Override
     public int lockUser(User user) throws Exception {
-        log.info(user.getLoginId() + "-------锁定用户");
         user.setUserStatus(USER_STATUS_LOCK);
         UpdateWrapper<User> updateWrapper = forStatusUpdate(user);
         LocalDateTime now = LocalDateTime.now();
@@ -115,7 +109,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public int unLockUser(User user) throws Exception {
-        log.info(user.getLoginId() + "-------解锁用户");
         user.setUserStatus(USER_STATUS_UNLOCK);
         UpdateWrapper<User> updateWrapper = forStatusUpdate(user);
         user.setUpdateTime(LocalDateTime.now());
@@ -159,7 +152,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     /**
-     * 生成用户
+     * 修改用户信息
      *
      * @param targetUser         查询出来的用户信息
      * @param modifyUserinfoFail 更改用户信息失败
@@ -231,6 +224,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         UserModel userModel = new UserModel();
         BeanUtils.copyProperties(user, userModel);
         userModel.setIdentity(jurisdiction.getIdentity());
+        userModel.setNoticeLevel(jurisdiction.getNotice_check());
         userModel.setJurisdictionUpdateTime(jurisdiction.getUpdateTime());
         return userModel;
     }
@@ -243,7 +237,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @throws Exception 查找用户失败
      */
     private User loginByUser(User user) throws Exception {
-        log.info(user.getLoginId() + "-------登录");
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("login_id", user.getLoginId());
         User selectUser = getOne(queryWrapper);

@@ -13,7 +13,7 @@ import static com.bcdm.foodtraceability.common.MessageConstants.*;
 
 /**
  * <p>
- *  商品前端控制器
+ * 商品前端控制器
  * </p>
  *
  * @author 王
@@ -41,7 +41,7 @@ public class GoodsController {
     public ReturnItem<IPage<GoodsModel>> getGoodsTypeList(@RequestBody String selectInfo) throws Exception {
         SelectPageEntity<GoodsModel> selectPageEntity = new SelectPageEntity<>(selectInfo);
         JSONObject selectPageInfo = JSONObject.parseObject(selectInfo);
-        selectPageEntity.setSelectInfo(selectPageInfo.getObject("goods",GoodsModel.class));
+        selectPageEntity.setSelectInfo(selectPageInfo.getObject("goods", GoodsModel.class));
         log.info("企业" + selectPageEntity.getCompanyId() + "-----获取商品信息");
         ReturnItem<IPage<GoodsModel>> returnItem = new ReturnItem<>();
         returnItem.setT(goodsService.getGoodsListByCompany(selectPageEntity));
@@ -60,6 +60,7 @@ public class GoodsController {
     @PostMapping("/create")
     @CrossOrigin
     public ReturnItem<Boolean> create(@RequestBody Goods goods) throws Exception {
+        log.info("企业" + goods.getCompanyId() + "-----添加" + goods.getGoodsName() + "商品信息");
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(goodsService.createGoods(goods));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -77,6 +78,7 @@ public class GoodsController {
     @PostMapping("/modify")
     @CrossOrigin
     public ReturnItem<Boolean> modify(@RequestBody Goods goods) throws Exception {
+        log.info("企业" + goods.getCompanyId() + "-----修改编号" + goods.getGoodsId() + "商品信息" );
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(goodsService.modifyGoods(goods));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -94,6 +96,7 @@ public class GoodsController {
     @PostMapping("/delete")
     @CrossOrigin
     public ReturnItem<Boolean> delete(@RequestBody Goods goods) throws Exception {
+        log.info("企业" + goods.getCompanyId() + "-----删除编号" + goods.getGoodsId() + "商品信息" );
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(goodsService.deleteGoods(goods));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);

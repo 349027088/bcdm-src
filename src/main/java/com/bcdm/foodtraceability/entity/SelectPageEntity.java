@@ -47,8 +47,8 @@ public class SelectPageEntity <T>{
     public SelectPageEntity(String jsonInfo) {
         JSONObject selectInfo = JSONObject.parseObject(jsonInfo);
         pageInfo = new Page<>();
-        pageInfo.setCurrent(null == selectInfo.getInteger("pageNo") ? 0 : selectInfo.getLong("pageNo"));
-        pageInfo.setSize( null == selectInfo.getInteger("pageSize") ? 0 : selectInfo.getLong("pageSize"));
+        pageInfo.setCurrent(null == selectInfo.getInteger("pageNo") ? 0 : selectInfo.getInteger("pageNo"));
+        pageInfo.setSize( null == selectInfo.getInteger("pageSize") ? 0 : selectInfo.getInteger("pageSize"));
         this.companyId = selectInfo.getInteger("companyId");
         this.userId = selectInfo.getInteger("userId");
         this.selectName = selectInfo.getString("selectName");

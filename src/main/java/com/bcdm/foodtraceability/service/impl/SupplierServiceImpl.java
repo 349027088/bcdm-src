@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.bcdm.foodtraceability.common.Constants.*;
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_FAIL;

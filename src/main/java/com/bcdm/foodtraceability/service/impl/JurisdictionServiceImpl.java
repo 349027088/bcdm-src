@@ -54,38 +54,36 @@ public class JurisdictionServiceImpl extends ServiceImpl<JurisdictionMapper, Jur
     @Override
     public Boolean modifyJurisdiction(Jurisdiction jurisdiction, Integer companyManagerUserId) throws Exception {
         if (jurisdictionCheck(companyManagerUserId, jurisdiction)) {
-            QueryWrapper<Jurisdiction> jurisdictionUpdateWrapper = new QueryWrapper<>();
-            jurisdictionUpdateWrapper
-                    .eq("user_id", jurisdiction.getUserId())
-                    .eq("company_id", jurisdiction.getCompanyId())
-                    .eq("update_time", jurisdiction.getUpdateTime());
-            if (!remove(jurisdictionUpdateWrapper)) {
-                throw new ServiceBusinessException(HTTP_RETURN_FAIL, MODIFY_JURISDICTION_FAIL);
-            }
-        } else {
-            throw new ServiceBusinessException(HTTP_RETURN_FAIL, MODIFY_JURISDICTION_LEVEL_FAIL);
-        }
-        return true;
-    }
-
-    @Override
-    public Boolean deleteJurisdiction(Jurisdiction jurisdiction, Integer companyManagerUserId) throws Exception {
-        if (jurisdictionCheck(companyManagerUserId, jurisdiction)) {
             UpdateWrapper<Jurisdiction> jurisdictionUpdateWrapper = new UpdateWrapper<>();
             jurisdictionUpdateWrapper
                     .eq("user_id", jurisdiction.getUserId())
                     .eq("company_id", jurisdiction.getCompanyId())
                     .eq("update_time", jurisdiction.getUpdateTime())
                     .set("update_time", LocalDateTime.now())
-                    .set("jurisdiction", COMPANY_USER_99)
-                    .set("identity", COMPANY_USER_99);
-            if (!update(jurisdictionUpdateWrapper)) {
-                throw new ServiceBusinessException(HTTP_RETURN_FAIL, DELETE_JURISDICTION_FAIL);
+                    .set("jurisdiction", jurisdiction.getJurisdiction())
+                    .set("identity", jurisdiction.getIdentity());
+            if (update(jurisdictionUpdateWrapper)) {
+                return true;
             }
-        } else {
-            throw new ServiceBusinessException(HTTP_RETURN_FAIL, DELETE_JURISDICTION_LEVEL_FAIL);
+            throw new ServiceBusinessException(HTTP_RETURN_FAIL, MODIFY_JURISDICTION_FAIL);
         }
-        return true;
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, MODIFY_JURISDICTION_LEVEL_FAIL);
+    }
+
+    @Override
+    public Boolean deleteJurisdiction(Jurisdiction jurisdiction, Integer companyManagerUserId) throws Exception {
+        if (jurisdictionCheck(companyManagerUserId, jurisdiction)) {
+            QueryWrapper<Jurisdiction> jurisdictionUpdateWrapper = new QueryWrapper<>();
+            jurisdictionUpdateWrapper
+                    .eq("user_id", jurisdiction.getUserId())
+                    .eq("company_id", jurisdiction.getCompanyId())
+                    .eq("update_time", jurisdiction.getUpdateTime());
+            if (remove(jurisdictionUpdateWrapper)) {
+                return true;
+            }
+            throw new ServiceBusinessException(HTTP_RETURN_FAIL, DELETE_JURISDICTION_FAIL);
+        }
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, DELETE_JURISDICTION_LEVEL_FAIL);
     }
 
     private boolean jurisdictionCheck(Integer companyManagerUserId, Jurisdiction jurisdiction) {
@@ -97,7 +95,6 @@ public class JurisdictionServiceImpl extends ServiceImpl<JurisdictionMapper, Jur
                             .eq("company_id", jurisdiction.getCompanyId()));
             return null != compareJurisdiction && compareJurisdiction.getJurisdiction() > managementJurisdiction.getJurisdiction() &&
                     jurisdiction.getJurisdiction() > managementJurisdiction.getJurisdiction();
-
         }
         return false;
     }

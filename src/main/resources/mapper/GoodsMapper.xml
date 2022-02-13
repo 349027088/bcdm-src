@@ -12,7 +12,6 @@
         T1.goods_type_id AS goodsTypeId,
         T1.update_time AS updateTime,
         T1.product_icon AS productIcon,
-        T1.barcode_number AS barcodeNumber,
         T1.manufacture_date AS manufactureDate,
         T1.quality_guarantee AS qualityGuarantee,
         T1.raw_material AS rawMaterial,
@@ -20,9 +19,12 @@
         T1.goods_name AS goodsName,
         T1.manufacturer_id AS manufacturerId,
         T1.supplier_id AS supplierId,
+        T1.place_of_production AS placeOfProduction,
         T2.goods_type_name AS goodsTypeName,
         T3.supplier_name AS supplierName,
-        T4.manufacturer_name AS manufacturerName
+        T4.manufacturer_name AS manufacturerName,
+        T5.barcode_number AS barcodeNumber,
+        T6.city_name AS placeOfProductionName
         FROM
         `goods` AS T1
         INNER JOIN
@@ -40,8 +42,16 @@
         ON
         T1.manufacturer_id = T4.manufacturer_id AND
         T1.company_id = T4.company_id
+        INNER JOIN
+        `city` AS T6
+        ON
+        T1.place_of_production = T6.city_id
+        LEFT JOIN
+        `barcode` AS T5
+        ON
+        T1.goods_id = T5.goods_id
         WHERE T1.company_id = #{goodsModel.companyId}
-        <if test="goodsModel != null and goodsModel.goodsName != null">
+        <if test="goodsModel != null and goodsModel.goodsName != null and goodsModel.goodsName != ''">
             AND T1.goods_name like CONCAT(#{goodsModel.goodsName},'%')
         </if>
         <if test="goodsModel != null and goodsModel.goodsTypeId != null">
@@ -56,9 +66,12 @@
         <if test="goodsModel != null and goodsModel.supplierId != null">
             AND T1.supplier_id = #{goodsModel.supplierId}
         </if>
+        <if test="goodsModel != null and goodsModel.placeOfProduction != null">
+            AND T1.place_of_production = #{goodsModel.placeOfProduction}
+        </if>
     </select>
 
-    <select id="checkToInsert" parameterType="com.bcdm.foodtraceability.entity.Goods">
+    <select id="checkToInsert" parameterType="com.bcdm.foodtraceability.entity.Goods" resultType="Integer">
         SELECT COUNT(1)
         FROM goods_type AS T1
                  INNER JOIN
@@ -70,10 +83,13 @@
                  INNER JOIN
              company AS T4
              ON T1.company_id = T4.company_id
+                 INNER JOIN
+             city AS T5
         WHERE T1.goods_type_id = #{goodsTypeId}
           AND T2.supplier_id = #{supplierId}
           AND T3.manufacturer_id = #{manufacturerId}
           AND T4.company_id = #{companyId}
+          AND T5.city_id = #{placeOfProduction}
     </select>
 
 </mapper>

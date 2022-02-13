@@ -3,14 +3,12 @@ package com.bcdm.foodtraceability.entity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@ToString
 @EqualsAndHashCode(callSuper = false)
 public class GoodsModel {
 
@@ -88,6 +86,16 @@ public class GoodsModel {
      * 生产日期
      */
     private LocalDate manufactureDate;
+
+    /**
+     * 生产产地编号
+     */
+    private Integer placeOfProduction;
+
+    /**
+     * 生产产地名称
+     */
+    private String placeOfProductionName;
 
     /**
      * 条形码编号

@@ -12,8 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_SUCCESS;
 import static com.bcdm.foodtraceability.common.MessageConstants.*;
 
@@ -38,7 +36,24 @@ public class CompanyController {
         this.userService = userService;
         this.companyService = companyService;
     }
-
+    /**
+     * 获取指定的公司信息
+     *
+     * @param selectInfo 查询条件
+     * @return 获取生产厂商列表
+     * @throws Exception 查询信息失败或者结果为0条信息
+     */
+    @PostMapping("/getManufacturerList")
+    @CrossOrigin
+    public ReturnItem<IPage<Company>> getManufacturerList(@RequestBody String selectInfo) throws Exception {
+        SelectPageEntity<Company> selectPageEntity = new SelectPageEntity<>(selectInfo);
+        log.info("管理员" + selectPageEntity.getUserId() + "-----获取指定的企业信息");
+        ReturnItem<IPage<Company>> returnItem = new ReturnItem<>();
+        returnItem.setT(companyService.getCompanyList(selectPageEntity));
+        returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
+        returnItem.setHttpMessage(SELECT_MANUFACTURER_SUCCESS);
+        return returnItem;
+    }
     /**
      * 企业登录Controller
      *

@@ -2,6 +2,7 @@ package com.bcdm.foodtraceability.service;
 
 import com.bcdm.foodtraceability.entity.Management;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.bcdm.foodtraceability.entity.ModifyPassword;
 import com.bcdm.foodtraceability.entity.User;
 
 /**
@@ -32,10 +33,10 @@ public interface ManagementService extends IService<Management> {
     /**
      * 修改密码
      *
-     * @param management 修改用登录信息
+     * @param userLoginInfo 修改用登录信息
      * @return 管理员信息
      */
-    Management modifyPassword(Management management, String newPassword) throws Exception;
+    Management modifyPassword(ModifyPassword userLoginInfo) throws Exception;
 
     /**
      * 修改管理员信息

@@ -91,10 +91,9 @@ public class Goods implements Serializable {
     private LocalDate manufactureDate;
 
     /**
-     * 条形码编号
+     * 生产产地
      */
-    private String barcodeNumber;
-
+    private Integer placeOfProduction;
     /**
      * 商品图片
      */

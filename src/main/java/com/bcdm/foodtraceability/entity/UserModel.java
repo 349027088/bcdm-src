@@ -89,6 +89,11 @@ public class UserModel {
      */
     private LocalDate birthday;
 
+    /**
+     * 通知级别
+     */
+    private Integer noticeLevel;
+
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;

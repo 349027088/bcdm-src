@@ -1,7 +1,9 @@
 package com.bcdm.foodtraceability.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.bcdm.foodtraceability.entity.Company;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.bcdm.foodtraceability.entity.SelectPageEntity;
 import com.bcdm.foodtraceability.entity.User;
 
 import java.util.Map;
@@ -16,6 +18,13 @@ import java.util.Map;
  */
 public interface CompanyService extends IService<Company> {
 
+    /**
+     * 管理员获取指定企业
+     *
+     * @param selectPageEntity 查询条件
+     * @return 指定的企业信息
+     */
+    IPage<Company> getCompanyList(SelectPageEntity<Company> selectPageEntity) throws Exception;
     /**
      * 创建企业信息
      *
