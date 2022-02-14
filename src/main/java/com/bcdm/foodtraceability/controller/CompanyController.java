@@ -36,16 +36,17 @@ public class CompanyController {
         this.userService = userService;
         this.companyService = companyService;
     }
+
     /**
-     * 获取指定的公司信息
+     * 用于管理员获取指定的公司信息
      *
      * @param selectInfo 查询条件
      * @return 获取生产厂商列表
      * @throws Exception 查询信息失败或者结果为0条信息
      */
-    @PostMapping("/getManufacturerList")
+    @PostMapping("/getCompanyList")
     @CrossOrigin
-    public ReturnItem<IPage<Company>> getManufacturerList(@RequestBody String selectInfo) throws Exception {
+    public ReturnItem<IPage<Company>> getCompanyList(@RequestBody String selectInfo) throws Exception {
         SelectPageEntity<Company> selectPageEntity = new SelectPageEntity<>(selectInfo);
         log.info("管理员" + selectPageEntity.getUserId() + "-----获取指定的企业信息");
         ReturnItem<IPage<Company>> returnItem = new ReturnItem<>();
@@ -54,8 +55,9 @@ public class CompanyController {
         returnItem.setHttpMessage(SELECT_MANUFACTURER_SUCCESS);
         return returnItem;
     }
+
     /**
-     * 企业登录Controller
+     * 注册企业Controller
      *
      * @param company 新建企业的信息和新建企业的用户
      * @return 创建成功的企业信息
@@ -93,6 +95,42 @@ public class CompanyController {
     }
 
     /**
+     * 企业营业执照更新Controller
+     *
+     * @param company 需要修改的公司信息
+     * @return 修改成功的公司信息
+     * @throws Exception 修改信息失败
+     */
+    @PostMapping("/modifyBusinessLicense")
+    @CrossOrigin
+    public ReturnItem<Boolean> modifyBusinessLicense(@RequestBody Company company) throws Exception {
+        log.info("用户" + company.getUserId() + "-----更新" + company.getCompanyId() + "企业的营业执照信息");
+        ReturnItem<Boolean> returnItem = new ReturnItem<>();
+        returnItem.setT(companyService.modifyBusinessLicense(company));
+        returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
+        returnItem.setHttpMessage(MODIFY_COMPANY_INFO_SUCCESS);
+        return returnItem;
+    }
+
+    /**
+     * 企业经营许可证更新Controller
+     *
+     * @param company 需要修改的公司信息
+     * @return 修改成功的公司信息
+     * @throws Exception 修改信息失败
+     */
+    @PostMapping("/modifyHealthPermit")
+    @CrossOrigin
+    public ReturnItem<Boolean> modifyHealthPermit(@RequestBody Company company) throws Exception {
+        log.info("用户" + company.getUserId() + "-----更新" + company.getCompanyId() + "企业的经营许可证信息");
+        ReturnItem<Boolean> returnItem = new ReturnItem<>();
+        returnItem.setT(companyService.modifyHealthPermit(company));
+        returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
+        returnItem.setHttpMessage(MODIFY_COMPANY_INFO_SUCCESS);
+        return returnItem;
+    }
+
+    /**
      * 获得公司的用户所有信息
      *
      * @param selectInfo 获取用户信息的公司
@@ -121,7 +159,7 @@ public class CompanyController {
     @PostMapping("/getCompanyInfo")
     @CrossOrigin
     public ReturnItem<Company> getCompanyInfo(@Validated({CreateGroup.class})
-                                                             @RequestBody Company company) throws Exception {
+                                              @RequestBody Company company) throws Exception {
         log.info("获取-----" + company.getCompanyId() + "企业的信息");
         ReturnItem<Company> returnItem = new ReturnItem<>();
         returnItem.setT(companyService.getCompanyInfo(company));

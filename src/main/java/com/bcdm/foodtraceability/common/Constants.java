@@ -153,4 +153,12 @@ public class Constants {
     /** 商品 */
     public static final Integer GOODS_LEVEL_THREE = 3;
 
+    // -------------------------------商品级别--------------------------------
+
+    /** 系统通知信息 */
+    public static final Integer NOTICE_SYSTEM = 0;
+
+    /** 公司通知信息 */
+    public static final Integer NOTICE_COMPANY = 1;
+
 }

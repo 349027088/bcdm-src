@@ -109,6 +109,7 @@ public class JurisdictionServiceImpl extends ServiceImpl<JurisdictionMapper, Jur
             jurisdiction.setJurisdiction(identity);
             jurisdiction.setUpdateTime(now);
             jurisdiction.setCreateTime(now);
+            jurisdiction.setNoticeCheck(now);
             return jurisdiction;
         }
         throw new ServiceBusinessException(HTTP_RETURN_FAIL, CREATE_JURISDICTION_FAIL);

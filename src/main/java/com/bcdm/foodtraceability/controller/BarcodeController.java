@@ -3,7 +3,10 @@ package com.bcdm.foodtraceability.controller;
 import com.bcdm.foodtraceability.entity.Barcode;
 import com.bcdm.foodtraceability.entity.ReturnItem;
 import com.bcdm.foodtraceability.service.BarcodeService;
+import com.bcdm.foodtraceability.validatedgroup.CreateGroup;
+import com.bcdm.foodtraceability.validatedgroup.RegisterGroup;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_SUCCESS;
@@ -11,7 +14,7 @@ import static com.bcdm.foodtraceability.common.MessageConstants.CREATE_BARCODE_S
 
 /**
  * <p>
- * 商品二维码前端控制器
+ * 商品二维码前端控制器X
  * </p>
  *
  * @author 王
@@ -36,7 +39,8 @@ public class BarcodeController {
      */
     @PostMapping("/create")
     @CrossOrigin
-    public ReturnItem<Barcode> create(@RequestBody Barcode barcode) throws Exception {
+    public ReturnItem<Barcode> create(@Validated({CreateGroup.class})
+                                          @RequestBody Barcode barcode) throws Exception {
         log.info("商品编号：" + barcode.getGoodsId() + "----生成新的二维码");
         ReturnItem<Barcode> returnItem = new ReturnItem<>();
         returnItem.setT(barcodeService.createBarcode(barcode.getGoodsId()));

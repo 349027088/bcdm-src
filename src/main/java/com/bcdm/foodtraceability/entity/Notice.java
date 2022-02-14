@@ -6,11 +6,14 @@ import java.io.Serializable;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.bcdm.foodtraceability.validatedgroup.CreateGroup;
-import com.bcdm.foodtraceability.validatedgroup.RegisterGroup;
+import com.bcdm.foodtraceability.validatedgroup.ModifyGroup;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -32,36 +35,44 @@ public class Notice implements Serializable {
      * 通知ID
      */
     @TableId(type = IdType.AUTO)
+    @NotNull(message = "获取不到需要修改的通知信息", groups = {ModifyGroup.class})
     private Integer noticeId;
 
     /**
      * 通知信息
      */
-    @NotNull(message = "信息不能为空",groups = {CreateGroup.class})
+    @NotEmpty(message = "标题不能为空", groups = {CreateGroup.class})
+    @Length(min = 1, max = 20, message = "标题长度为20以内", groups = {ModifyGroup.class,CreateGroup.class})
+    private String noticeTitle;
+
+    /**
+     * 通知信息
+     */
+    @NotEmpty(message = "信息不能为空", groups = {ModifyGroup.class,CreateGroup.class})
     private String noticeInfo;
 
     /**
      * 通知级别
      */
-    @NotNull(message = "通知系统产生未知错误",groups = {CreateGroup.class})
     private Integer noticeLevel;
 
     /**
      * 姓名
      */
-    @NotNull(message = "姓名不能为空",groups = {CreateGroup.class})
+    @NotEmpty(message = "未能读取到生成通知用户的信息", groups = {CreateGroup.class})
     private String userName;
 
     /**
      * 结束
      */
-    @NotNull(message = "结束时间不能为空",groups = {CreateGroup.class})
+    @NotEmpty(message = "结束时间不能为空", groups = {CreateGroup.class})
+    @Future(message = "请选择未来的时间", groups = {CreateGroup.class})
     private LocalDateTime endTime;
 
     /**
      * 企业ID
      */
-    @NotNull(message = "公司信息异常",groups = {CreateGroup.class})
+    @NotNull(message = "公司信息异常", groups = {CreateGroup.class})
     private Integer companyId;
 
     /**

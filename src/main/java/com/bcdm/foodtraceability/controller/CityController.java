@@ -14,7 +14,7 @@ import static com.bcdm.foodtraceability.common.MessageConstants.GET_CITY_LIST_SU
 
 /**
  * <p>
- * 城市信息前端控制器
+ * 城市信息前端控制器X
  * </p>
  *
  * @author 王

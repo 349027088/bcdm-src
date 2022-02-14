@@ -2,9 +2,13 @@ package com.bcdm.foodtraceability.entity;
 
 import java.io.Serializable;
 
+import com.bcdm.foodtraceability.validatedgroup.CreateGroup;
+import com.bcdm.foodtraceability.validatedgroup.ModifyGroup;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * <p>
@@ -29,6 +33,7 @@ public class Barcode implements Serializable {
     /**
      * 商品编号
      */
+    @NotNull(message = "当前商品信息异常", groups = {CreateGroup.class, ModifyGroup.class})
     private Integer goodsId;
 
 

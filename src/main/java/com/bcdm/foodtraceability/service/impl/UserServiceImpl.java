@@ -48,14 +48,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public Map<String, Object> login(User user) throws Exception {
-        Map<String,Object> loginInfo = new HashMap<>();
+        Map<String, Object> loginInfo = new HashMap<>();
         User loginUser = loginByUser(user);
-        Map<String,Object> companyByUser = companyService.getCompanyByUser(loginUser);
-        if (null != companyByUser.get(COMPANY) && COMPANY_STATUS_ON_SERVICE.equals(((Company)companyByUser.get(COMPANY)).getCompanyStatus())) {
-            loginInfo.put(COMPANY,companyByUser.get(COMPANY));
+        Map<String, Object> companyByUser = companyService.getCompanyByUser(loginUser);
+        if (null != companyByUser && null != companyByUser.get(COMPANY) && COMPANY_STATUS_ON_SERVICE.equals(((Company) companyByUser.get(COMPANY)).getCompanyStatus())) {
+            loginInfo.put(COMPANY, companyByUser.get(COMPANY));
         }
-        UserModel loginUserInfo = createUserModel(loginUser,(Jurisdiction) companyByUser.get(JURISDICTION));
-        loginInfo.put(USER,loginUserInfo);
+        if (null != companyByUser && null != companyByUser.get(JURISDICTION) ){
+            UserModel loginUserInfo = createUserModel(loginUser, (Jurisdiction) companyByUser.get(JURISDICTION));
+            loginInfo.put(USER, loginUserInfo);
+        }else {
+            loginInfo.put(USER, loginUser);
+        }
         return loginInfo;
     }
 
@@ -122,7 +126,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public IPage<UserModel> getUserByCompany(SelectPageEntity<UserModel> selectInfo) throws Exception {
         List<UserModel> userList = jurisdictionGetUserList(selectInfo);
         if (SELECT_ZERO != userList.size()) {
-            int start = (int) (selectInfo.getPageInfo().getSize() * (selectInfo.getPageInfo().getCurrent()-1L));
+            int start = (int) (selectInfo.getPageInfo().getSize() * (selectInfo.getPageInfo().getCurrent() - 1L));
             int end = userList.size() >= selectInfo.getPageInfo().getSize() * (selectInfo.getPageInfo().getCurrent()) ?
                     (int) (selectInfo.getPageInfo().getSize() * (selectInfo.getPageInfo().getCurrent())) : userList.size();
             selectInfo.getPageInfo().setRecords(new ArrayList<>());
@@ -182,10 +186,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         List<Jurisdiction> jurisdictionList = jurisdictionService.getJurisdictionByCompany(selectInfo.getCompanyId());
         List<UserModel> userList = new ArrayList<>();
         for (Jurisdiction jurisdiction : jurisdictionList) {
-            if (COMPANY_USER_3.equals(selectInfo.getCheckParam()) && COMPANY_USER_3.equals(jurisdiction.getJurisdiction())){
+            if (COMPANY_USER_3.equals(selectInfo.getCheckParam()) && COMPANY_USER_3.equals(jurisdiction.getJurisdiction())) {
                 userAdd(selectInfo, userList, jurisdiction);
             }
-            if (!COMPANY_USER_3.equals(selectInfo.getCheckParam()) && !COMPANY_USER_3.equals(jurisdiction.getJurisdiction())){
+            if (!COMPANY_USER_3.equals(selectInfo.getCheckParam()) && !COMPANY_USER_3.equals(jurisdiction.getJurisdiction())) {
                 userAdd(selectInfo, userList, jurisdiction);
             }
 
@@ -196,18 +200,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     /**
      * 用户查询筛选
      *
-     * @param selectInfo 筛选条件
-     * @param userList 查询结果
+     * @param selectInfo   筛选条件
+     * @param userList     查询结果
      * @param jurisdiction 关联信息
      */
     private void userAdd(SelectPageEntity<UserModel> selectInfo, List<UserModel> userList, Jurisdiction jurisdiction) {
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
         userQueryWrapper.eq("user_id", jurisdiction.getUserId());
-        if (!StringUtils.isEmpty(selectInfo.getSelectName())){
-            userQueryWrapper.likeRight("user_name",selectInfo.getSelectName());
+        if (!StringUtils.isEmpty(selectInfo.getSelectName())) {
+            userQueryWrapper.likeRight("user_name", selectInfo.getSelectName());
         }
         User user = getOne(userQueryWrapper);
-        if (null!=user){
+        if (null != user) {
             UserModel userModel = createUserModel(user, jurisdiction);
             userList.add(userModel);
         }
@@ -224,7 +228,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         UserModel userModel = new UserModel();
         BeanUtils.copyProperties(user, userModel);
         userModel.setIdentity(jurisdiction.getIdentity());
-        userModel.setNoticeLevel(jurisdiction.getNotice_check());
+        userModel.setNoticeCheck(jurisdiction.getNoticeCheck());
         userModel.setJurisdictionUpdateTime(jurisdiction.getUpdateTime());
         return userModel;
     }

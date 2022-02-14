@@ -1,6 +1,5 @@
 package com.bcdm.foodtraceability.controller;
 
-import com.bcdm.foodtraceability.entity.Company;
 import com.bcdm.foodtraceability.entity.ModifyPassword;
 import com.bcdm.foodtraceability.entity.ReturnItem;
 import com.bcdm.foodtraceability.entity.User;
@@ -18,7 +17,7 @@ import static com.bcdm.foodtraceability.common.MessageConstants.*;
 
 /**
  * <p>
- * 用户前端控制器
+ * 用户前端控制器X
  * </p>
  *
  * @author 王

@@ -25,6 +25,7 @@ public interface CompanyService extends IService<Company> {
      * @return 指定的企业信息
      */
     IPage<Company> getCompanyList(SelectPageEntity<Company> selectPageEntity) throws Exception;
+
     /**
      * 创建企业信息
      *
@@ -56,7 +57,7 @@ public interface CompanyService extends IService<Company> {
      * @param user 需要查询名下企业的用户
      * @return 该用户名下的企业信息
      */
-    Map<String,Object> getCompanyByUser(User user) throws Exception;
+    Map<String, Object> getCompanyByUser(User user) throws Exception;
 
     /**
      * 登录员工信息到企业
@@ -66,4 +67,20 @@ public interface CompanyService extends IService<Company> {
      * @throws Exception 登录员工信息失败
      */
     Company createUserToCompany(Company company) throws Exception;
+
+    /**
+     * 修改企业营业执照信息
+     *
+     * @param company 需要修改信息的企业
+     * @return 修改成功的企业信息
+     */
+    Boolean modifyBusinessLicense(Company company) throws Exception;
+
+    /**
+     * 修改企业经营许可证信息
+     *
+     * @param company 需要修改信息的企业
+     * @return 修改成功的企业信息
+     */
+    Boolean modifyHealthPermit(Company company) throws Exception;
 }

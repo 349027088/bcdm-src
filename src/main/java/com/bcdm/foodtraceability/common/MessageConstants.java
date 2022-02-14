@@ -61,8 +61,8 @@ public class MessageConstants {
     /** 没有对应的员工信息 */
     public static final String COMPANY_GET_USER_INFO_FAIL = "没有对应的员工信息";
 
-    /** 企业登录成功 */
-    public static final String CREATE_COMPANY_SUCCESS = "企业登录成功";
+    /** 企业注册成功 */
+    public static final String CREATE_COMPANY_SUCCESS = "企业注册已经成功，请耐心等待管理员审核";
 
     /** 企业信息修改成功 */
     public static final String MODIFY_COMPANY_INFO_SUCCESS = "企业信息修改成功";
@@ -268,6 +268,9 @@ public class MessageConstants {
     /** 创建商品二维码失败 */
     public static final String CREATE_BARCODE_FAIL = "创建商品二维码失败";
 
+    /** 创建新的消息通知失败 */
+    public static final String CREATE_NOTICE_FAIL = "创建新的消息通知失败";
+
     /** 创建商品二维码成功 */
     public static final String CREATE_BARCODE_SUCCESS = "创建商品二维码成功";
 
@@ -279,4 +282,13 @@ public class MessageConstants {
 
     /** 获取城市信息失败 */
     public static final String GET_CITY_LIST_FAIL = "获取城市信息失败";
+
+    /** 获取通知信息失败 */
+    public static final String GET_NOTICE_FAIL = "获取通知信息失败";
+
+    /** 修改通知信息失败 */
+    public static final String MODIFY_NOTICE_FAIL = "修改通知信息失败";
+
+    /** 删除通知信息失败 */
+    public static final String DELETE_NOTICE_FAIL = "删除通知信息失败";
 }

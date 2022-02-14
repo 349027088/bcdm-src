@@ -66,7 +66,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     @Override
     public Company register(Company company) throws Exception {
         Jurisdiction jurisdiction = jurisdictionService.getJurisdictionByUser(company.getUserId());
-        if (null != jurisdiction) {
+        if (null == jurisdiction) {
             createNewCompanyInfo(company);
             if (!save(company)) {
                 throw new ServiceBusinessException(HTTP_RETURN_FAIL, CREATE_COMPANY_FAIL);
@@ -84,7 +84,35 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         if (COMPANY_USER_0.equals(jurisdiction.getJurisdiction()) || COMPANY_USER_1.equals(jurisdiction.getJurisdiction())) {
             Company compareCompany = getById(company.getCompanyId());
             iconDelete(company, compareCompany);
-            return modifyCompanyInfo(company, compareCompany);
+            return modifyCompanyInfo(company);
+        }
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, MODIFY_COMPANY_FAIL);
+    }
+
+    @Override
+    public Boolean modifyBusinessLicense(Company company) throws Exception {
+        UpdateWrapper<Company> companyUpdateWrapper = new UpdateWrapper<>();
+        companyUpdateWrapper
+                .eq("company_id", company.getCompanyId())
+                .eq("update_time", company.getUpdateTime())
+                .set("update_time", LocalDateTime.now())
+                .set("business_license", company.getBusinessLicense());
+        if (update(companyUpdateWrapper)) {
+            return true;
+        }
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, MODIFY_COMPANY_FAIL);
+    }
+
+    @Override
+    public Boolean modifyHealthPermit(Company company) throws Exception {
+        UpdateWrapper<Company> companyUpdateWrapper = new UpdateWrapper<>();
+        companyUpdateWrapper
+                .eq("company_id", company.getCompanyId())
+                .eq("update_time", company.getUpdateTime())
+                .set("update_time", LocalDateTime.now())
+                .set("health_permit", company.getHealthPermit());
+        if (update(companyUpdateWrapper)) {
+            return true;
         }
         throw new ServiceBusinessException(HTTP_RETURN_FAIL, MODIFY_COMPANY_FAIL);
     }
@@ -171,13 +199,22 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
      * @throws Exception 删除图片发生异常
      */
     private void iconDelete(Company company, Company compareCompany) throws Exception {
-        if (null != company.getCompanyIcon() && !company.getCompanyIcon().equals(compareCompany.getCompanyIcon())) {
+        //企业LOGO更新验证
+        if (!StringUtils.isEmpty(company.getCompanyIcon())
+                && !StringUtils.isEmpty(compareCompany.getCompanyIcon())
+                && !company.getCompanyIcon().equals(compareCompany.getCompanyIcon())) {
             iconService.deleteIcon(compareCompany.getCompanyIcon());
         }
-        if (null != company.getBusinessLicense() && !company.getBusinessLicense().equals(compareCompany.getBusinessLicense())) {
+        //企业营业执照更新验证
+        if (null != company.getBusinessLicense()
+                && null != compareCompany.getBusinessLicense()
+                && !company.getBusinessLicense().equals(compareCompany.getBusinessLicense())) {
             iconService.deleteIcon(compareCompany.getBusinessLicense());
         }
-        if (null != company.getHealthPermit() && !company.getHealthPermit().equals(compareCompany.getHealthPermit())) {
+        //企业经营执照更新验证
+        if (null != company.getHealthPermit()
+                && null != compareCompany.getHealthPermit()
+                && !company.getHealthPermit().equals(compareCompany.getHealthPermit())) {
             iconService.deleteIcon(compareCompany.getHealthPermit());
         }
     }
@@ -188,33 +225,17 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
      * @param company 需要修改的公司信息
      * @return 修改信息结果
      */
-    private Company modifyCompanyInfo(Company company, Company compareCompany) throws Exception{
+    private Company modifyCompanyInfo(Company company) throws Exception {
         UpdateWrapper<Company> companyUpdateWrapper = new UpdateWrapper<>();
-        LocalDateTime now = LocalDateTime.now();
         companyUpdateWrapper
                 .eq("company_id", company.getCompanyId())
-                .eq("user_id", company.getUserId())
                 .eq("update_time", company.getUpdateTime())
-                .set("update_time", now);
-        if (!company.getCompanyPhone().equals(compareCompany.getCompanyPhone())) {
-            companyUpdateWrapper.set("company_phone", company.getCompanyPhone());
-        }
-        if (!company.getCompanyIcon().equals(compareCompany.getCompanyIcon())) {
-            companyUpdateWrapper.set("company_icon", company.getCompanyIcon());
-        }
-        if (!company.getCompanyInfo().equals(compareCompany.getCompanyInfo())) {
-            companyUpdateWrapper.set("company_info", company.getCompanyInfo());
-        }
-        if (!company.getCompanyAddress().equals(compareCompany.getCompanyAddress())) {
-            companyUpdateWrapper.set("company_address", company.getCompanyAddress());
-        }
-        if (!company.getCompanyStatus().equals(compareCompany.getCompanyStatus())) {
-            companyUpdateWrapper.set("company_status", company.getCompanyStatus());
-        }
-        if (!company.getCompanyLevel().equals(compareCompany.getCompanyLevel())) {
-            companyUpdateWrapper.set("company_level", company.getCompanyLevel());
-        }
-        if (update(companyUpdateWrapper)){
+                .set("update_time", LocalDateTime.now())
+                .set("company_phone", company.getCompanyPhone())
+                .set("company_icon", company.getCompanyIcon())
+                .set("company_info", company.getCompanyInfo())
+                .set("company_address", company.getCompanyAddress());
+        if (update(companyUpdateWrapper)) {
             return getById(company.getCompanyId());
         }
         throw new ServiceBusinessException(HTTP_RETURN_FAIL, MODIFY_COMPANY_FAIL);

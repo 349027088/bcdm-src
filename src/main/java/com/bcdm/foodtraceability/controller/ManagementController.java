@@ -7,6 +7,7 @@ import com.bcdm.foodtraceability.entity.ModifyPassword;
 import com.bcdm.foodtraceability.entity.ReturnItem;
 import com.bcdm.foodtraceability.entity.User;
 import com.bcdm.foodtraceability.service.ManagementService;
+import com.bcdm.foodtraceability.validatedgroup.GetInfoGroup;
 import com.bcdm.foodtraceability.validatedgroup.ModifyGroup;
 import com.bcdm.foodtraceability.validatedgroup.RegisterGroup;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,11 @@ import static com.bcdm.foodtraceability.common.MessageConstants.*;
 @RequestMapping("/management")
 public class ManagementController {
 
-    @Autowired
-    private ManagementService managementService;
+    private final ManagementService managementService;
+
+    public ManagementController(ManagementService managementService) {
+        this.managementService = managementService;
+    }
 
     /**
      * 管理员登录Controller
@@ -42,7 +46,8 @@ public class ManagementController {
      */
     @PostMapping("/login")
     @CrossOrigin
-    public ReturnItem<Management> login(@Validated @RequestBody Management management) throws Exception {
+    public ReturnItem<Management> login(@Validated({GetInfoGroup.class})
+                                            @RequestBody Management management) throws Exception {
         ReturnItem<Management> returnItem = new ReturnItem<>();
         returnItem.setT(managementService.login(management));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -59,7 +64,8 @@ public class ManagementController {
      */
     @PostMapping("/register")
     @CrossOrigin
-    public ReturnItem<Management> register(@Validated({RegisterGroup.class, Default.class}) @RequestBody Management management) throws Exception {
+    public ReturnItem<Management> register(@Validated({RegisterGroup.class})
+                                               @RequestBody Management management) throws Exception {
         ReturnItem<Management> returnItem = new ReturnItem<>();
         returnItem.setT(managementService.register(management));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);

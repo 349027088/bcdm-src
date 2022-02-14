@@ -77,26 +77,24 @@ public class Company implements Serializable {
      * 企业地址
      */
     @NotBlank(message = "企业地址不能为空", groups = {RegisterGroup.class, ModifyGroup.class})
-    @Length(min = 4, max = 100, message = "请输入100位以下的企业地址", groups = {RegisterGroup.class, ModifyGroup.class})
+    @Length(min = 4, max = 100, message = "请输入4-100位以下的企业地址", groups = {RegisterGroup.class, ModifyGroup.class})
     private String companyAddress;
 
     /**
      * 企业信息
      */
-    @NotBlank(message = "企业信息不能为空", groups = {RegisterGroup.class, ModifyGroup.class})
-    @Length(min = 4, max = 100, message = "请输入100字以内的企业信息", groups = {RegisterGroup.class, ModifyGroup.class})
     private String companyInfo;
 
     /**
      * 营业执照
      */
-    @NotBlank(message = "请上传营业执照", groups = {RegisterGroup.class, ModifyGroup.class})
+    @NotBlank(message = "请上传营业执照", groups = {RegisterGroup.class})
     private String businessLicense;
 
     /**
      * 经营许可证
      */
-    @NotBlank(message = "请上传经营许可证", groups = {RegisterGroup.class, ModifyGroup.class})
+    @NotBlank(message = "请上传经营许可证", groups = {RegisterGroup.class})
     private String healthPermit;
 
     private LocalDateTime createTime;
