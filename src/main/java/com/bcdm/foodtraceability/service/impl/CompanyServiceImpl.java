@@ -3,17 +3,11 @@ package com.bcdm.foodtraceability.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.bcdm.foodtraceability.entity.Company;
-import com.bcdm.foodtraceability.entity.Jurisdiction;
-import com.bcdm.foodtraceability.entity.SelectPageEntity;
-import com.bcdm.foodtraceability.entity.User;
+import com.bcdm.foodtraceability.entity.*;
 import com.bcdm.foodtraceability.exception.ServiceBusinessException;
 import com.bcdm.foodtraceability.mapper.CompanyMapper;
-import com.bcdm.foodtraceability.service.CompanyService;
+import com.bcdm.foodtraceability.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bcdm.foodtraceability.service.EmpowerService;
-import com.bcdm.foodtraceability.service.IconService;
-import com.bcdm.foodtraceability.service.JurisdictionService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -42,10 +36,13 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
 
     private final IconService iconService;
 
-    public CompanyServiceImpl(JurisdictionService jurisdictionService, EmpowerService empowerService, IconService iconService) {
+    private final ManagementService managementService;
+
+    public CompanyServiceImpl(JurisdictionService jurisdictionService, EmpowerService empowerService, IconService iconService, ManagementService managementService) {
         this.jurisdictionService = jurisdictionService;
         this.empowerService = empowerService;
         this.iconService = iconService;
+        this.managementService = managementService;
     }
 
     @Override
@@ -90,11 +87,11 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     }
 
     @Override
-    public Boolean modifyBusinessLicense(Company company) throws Exception {
+    public Boolean modifyBusinessLicense(String managementId, Company company) throws Exception {
+        managementService.checkManager(managementId);
         UpdateWrapper<Company> companyUpdateWrapper = new UpdateWrapper<>();
         companyUpdateWrapper
                 .eq("company_id", company.getCompanyId())
-                .eq("update_time", company.getUpdateTime())
                 .set("update_time", LocalDateTime.now())
                 .set("business_license", company.getBusinessLicense());
         if (update(companyUpdateWrapper)) {
@@ -104,11 +101,11 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     }
 
     @Override
-    public Boolean modifyHealthPermit(Company company) throws Exception {
+    public Boolean modifyHealthPermit(String managementId, Company company) throws Exception {
+        managementService.checkManager(managementId);
         UpdateWrapper<Company> companyUpdateWrapper = new UpdateWrapper<>();
         companyUpdateWrapper
                 .eq("company_id", company.getCompanyId())
-                .eq("update_time", company.getUpdateTime())
                 .set("update_time", LocalDateTime.now())
                 .set("health_permit", company.getHealthPermit());
         if (update(companyUpdateWrapper)) {

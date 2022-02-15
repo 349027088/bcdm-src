@@ -28,6 +28,15 @@ public interface GoodsMapper extends BaseMapper<Goods> {
     IPage<GoodsModel> selectGoodsPage(Page<GoodsModel> page, GoodsModel goodsModel);
 
     /**
+     * 参数条件查询
+     *
+     * @param page       分页条件
+     * @param goodsModel 查询条件
+     * @return 分页后的商品信息
+     */
+    GoodsModel getGoodById(GoodsModel goodsModel);
+
+    /**
      * 验证插入商品信息的正确性
      *
      * @param goods 需要验证的商品信息

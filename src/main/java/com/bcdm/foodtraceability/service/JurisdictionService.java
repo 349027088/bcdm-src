@@ -60,4 +60,13 @@ public interface JurisdictionService extends IService<Jurisdiction> {
      * @throws Exception 删除关联信息失败
      */
     Boolean deleteJurisdiction(Jurisdiction jurisdiction, Integer companyManagerUserId) throws Exception;
+
+    /**
+     * 修改通知信息获取的最新时间
+     *
+     * @param jurisdiction 需要修改的信息
+     * @return 修改信息结果
+     * @throws Exception 修改通知信息失败
+     */
+    Boolean modifyNoticeCheck(Jurisdiction jurisdiction) throws Exception;
 }

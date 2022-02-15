@@ -12,7 +12,7 @@ import lombok.Setter;
 
 /**
  * <p>
- *
+ * 企业经营资格修改信息载体
  * </p>
  *
  * @author 王
@@ -26,9 +26,14 @@ public class CompanyInfoCheck implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
+     * 修改审批信息ID
+     */
+    @TableId(type = IdType.AUTO)
+    private Integer checkId;
+
+    /**
      * 企业ID
      */
-    @TableId(value = "company_id", type = IdType.AUTO)
     private Integer companyId;
 
     /**
@@ -40,11 +45,6 @@ public class CompanyInfoCheck implements Serializable {
      * 企业名称
      */
     private String companyName;
-
-    /**
-     * 企业LOGO
-     */
-    private String companyIcon;
 
     /**
      * 联系方式

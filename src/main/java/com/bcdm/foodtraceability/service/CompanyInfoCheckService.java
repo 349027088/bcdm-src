@@ -13,4 +13,22 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface CompanyInfoCheckService extends IService<CompanyInfoCheck> {
 
+
+    /**
+     * 上传新的营业执照信息
+     *
+     * @param company 需要修改信息的企业
+     * @return 上传结果
+     */
+    Boolean modifyBusinessLicense(CompanyInfoCheck company) throws Exception;
+
+    /**
+     * 上传新的经营许可证信息
+     *
+     * @param company 需要修改信息的企业
+     * @return 上传结果
+     */
+    Boolean modifyHealthPermit(CompanyInfoCheck company) throws Exception;
+
+
 }

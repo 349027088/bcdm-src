@@ -67,14 +67,13 @@ public interface CompanyService extends IService<Company> {
      * @throws Exception 登录员工信息失败
      */
     Company createUserToCompany(Company company) throws Exception;
-
     /**
      * 修改企业营业执照信息
      *
      * @param company 需要修改信息的企业
      * @return 修改成功的企业信息
      */
-    Boolean modifyBusinessLicense(Company company) throws Exception;
+    Boolean modifyBusinessLicense(String managementId, Company company) throws Exception;
 
     /**
      * 修改企业经营许可证信息
@@ -82,5 +81,6 @@ public interface CompanyService extends IService<Company> {
      * @param company 需要修改信息的企业
      * @return 修改成功的企业信息
      */
-    Boolean modifyHealthPermit(Company company) throws Exception;
+    Boolean modifyHealthPermit(String managementId, Company company) throws Exception;
+
 }

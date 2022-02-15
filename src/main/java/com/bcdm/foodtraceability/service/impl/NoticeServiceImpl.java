@@ -13,7 +13,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static com.bcdm.foodtraceability.common.Constants.*;
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_FAIL;
@@ -55,16 +54,12 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
     }
 
     @Override
-    public List<Notice> getNewNotice(UserModel userModel) throws Exception {
+    public Long getNewNotice(UserModel userModel) throws Exception {
         QueryWrapper<Notice> noticeQueryWrapper = new QueryWrapper<>();
         noticeQueryWrapper
-                .gt("end_time",LocalDateTime.now())
-                .gt("create_time",userModel.getNoticeCheck());
-        List<Notice> list = list(noticeQueryWrapper);
-        if (SELECT_ZERO != list.size()) {
-            return list;
-        }
-        throw new ServiceBusinessException(HTTP_RETURN_FAIL, CREATE_NOTICE_FAIL);
+                .ge("end_time", LocalDateTime.now())
+                .gt("update_time", userModel.getNoticeCheck());
+            return count(noticeQueryWrapper);
     }
 
     @Override
@@ -73,8 +68,8 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
         noticeQueryWrapper
                 .eq("company_id", selectInfo.getCompanyId())
                 .or()
-                .eq("company_id",NOTICE_SYSTEM)
-                .gt("end_time",LocalDateTime.now());
+                .eq("company_id", NOTICE_SYSTEM)
+                .gt("end_time", LocalDateTime.now());
         IPage<Notice> page = page(selectInfo.getPageInfo(), noticeQueryWrapper);
         if (SELECT_ZERO != page.getTotal()) {
             return page;
@@ -85,14 +80,29 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
     @Override
     public Boolean modifyNotice(Notice notice) throws Exception {
         UpdateWrapper<Notice> noticeUpdateWrapper = new UpdateWrapper<>();
+        LocalDateTime now = LocalDateTime.now();
         noticeUpdateWrapper
-                .eq("notice_id",notice.getNoticeId())
-                .eq("company_id",notice.getCompanyId())
-                .set("notice_title",notice.getNoticeTitle())
-                .set("notice_info",notice.getNoticeInfo());
-        if (update(noticeUpdateWrapper)){
+                .eq("notice_id", notice.getNoticeId())
+                .eq("company_id", notice.getCompanyId())
+                .eq("notice_level", notice.getNoticeLevel())
+                .eq("update_time", notice.getUpdateTime())
+                .set("notice_title", notice.getNoticeTitle())
+                .set("notice_info", notice.getNoticeInfo())
+                .set("end_time", notice.getEndTime())
+                .set("user_name", notice.getUserName())
+                .set("update_time", now);
+        if (update(noticeUpdateWrapper)) {
             return true;
         }
         throw new ServiceBusinessException(HTTP_RETURN_FAIL, MODIFY_NOTICE_FAIL);
+    }
+
+    @Override
+    public Boolean deleteNotice(Notice notice) throws Exception {
+        Notice noticeById = getById(notice.getNoticeId());
+        if (null != noticeById && noticeById.getCompanyId().equals(notice.getCompanyId()) && remove(new QueryWrapper<Notice>().eq("notice_id", notice.getNoticeId()))) {
+            return true;
+        }
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, DELETE_NOTICE_FAIL);
     }
 }

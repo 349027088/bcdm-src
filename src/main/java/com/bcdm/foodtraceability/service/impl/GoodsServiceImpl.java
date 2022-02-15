@@ -40,6 +40,15 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     }
 
     @Override
+    public GoodsModel getGoodsById(GoodsModel goodsModel) throws Exception {
+        goodsModel = goodsMapper.getGoodById(goodsModel);
+        if (null!=goodsModel){
+            return goodsModel;
+        }
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, SELECT_GOODS_INFO_FAIL);
+    }
+
+    @Override
     public IPage<GoodsModel> getGoodsListByCompany(SelectPageEntity<GoodsModel> selectInfo) throws Exception {
         if (null != selectInfo.getSelectInfo()) {
             selectInfo.setPageInfo(goodsMapper.selectGoodsPage((Page<GoodsModel>) selectInfo.getPageInfo(), selectInfo.getSelectInfo()));

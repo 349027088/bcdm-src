@@ -40,10 +40,10 @@ public interface NoticeService extends IService<Notice> {
      * 获取最新的通知信息
      *
      * @param userModel 用户读取信息
-     * @return 未读通知信息
+     * @return 未读通知信息条数
      * @throws Exception 查询失败
      */
-    List<Notice> getNewNotice(UserModel userModel) throws Exception;
+    Long getNewNotice(UserModel userModel) throws Exception;
 
     /**
      * 获取全部通知信息
@@ -62,4 +62,13 @@ public interface NoticeService extends IService<Notice> {
      * @throws Exception 修改信息失败
      */
     Boolean modifyNotice(Notice notice) throws Exception;
+
+    /**
+     * 删除通知
+     *
+     * @param notice 需要删除的通知信息
+     * @return 删除结果
+     * @throws Exception 删除信息失败
+     */
+    Boolean deleteNotice(Notice notice) throws Exception;
 }

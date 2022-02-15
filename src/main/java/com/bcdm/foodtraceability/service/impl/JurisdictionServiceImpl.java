@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.bcdm.foodtraceability.common.Constants.COMPANY_USER_99;
 import static com.bcdm.foodtraceability.common.Constants.SELECT_ZERO;
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_FAIL;
 import static com.bcdm.foodtraceability.common.MessageConstants.*;
@@ -84,6 +83,21 @@ public class JurisdictionServiceImpl extends ServiceImpl<JurisdictionMapper, Jur
             throw new ServiceBusinessException(HTTP_RETURN_FAIL, DELETE_JURISDICTION_FAIL);
         }
         throw new ServiceBusinessException(HTTP_RETURN_FAIL, DELETE_JURISDICTION_LEVEL_FAIL);
+    }
+
+    @Override
+    public Boolean modifyNoticeCheck(Jurisdiction jurisdiction) throws Exception {
+        UpdateWrapper<Jurisdiction> jurisdictionUpdateWrapper = new UpdateWrapper<>();
+        jurisdictionUpdateWrapper
+                .eq("user_id", jurisdiction.getUserId())
+                .eq("company_id", jurisdiction.getCompanyId())
+                .eq("update_time", jurisdiction.getUpdateTime())
+                .set("notice_check", LocalDateTime.now());
+        if (update(jurisdictionUpdateWrapper)) {
+            return true;
+        }
+        throw new ServiceBusinessException(HTTP_RETURN_FAIL, MODIFY_NOTICE_CHECK_FAIL);
+
     }
 
     private boolean jurisdictionCheck(Integer companyManagerUserId, Jurisdiction jurisdiction) {

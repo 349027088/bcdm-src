@@ -8,6 +8,7 @@ import com.bcdm.foodtraceability.service.JurisdictionService;
 import org.springframework.web.bind.annotation.*;
 
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_SUCCESS;
+import static com.bcdm.foodtraceability.common.MessageConstants.MODIFY_NOTICE_CHECK_SUCCESS;
 import static com.bcdm.foodtraceability.common.MessageConstants.MODIFY_USER_TO_COMPANY_SUCCESS;
 
 /**
@@ -46,6 +47,23 @@ public class JurisdictionController {
         returnItem.setT(jurisdictionService.modifyJurisdiction(jurisdiction, companyManagerUserId));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
         returnItem.setHttpMessage(MODIFY_USER_TO_COMPANY_SUCCESS);
+        return returnItem;
+    }
+
+    /**
+     * 修改用户的通知
+     *
+     * @param jurisdiction 需要修改的关联信息和修改权限的管理
+     * @return 修改关联信息成功状态
+     * @throws Exception 关联信息修改失败
+     */
+    @PostMapping("changeNotice")
+    @CrossOrigin
+    public ReturnItem<Boolean> changeNotice(@RequestBody Jurisdiction jurisdiction) throws Exception {
+        ReturnItem<Boolean> returnItem = new ReturnItem<>();
+        returnItem.setT(jurisdictionService.modifyNoticeCheck(jurisdiction));
+        returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
+        returnItem.setHttpMessage(MODIFY_NOTICE_CHECK_SUCCESS);
         return returnItem;
     }
 

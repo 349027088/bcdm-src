@@ -10,14 +10,11 @@ import com.bcdm.foodtraceability.validatedgroup.CreateGroup;
 import com.bcdm.foodtraceability.validatedgroup.GetInfoGroup;
 import com.bcdm.foodtraceability.validatedgroup.ModifyGroup;
 import com.bcdm.foodtraceability.validatedgroup.RegisterGroup;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.*;
 
@@ -41,7 +38,7 @@ public class Management implements Serializable {
      */
     @TableId(type = IdType.AUTO)
     @NotNull(message = "当前用户信息出现错误，请登录后重试", groups = {CreateGroup.class, ModifyGroup.class})
-    private Integer managerId;
+    private String managerId;
 
     /**
      * 管理员账号

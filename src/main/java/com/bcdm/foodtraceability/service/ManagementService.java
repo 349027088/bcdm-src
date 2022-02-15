@@ -47,19 +47,10 @@ public interface ManagementService extends IService<Management> {
     Management modifyUserInfo(Management management) throws Exception;
 
     /**
-     * 锁定管理员
+     * 管理员判定
      *
-     * @param management 锁定管理员
-     * @return 成功与否
+     * @param managementId 用于判定是不是管理员得ID
+     * @return 管理员不存在
      */
-    boolean lockUser(Management management) throws Exception;
-
-    /**
-     * 解锁管理员
-     *
-     * @param management 解锁管理员
-     * @return 成功与否
-     */
-    boolean unLockUser(Management management) throws Exception;
-
+    Boolean checkManager(String managementId) throws Exception;
 }

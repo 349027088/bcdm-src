@@ -1,12 +1,12 @@
 package com.bcdm.foodtraceability.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.bcdm.foodtraceability.entity.*;
 import com.bcdm.foodtraceability.service.CompanyService;
 import com.bcdm.foodtraceability.service.UserService;
 import com.bcdm.foodtraceability.validatedgroup.CreateGroup;
 import com.bcdm.foodtraceability.validatedgroup.GetInfoGroup;
-import com.bcdm.foodtraceability.validatedgroup.ModifyGroup;
 import com.bcdm.foodtraceability.validatedgroup.RegisterGroup;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -84,9 +84,8 @@ public class CompanyController {
      */
     @PostMapping("/modify")
     @CrossOrigin
-    public ReturnItem<Company> modify(@Validated({ModifyGroup.class})
-                                      @RequestBody Company company) throws Exception {
-        log.info("用户" + company.getUserId() + "-----修改" + company.getCompanyId() + "企业的信息");
+    public ReturnItem<Company> modify(@RequestBody Company company) throws Exception {
+        log.info("用户：" + company.getUserId() + "-----修改" + company.getCompanyId() + "企业的信息修改");
         ReturnItem<Company> returnItem = new ReturnItem<>();
         returnItem.setT(companyService.modify(company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -97,16 +96,19 @@ public class CompanyController {
     /**
      * 企业营业执照更新Controller
      *
-     * @param company 需要修改的公司信息
+     * @param modifyInfo 需要修改的公司信息
      * @return 修改成功的公司信息
      * @throws Exception 修改信息失败
      */
     @PostMapping("/modifyBusinessLicense")
     @CrossOrigin
-    public ReturnItem<Boolean> modifyBusinessLicense(@RequestBody Company company) throws Exception {
-        log.info("用户" + company.getUserId() + "-----更新" + company.getCompanyId() + "企业的营业执照信息");
+    public ReturnItem<Boolean> modifyBusinessLicense(@RequestBody String modifyInfo) throws Exception {
+        JSONObject jsonObject = JSONObject.parseObject(modifyInfo);
+        String managementId = jsonObject.getString("managementId");
+        Company company = jsonObject.getObject("company",Company.class);
+        log.info("管理员" + managementId + "-----更新" + company.getCompanyId() + "企业的营业执照信息");
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
-        returnItem.setT(companyService.modifyBusinessLicense(company));
+        returnItem.setT(companyService.modifyBusinessLicense(managementId,company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
         returnItem.setHttpMessage(MODIFY_COMPANY_INFO_SUCCESS);
         return returnItem;
@@ -115,16 +117,19 @@ public class CompanyController {
     /**
      * 企业经营许可证更新Controller
      *
-     * @param company 需要修改的公司信息
+     * @param modifyInfo 需要修改的公司信息
      * @return 修改成功的公司信息
      * @throws Exception 修改信息失败
      */
     @PostMapping("/modifyHealthPermit")
     @CrossOrigin
-    public ReturnItem<Boolean> modifyHealthPermit(@RequestBody Company company) throws Exception {
-        log.info("用户" + company.getUserId() + "-----更新" + company.getCompanyId() + "企业的经营许可证信息");
+    public ReturnItem<Boolean> modifyHealthPermit(@RequestBody String modifyInfo) throws Exception {
+        JSONObject jsonObject = JSONObject.parseObject(modifyInfo);
+        String managementId = jsonObject.getString("managementId");
+        Company company = jsonObject.getObject("company",Company.class);
+        log.info("管理员" + managementId + "-----更新" + company.getCompanyId() + "企业的经营许可证信息");
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
-        returnItem.setT(companyService.modifyHealthPermit(company));
+        returnItem.setT(companyService.modifyHealthPermit(managementId,company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
         returnItem.setHttpMessage(MODIFY_COMPANY_INFO_SUCCESS);
         return returnItem;

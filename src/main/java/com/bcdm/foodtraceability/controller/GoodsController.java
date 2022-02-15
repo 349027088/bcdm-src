@@ -33,6 +33,23 @@ public class GoodsController {
     /**
      * 获取公司的所有商品信息
      *
+     * @param goodsModel 需要获取商品列表的企业
+     * @return 获取商品种类列表
+     */
+    @PostMapping("/getGoodsById")
+    @CrossOrigin
+    public ReturnItem<GoodsModel> getGoodsById(@RequestBody GoodsModel goodsModel) throws Exception {
+        log.info("获取编号：" + goodsModel.getGoodsId() + "-----商品信息");
+        ReturnItem<GoodsModel> returnItem = new ReturnItem<>();
+        returnItem.setT(goodsService.getGoodsById(goodsModel));
+        returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
+        returnItem.setHttpMessage(SELECT_GOODS_INFO_SUCCESS);
+        return returnItem;
+    }
+
+    /**
+     * 获取公司的所有商品信息
+     *
      * @param selectInfo 需要获取商品列表的企业
      * @return 获取商品种类列表
      */

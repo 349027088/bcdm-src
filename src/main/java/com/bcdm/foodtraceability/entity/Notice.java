@@ -1,5 +1,6 @@
 package com.bcdm.foodtraceability.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 
@@ -59,20 +60,19 @@ public class Notice implements Serializable {
     /**
      * 姓名
      */
-    @NotEmpty(message = "未能读取到生成通知用户的信息", groups = {CreateGroup.class})
+    @NotEmpty(message = "未能读取到生成通知用户的信息", groups = {ModifyGroup.class,CreateGroup.class})
     private String userName;
 
     /**
      * 结束
      */
-    @NotEmpty(message = "结束时间不能为空", groups = {CreateGroup.class})
     @Future(message = "请选择未来的时间", groups = {CreateGroup.class})
-    private LocalDateTime endTime;
+    private LocalDate endTime;
 
     /**
      * 企业ID
      */
-    @NotNull(message = "公司信息异常", groups = {CreateGroup.class})
+    @NotNull(message = "公司信息异常", groups = {ModifyGroup.class,CreateGroup.class})
     private Integer companyId;
 
     /**

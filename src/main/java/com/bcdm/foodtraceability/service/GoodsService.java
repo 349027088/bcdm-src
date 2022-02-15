@@ -84,4 +84,12 @@ public interface GoodsService extends IService<Goods> {
     int deleteGoodsList(Company company,List<Goods> goodsList)throws Exception;
 
 
+    /**
+     * 查询指定的商品信息
+     *
+     * @param goodsModel 需要查询的商品ID
+     * @return 查询到的商品信息
+     * @throws Exception 查询商品信息失败
+     */
+    GoodsModel getGoodsById(GoodsModel goodsModel)throws Exception;
 }

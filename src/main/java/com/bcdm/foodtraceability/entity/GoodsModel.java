@@ -1,9 +1,11 @@
 package com.bcdm.foodtraceability.entity;
 
+import com.bcdm.foodtraceability.validatedgroup.GetInfoGroup;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -15,6 +17,7 @@ public class GoodsModel {
     /**
      * 商品ID
      */
+    @NotNull(message = "没有需要查询的商品信息",groups = {GetInfoGroup.class})
     private Integer goodsId;
 
     /**

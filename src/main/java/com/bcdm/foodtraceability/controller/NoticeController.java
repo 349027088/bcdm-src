@@ -4,14 +4,15 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.bcdm.foodtraceability.entity.*;
 import com.bcdm.foodtraceability.service.NoticeService;
 import com.bcdm.foodtraceability.validatedgroup.CreateGroup;
+import com.bcdm.foodtraceability.validatedgroup.DeleteGroup;
+import com.bcdm.foodtraceability.validatedgroup.ModifyGroup;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_SUCCESS;
-import static com.bcdm.foodtraceability.common.MessageConstants.CREATE_NOTICE_SUCCESS;
+import static com.bcdm.foodtraceability.common.MessageConstants.*;
 
 /**
  * <p>
@@ -41,7 +42,7 @@ public class NoticeController {
     @PostMapping("/companyCreate")
     @CrossOrigin
     public ReturnItem<Boolean> companyCreate(@Validated({CreateGroup.class})
-                                      @RequestBody Notice notice) throws Exception {
+                                             @RequestBody Notice notice) throws Exception {
         log.info("企业：" + notice.getCompanyId() + "----发布新的通知");
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(noticeService.companyCreate(notice));
@@ -59,7 +60,7 @@ public class NoticeController {
     @PostMapping("/managementCreate")
     @CrossOrigin
     public ReturnItem<Boolean> managementCreate(@Validated({CreateGroup.class})
-                                      @RequestBody Notice notice) throws Exception {
+                                                @RequestBody Notice notice) throws Exception {
         log.info("管理员：" + notice.getUserName() + "----发布新的通知");
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(noticeService.managementCreate(notice));
@@ -74,15 +75,15 @@ public class NoticeController {
      * @return 创建结果
      * @throws Exception 生成新的通知失败
      */
-    @PostMapping("/modify")
+    @PostMapping("/modifyNotice")
     @CrossOrigin
-    public ReturnItem<Boolean> modify(@Validated({CreateGroup.class})
+    public ReturnItem<Boolean> modify(@Validated({ModifyGroup.class})
                                       @RequestBody Notice notice) throws Exception {
-        log.info("企业：" + notice.getCompanyId() + "----修改通知");
+        log.info("企业：" + notice.getCompanyId() + "用户：" + notice.getUserName() + "----修改通知");
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(noticeService.modifyNotice(notice));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
-        returnItem.setHttpMessage(CREATE_NOTICE_SUCCESS);
+        returnItem.setHttpMessage(MODIFY_NOTICE_SUCCESS);
         return returnItem;
     }
 
@@ -100,7 +101,7 @@ public class NoticeController {
         ReturnItem<IPage<Notice>> returnItem = new ReturnItem<>();
         returnItem.setT(noticeService.getAllNotice(selectPageEntity));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
-        returnItem.setHttpMessage(CREATE_NOTICE_SUCCESS);
+        returnItem.setHttpMessage(SELECT_NOTICE_SUCCESS);
         return returnItem;
     }
 
@@ -112,13 +113,30 @@ public class NoticeController {
      */
     @PostMapping("/getNewNotice")
     @CrossOrigin
-    public ReturnItem<List<Notice>> getNewNotice(@Validated({CreateGroup.class})
-                                      @RequestBody UserModel userModel) throws Exception {
+    public ReturnItem<Long> getNewNotice(@RequestBody UserModel userModel) throws Exception {
         log.info("用户：" + userModel.getUserId() + "----获取新通知");
-        ReturnItem<List<Notice>> returnItem = new ReturnItem<>();
+        ReturnItem<Long> returnItem = new ReturnItem<>();
         returnItem.setT(noticeService.getNewNotice(userModel));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
-        returnItem.setHttpMessage(CREATE_NOTICE_SUCCESS);
+        returnItem.setHttpMessage(SELECT_NOTICE_SUCCESS);
+        return returnItem;
+    }
+
+    /**
+     * 通知生成Controller
+     *
+     * @return 创建结果
+     * @throws Exception 生成新的通知失败
+     */
+    @PostMapping("/deleteNotice")
+    @CrossOrigin
+    public ReturnItem<Boolean> deleteNotice(@Validated({DeleteGroup.class})
+                                            @RequestBody Notice notice) throws Exception {
+        log.info("企业：" + notice.getCompanyId() + "----删除编号" + notice.getNoticeId() + "通知");
+        ReturnItem<Boolean> returnItem = new ReturnItem<>();
+        returnItem.setT(noticeService.deleteNotice(notice));
+        returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
+        returnItem.setHttpMessage(DELETE_NOTICE_SUCCESS);
         return returnItem;
     }
 

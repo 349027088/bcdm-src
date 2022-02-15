@@ -1,11 +1,8 @@
 package com.bcdm.foodtraceability.service;
 
-import com.bcdm.foodtraceability.entity.Company;
-import com.bcdm.foodtraceability.entity.Empower;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.bcdm.foodtraceability.entity.*;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.bcdm.foodtraceability.entity.Management;
-
-import java.util.List;
 
 /**
  * <p>
@@ -28,7 +25,7 @@ public interface EmpowerService extends IService<Empower> {
     /**
      * 给企业授权
      *
-     * @param empower    授权信息
+     * @param empower 授权信息
      * @return 返回授权成功的信息
      * @throws Exception 企业授权失败
      */
@@ -37,7 +34,7 @@ public interface EmpowerService extends IService<Empower> {
     /**
      * 修改企业授权信息
      *
-     * @param empower    修改后的授权信息
+     * @param empower 修改后的授权信息
      * @return 修改成功的授权信息
      */
     Empower modifyEmpower(Empower empower) throws Exception;
@@ -45,10 +42,10 @@ public interface EmpowerService extends IService<Empower> {
     /**
      * 查询所有授权信息
      *
-     * @param management 查询信息的管理员
+     * @param selectInfo 查询信息的管理员
      * @return 查询所有授权信息
      */
-    List<Empower> getEmpowerList(Management management);
+    IPage<Empower> getEmpowerList(SelectPageEntity<Empower> selectInfo) throws Exception;
 
 
 }

@@ -67,6 +67,12 @@ public class MessageConstants {
     /** 企业信息修改成功 */
     public static final String MODIFY_COMPANY_INFO_SUCCESS = "企业信息修改成功";
 
+    /** 上传新的营业执照成功 */
+    public static final String UPLOAD_BUSINESS_LICENSE_INFO_SUCCESS = "上传新的营业执照成功，请等待管理员得审核";
+
+    /** 上传新的经营资格执照成功 */
+    public static final String UPLOAD_HEALTH_PERMIT_INFO_SUCCESS = "上传新的经营资格执照成功，请等待管理员得审核";
+
     /** 员工信息获取成功 */
     public static final String COMPANY_USER_GET_SUCCESS = "员工信息获取成功";
 
@@ -75,6 +81,9 @@ public class MessageConstants {
 
     /** 修改员工职位成功 */
     public static final String MODIFY_USER_TO_COMPANY_SUCCESS = "修改员工职位成功";
+
+    /** 修改通知最新时间成功 */
+    public static final String MODIFY_NOTICE_CHECK_SUCCESS = "修改通知最新时间成功";
 
     /** 登录到企业成功 */
     public static final String CREATE_USER_TO_COMPANY_SUCCESS = "登录到企业成功";
@@ -117,6 +126,9 @@ public class MessageConstants {
 
     /** 修改权限信息失败 */
     public static final String MODIFY_JURISDICTION_FAIL = "修改职位失败";
+
+    /** 更新读取通知时间失败 */
+    public static final String MODIFY_NOTICE_CHECK_FAIL = "更新读取通知时间失败";
 
     /** 修改权限级别不足 */
     public static final String MODIFY_JURISDICTION_LEVEL_FAIL = "修改权限级别不足";
@@ -274,8 +286,17 @@ public class MessageConstants {
     /** 创建商品二维码成功 */
     public static final String CREATE_BARCODE_SUCCESS = "创建商品二维码成功";
 
-    /** 发布新的通知成功 */
+    /** 发布通知信息成功 */
     public static final String CREATE_NOTICE_SUCCESS = "发布新的通知成功";
+
+    /** 修改通知信息成功 */
+    public static final String MODIFY_NOTICE_SUCCESS = "修改通知信息成功";
+
+    /** 查询通知信息成功 */
+    public static final String SELECT_NOTICE_SUCCESS = "查询通知信息成功";
+
+    /** 删除通知信息成功 */
+    public static final String DELETE_NOTICE_SUCCESS = "删除通知信息成功";
 
     /** 获取城市信息成功 */
     public static final String GET_CITY_LIST_SUCCESS = "获取城市信息成功";
@@ -291,4 +312,16 @@ public class MessageConstants {
 
     /** 删除通知信息失败 */
     public static final String DELETE_NOTICE_FAIL = "删除通知信息失败";
+
+    /** 非管理员 */
+    public static final String ERROR_FOR_GET_MANAGER = "警告！当前修改人员非本社管理人员";
+
+    /** 修改企业营业执照信息失败 */
+    public static final String MODIFY_COMPANY_BUSINESS_LICENSE_FAIL = "修改企业营业执照信息失败";
+
+    /** 修改企业经营执照信息失败 */
+    public static final String MODIFY_COMPANY_HEALTH_PERMIT_FAIL = "修改企业经营执照信息失败";
+
+    /** 修改信息已存在 */
+    public static final String MODIFY_COMPANY_IS_FAIL = "当前存在正在修改得经营信息，请耐心等待审核";
 }

@@ -1,13 +1,14 @@
 package com.bcdm.foodtraceability.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.bcdm.foodtraceability.entity.Company;
-import com.bcdm.foodtraceability.entity.Empower;
-import com.bcdm.foodtraceability.entity.Management;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.bcdm.foodtraceability.entity.*;
 import com.bcdm.foodtraceability.exception.ServiceBusinessException;
 import com.bcdm.foodtraceability.mapper.EmpowerMapper;
 import com.bcdm.foodtraceability.service.EmpowerService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -73,8 +74,17 @@ public class EmpowerServiceImpl extends ServiceImpl<EmpowerMapper, Empower> impl
     }
 
     @Override
-    public List<Empower> getEmpowerList(Management management){
-            return list();
+    public IPage<Empower> getEmpowerList(SelectPageEntity<Empower> selectInfo) throws Exception {
+        QueryWrapper<Empower> manufacturerQueryWrapper = new QueryWrapper<>();
+        if (!StringUtils.isEmpty(selectInfo.getSelectName())) {
+            manufacturerQueryWrapper.likeRight("manufacturer_name", selectInfo.getSelectName());
+        }
+        manufacturerQueryWrapper.eq("company_id", selectInfo.getCompanyId());
+        selectInfo.setPageInfo(page(selectInfo.getPageInfo(), manufacturerQueryWrapper));
+        if (SELECT_ZERO == selectInfo.getPageInfo().getTotal()) {
+            throw new ServiceBusinessException(HTTP_RETURN_FAIL, SELECT_EMPOWER_FAIL);
+        }
+        return selectInfo.getPageInfo();
     }
 
     /**
