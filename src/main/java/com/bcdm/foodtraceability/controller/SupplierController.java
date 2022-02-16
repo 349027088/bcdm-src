@@ -1,12 +1,12 @@
 package com.bcdm.foodtraceability.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.bcdm.foodtraceability.configuration.BlogAction;
 import com.bcdm.foodtraceability.entity.Supplier;
 import com.bcdm.foodtraceability.entity.ReturnItem;
 import com.bcdm.foodtraceability.entity.SelectPageEntity;
 import com.bcdm.foodtraceability.service.SupplierService;
 import com.bcdm.foodtraceability.validatedgroup.*;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +23,6 @@ import static com.bcdm.foodtraceability.common.MessageConstants.*;
  */
 @RestController
 @RequestMapping("/supplier")
-@Slf4j
 public class SupplierController {
 
     private final SupplierService supplierService;
@@ -43,7 +42,7 @@ public class SupplierController {
     @CrossOrigin
     public ReturnItem<IPage<Supplier>> getSupplierList(@RequestBody String selectInfo) throws Exception {
         SelectPageEntity<Supplier> selectPageEntity = new SelectPageEntity<>(selectInfo);
-        log.info("企业" + selectPageEntity.getCompanyId() + "-----获取所有供应商信息");
+        BlogAction.logger.info("企业" + selectPageEntity.getCompanyId() + "-----获取所有供应商信息");
         ReturnItem<IPage<Supplier>> returnItem = new ReturnItem<>();
         returnItem.setT(supplierService.getSupplierList(selectPageEntity));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -62,7 +61,7 @@ public class SupplierController {
     @CrossOrigin
     public ReturnItem<Supplier> getSupplierById(@Validated({GetInfoGroup.class})
                                                 @RequestBody Supplier supplier) throws Exception {
-        log.info("企业" + supplier.getCompanyId() + "-----获取编号:" + supplier.getSupplierId() + "的供应商信息");
+        BlogAction.logger.info("企业" + supplier.getCompanyId() + "-----获取编号:" + supplier.getSupplierId() + "的供应商信息");
         ReturnItem<Supplier> returnItem = new ReturnItem<>();
         returnItem.setT(supplierService.getSupplierById(supplier));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -81,7 +80,7 @@ public class SupplierController {
     @CrossOrigin
     public ReturnItem<Boolean> create(@Validated({CreateGroup.class})
                                       @RequestBody Supplier supplier) throws Exception {
-        log.info("企业" + supplier.getCompanyId() + "-----添加供应商:" + supplier.getSupplierName());
+        BlogAction.logger.info("企业" + supplier.getCompanyId() + "-----添加供应商:" + supplier.getSupplierName());
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(supplierService.createSupplier(supplier));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -100,7 +99,7 @@ public class SupplierController {
     @CrossOrigin
     public ReturnItem<Boolean> modify(@Validated({ModifyGroup.class})
                                       @RequestBody Supplier supplier) throws Exception {
-        log.info("企业" + supplier.getCompanyId() + "-----修改供应商:" + supplier.getSupplierId() + "-----名称:" + supplier.getSupplierName());
+        BlogAction.logger.info("企业" + supplier.getCompanyId() + "-----修改供应商:" + supplier.getSupplierId() + "-----名称:" + supplier.getSupplierName());
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(supplierService.modifySupplier(supplier));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -119,7 +118,7 @@ public class SupplierController {
     @CrossOrigin
     public ReturnItem<Boolean> delete(@Validated({DeleteGroup.class})
                                       @RequestBody Supplier supplier) throws Exception {
-        log.info("企业" + supplier.getCompanyId() + "-----删除供应商:" + supplier.getSupplierName());
+        BlogAction.logger.info("企业" + supplier.getCompanyId() + "-----删除供应商:" + supplier.getSupplierName());
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(supplierService.deleteSupplier(supplier));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);

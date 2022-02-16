@@ -27,7 +27,7 @@ public class ExceptionConfigController {
     // 专门用来捕获和处理Controller层的业务异常
     @ExceptionHandler(ServiceBusinessException.class)
     public ModelAndView serviceBusinessExceptionHandler(ServiceBusinessException e){
-        log.info(e.getHttpMessage());
+        BlogAction.logger.info(e.getHttpMessage());
         ModelAndView mv = new ModelAndView(new MappingJackson2JsonView());
         mv.addObject("httpStatus",e.getHttpStatus());
         mv.addObject("httpMessage",e.getHttpMessage());

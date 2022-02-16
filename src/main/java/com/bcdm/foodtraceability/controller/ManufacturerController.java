@@ -1,12 +1,12 @@
 package com.bcdm.foodtraceability.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.bcdm.foodtraceability.configuration.BlogAction;
 import com.bcdm.foodtraceability.entity.Manufacturer;
 import com.bcdm.foodtraceability.entity.ReturnItem;
 import com.bcdm.foodtraceability.entity.SelectPageEntity;
 import com.bcdm.foodtraceability.service.ManufacturerService;
 import com.bcdm.foodtraceability.validatedgroup.*;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +23,6 @@ import static com.bcdm.foodtraceability.common.MessageConstants.*;
  */
 @RestController
 @RequestMapping("/manufacturer")
-@Slf4j
 public class ManufacturerController {
 
     private final ManufacturerService manufacturerService;
@@ -43,7 +42,7 @@ public class ManufacturerController {
     @CrossOrigin
     public ReturnItem<IPage<Manufacturer>> getManufacturerList(@RequestBody String selectInfo) throws Exception {
         SelectPageEntity<Manufacturer> selectPageEntity = new SelectPageEntity<>(selectInfo);
-        log.info("企业" + selectPageEntity.getCompanyId() + "-----获取所有生产厂商信息");
+        BlogAction.logger.info("企业" + selectPageEntity.getCompanyId() + "-----获取所有生产厂商信息");
         ReturnItem<IPage<Manufacturer>> returnItem = new ReturnItem<>();
         returnItem.setT(manufacturerService.getManufacturerList(selectPageEntity));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -62,7 +61,7 @@ public class ManufacturerController {
     @CrossOrigin
     public ReturnItem<Manufacturer> getManufacturerById(@Validated({GetInfoGroup.class})
                                                         @RequestBody Manufacturer getOneInfo) throws Exception {
-        log.info("企业" + getOneInfo.getCompanyId() + "-----获取编号:" + getOneInfo.getManufacturerId() + "的生产厂商信息");
+        BlogAction.logger.info("企业" + getOneInfo.getCompanyId() + "-----获取编号:" + getOneInfo.getManufacturerId() + "的生产厂商信息");
         ReturnItem<Manufacturer> returnItem = new ReturnItem<>();
         returnItem.setT(manufacturerService.getManufacturerById(getOneInfo));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -81,7 +80,7 @@ public class ManufacturerController {
     @CrossOrigin
     public ReturnItem<Boolean> create(@Validated({CreateGroup.class})
                                       @RequestBody Manufacturer manufacturer) throws Exception {
-        log.info("企业" + manufacturer.getCompanyId() + "-----创建新生产厂商:" + manufacturer.getManufacturerName());
+        BlogAction.logger.info("企业" + manufacturer.getCompanyId() + "-----创建新生产厂商:" + manufacturer.getManufacturerName());
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(manufacturerService.createManufacturer(manufacturer));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -100,7 +99,7 @@ public class ManufacturerController {
     @CrossOrigin
     public ReturnItem<Boolean> modify(@Validated(ModifyGroup.class)
                                       @RequestBody Manufacturer manufacturer) throws Exception {
-        log.info("企业" + manufacturer.getCompanyId() + "-----修改生产厂商编号:" + manufacturer.getManufacturerId() + "-----名称:" + manufacturer.getManufacturerName());
+        BlogAction.logger.info("企业" + manufacturer.getCompanyId() + "-----修改生产厂商编号:" + manufacturer.getManufacturerId() + "-----名称:" + manufacturer.getManufacturerName());
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(manufacturerService.modifyManufacturer(manufacturer));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -119,7 +118,7 @@ public class ManufacturerController {
     @CrossOrigin
     public ReturnItem<Boolean> delete(@Validated(DeleteGroup.class)
                                       @RequestBody Manufacturer manufacturer) throws Exception {
-        log.info("企业" + manufacturer.getCompanyId() + "-----删除生产厂商:" + manufacturer.getManufacturerName());
+        BlogAction.logger.info("企业" + manufacturer.getCompanyId() + "-----删除生产厂商:" + manufacturer.getManufacturerName());
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(manufacturerService.deleteManufacturer(manufacturer));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);

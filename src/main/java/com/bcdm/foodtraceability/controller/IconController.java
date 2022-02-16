@@ -1,8 +1,8 @@
 package com.bcdm.foodtraceability.controller;
 
+import com.bcdm.foodtraceability.configuration.BlogAction;
 import com.bcdm.foodtraceability.entity.ReturnItem;
 import com.bcdm.foodtraceability.service.IconService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,7 +19,6 @@ import static com.bcdm.foodtraceability.common.MessageConstants.ICON_UPLOAD_SUCC
  */
 @RestController
 @RequestMapping("/icon")
-@Slf4j
 public class IconController {
 
     private final IconService iconService;
@@ -38,7 +37,7 @@ public class IconController {
     @PostMapping("createIcon")
     @CrossOrigin
     public ReturnItem<String> createIcon(@RequestPart MultipartFile file) throws Exception {
-        log.info("图片上传");
+        BlogAction.logger.info("图片上传");
         ReturnItem<String> returnItem = new ReturnItem<>();
         returnItem.setT(iconService.createIcon(file));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);

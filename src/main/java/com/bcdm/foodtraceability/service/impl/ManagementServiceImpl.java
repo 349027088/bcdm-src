@@ -2,9 +2,9 @@ package com.bcdm.foodtraceability.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.bcdm.foodtraceability.configuration.BlogAction;
 import com.bcdm.foodtraceability.entity.Management;
 import com.bcdm.foodtraceability.entity.ModifyPassword;
-import com.bcdm.foodtraceability.entity.User;
 import com.bcdm.foodtraceability.exception.ServiceBusinessException;
 import com.bcdm.foodtraceability.mapper.ManagementMapper;
 import com.bcdm.foodtraceability.service.ManagementService;
@@ -18,7 +18,6 @@ import static com.bcdm.foodtraceability.common.Constants.*;
 import static com.bcdm.foodtraceability.common.CreateMD5.Md5encode;
 import static com.bcdm.foodtraceability.common.CreateUUID.getUUID;
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_FAIL;
-import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_SERVER_FAIL;
 import static com.bcdm.foodtraceability.common.MessageConstants.*;
 
 /**
@@ -90,7 +89,7 @@ public class ManagementServiceImpl extends ServiceImpl<ManagementMapper, Managem
         if (null != getById(managementId)) {
             return true;
         }
-        log.error("登录者ID：" + managementId + "  " + ERROR_FOR_GET_MANAGER);
+        BlogAction.logger.error("登录者ID：" + managementId + "  " + ERROR_FOR_GET_MANAGER);
         throw new ServiceBusinessException(HTTP_RETURN_FAIL, ERROR_FOR_GET_MANAGER);
     }
 

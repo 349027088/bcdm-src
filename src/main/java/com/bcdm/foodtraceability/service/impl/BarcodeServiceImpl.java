@@ -35,7 +35,7 @@ public class BarcodeServiceImpl extends ServiceImpl<BarcodeMapper, Barcode> impl
     @Override
     public Barcode createBarcode(Integer goodsId) throws Exception {
         Barcode barcode = new Barcode();
-        barcode.setBarcodeNumber(LocalDateTime.now() + CreateUUID.getUUID());
+        barcode.setBarcodeNumber(LocalDateTime.now().toLocalDate() + CreateUUID.getUUID());
         barcode.setGoodsId(goodsId);
         if (save(barcode)) {
             return barcode;

@@ -2,13 +2,11 @@ package com.bcdm.foodtraceability.controller;
 
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.bcdm.foodtraceability.configuration.BlogAction;
 import com.bcdm.foodtraceability.entity.Empower;
-import com.bcdm.foodtraceability.entity.GoodsType;
 import com.bcdm.foodtraceability.entity.ReturnItem;
 import com.bcdm.foodtraceability.entity.SelectPageEntity;
 import com.bcdm.foodtraceability.service.EmpowerService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_SUCCESS;
@@ -24,7 +22,6 @@ import static com.bcdm.foodtraceability.common.MessageConstants.SELECT_GOODS_TYP
  */
 @RestController
 @RequestMapping("/empower")
-@Slf4j
 public class EmpowerController {
 
     private final EmpowerService empowerService;
@@ -44,7 +41,7 @@ public class EmpowerController {
     @CrossOrigin
     public ReturnItem<IPage<Empower>> getGoodsTypeList(@RequestBody String selectInfo) throws Exception {
         SelectPageEntity<Empower> selectPageEntity = new SelectPageEntity<>(selectInfo);
-        log.info("企业" + selectPageEntity.getCompanyId() + "-----获取所有授权信息");
+        BlogAction.logger.info("企业" + selectPageEntity.getCompanyId() + "-----获取所有授权信息");
         ReturnItem<IPage<Empower>> returnItem = new ReturnItem<>();
         returnItem.setT(empowerService.getEmpowerList(selectPageEntity));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);

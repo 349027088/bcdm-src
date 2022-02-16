@@ -1,13 +1,12 @@
 package com.bcdm.foodtraceability.controller;
 
+import com.bcdm.foodtraceability.configuration.BlogAction;
 import com.bcdm.foodtraceability.entity.Barcode;
 import com.bcdm.foodtraceability.entity.GoodsModel;
 import com.bcdm.foodtraceability.entity.ReturnItem;
 import com.bcdm.foodtraceability.service.BarcodeService;
 import com.bcdm.foodtraceability.validatedgroup.CreateGroup;
 import com.bcdm.foodtraceability.validatedgroup.GetInfoGroup;
-import com.bcdm.foodtraceability.validatedgroup.RegisterGroup;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +24,6 @@ import static com.bcdm.foodtraceability.common.MessageConstants.SELECT_GOODS_INF
  */
 @RestController
 @RequestMapping("/barcode")
-@Slf4j
 public class BarcodeController {
 
     private final BarcodeService barcodeService;
@@ -44,7 +42,7 @@ public class BarcodeController {
     @CrossOrigin
     public ReturnItem<Barcode> create(@Validated({CreateGroup.class})
                                           @RequestBody Barcode barcode) throws Exception {
-        log.info("商品编号：" + barcode.getGoodsId() + "----生成新的二维码");
+        BlogAction.logger.info("商品编号：" + barcode.getGoodsId() + "----生成新的二维码");
         ReturnItem<Barcode> returnItem = new ReturnItem<>();
         returnItem.setT(barcodeService.createBarcode(barcode.getGoodsId()));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -63,7 +61,7 @@ public class BarcodeController {
     @CrossOrigin
     public ReturnItem<GoodsModel> getGoodsById(@Validated({GetInfoGroup.class})
                                                    @RequestBody Barcode barcode) throws Exception {
-        log.info("获取二维码：" + barcode.getBarcodeNumber() + "-----商品信息");
+        BlogAction.logger.info("获取二维码：" + barcode.getBarcodeNumber() + "-----商品信息");
         ReturnItem<GoodsModel> returnItem = new ReturnItem<>();
         returnItem.setT(barcodeService.getGoodsByQRCode(barcode));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);

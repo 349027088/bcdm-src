@@ -3,6 +3,7 @@ package com.bcdm.foodtraceability.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.bcdm.foodtraceability.configuration.BlogAction;
 import com.bcdm.foodtraceability.entity.*;
 import com.bcdm.foodtraceability.service.GoodsService;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +43,7 @@ public class GoodsController {
         SelectPageEntity<GoodsModel> selectPageEntity = new SelectPageEntity<>(selectInfo);
         JSONObject selectPageInfo = JSONObject.parseObject(selectInfo);
         selectPageEntity.setSelectInfo(selectPageInfo.getObject("goods", GoodsModel.class));
-        log.info("企业" + selectPageEntity.getCompanyId() + "-----获取商品信息");
+        BlogAction.logger.info("企业" + selectPageEntity.getCompanyId() + "-----获取商品信息");
         ReturnItem<IPage<GoodsModel>> returnItem = new ReturnItem<>();
         returnItem.setT(goodsService.getGoodsListByCompany(selectPageEntity));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -60,7 +61,7 @@ public class GoodsController {
     @PostMapping("/create")
     @CrossOrigin
     public ReturnItem<Boolean> create(@RequestBody Goods goods) throws Exception {
-        log.info("企业" + goods.getCompanyId() + "-----添加" + goods.getGoodsName() + "商品信息");
+        BlogAction.logger.info("企业" + goods.getCompanyId() + "-----添加" + goods.getGoodsName() + "商品信息");
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(goodsService.createGoods(goods));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -78,7 +79,7 @@ public class GoodsController {
     @PostMapping("/modify")
     @CrossOrigin
     public ReturnItem<Boolean> modify(@RequestBody Goods goods) throws Exception {
-        log.info("企业" + goods.getCompanyId() + "-----修改编号" + goods.getGoodsId() + "商品信息" );
+        BlogAction.logger.info("企业" + goods.getCompanyId() + "-----修改编号" + goods.getGoodsId() + "商品信息" );
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(goodsService.modifyGoods(goods));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -96,7 +97,7 @@ public class GoodsController {
     @PostMapping("/delete")
     @CrossOrigin
     public ReturnItem<Boolean> delete(@RequestBody Goods goods) throws Exception {
-        log.info("企业" + goods.getCompanyId() + "-----删除编号" + goods.getGoodsId() + "商品信息" );
+        BlogAction.logger.info("企业" + goods.getCompanyId() + "-----删除编号" + goods.getGoodsId() + "商品信息" );
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(goodsService.deleteGoods(goods));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
