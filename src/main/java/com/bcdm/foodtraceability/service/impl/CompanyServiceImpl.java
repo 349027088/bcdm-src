@@ -38,11 +38,14 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
 
     private final ManagementService managementService;
 
-    public CompanyServiceImpl(JurisdictionService jurisdictionService, EmpowerService empowerService, IconService iconService, ManagementService managementService) {
+    private final CompanyInfoCheckService companyInfoCheckService;
+
+    public CompanyServiceImpl(JurisdictionService jurisdictionService, EmpowerService empowerService, IconService iconService, ManagementService managementService,CompanyInfoCheckService companyInfoCheckService) {
         this.jurisdictionService = jurisdictionService;
         this.empowerService = empowerService;
         this.iconService = iconService;
         this.managementService = managementService;
+        this.companyInfoCheckService = companyInfoCheckService;
     }
 
     @Override
@@ -95,6 +98,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
                 .set("update_time", LocalDateTime.now())
                 .set("business_license", company.getBusinessLicense());
         if (update(companyUpdateWrapper)) {
+            companyInfoCheckService.deleteCheckInfo(company);
             return true;
         }
         throw new ServiceBusinessException(HTTP_RETURN_FAIL, MODIFY_COMPANY_FAIL);
@@ -109,6 +113,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
                 .set("update_time", LocalDateTime.now())
                 .set("health_permit", company.getHealthPermit());
         if (update(companyUpdateWrapper)) {
+            companyInfoCheckService.deleteCheckInfo(company);
             return true;
         }
         throw new ServiceBusinessException(HTTP_RETURN_FAIL, MODIFY_COMPANY_FAIL);

@@ -69,7 +69,7 @@ public class SupplierServiceImpl extends ServiceImpl<SupplierMapper, Supplier> i
             supplier.setSupplierLevel(SUPPLIER_LEVEL_ON_SERVICE);
             supplier.setCreateTime(now);
             supplier.setUpdateTime(now);
-            if (!save(supplier)) {
+            if (save(supplier)) {
                 return true;
             }
             throw new ServiceBusinessException(HTTP_RETURN_FAIL, CREATE_SUPPLIER_FAIL);

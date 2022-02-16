@@ -71,54 +71,6 @@
         </if>
     </select>
 
-    <select id="getGoodById" resultType="com.bcdm.foodtraceability.entity.GoodsModel"
-            parameterType="com.bcdm.foodtraceability.entity.GoodsModel">
-        SELECT
-        T1.goods_id AS goodsId,
-        T1.goods_status AS goodsStatus,
-        T1.goods_level AS goodsLevel,
-        T1.company_id AS companyId,
-        T1.goods_type_id AS goodsTypeId,
-        T1.update_time AS updateTime,
-        T1.product_icon AS productIcon,
-        T1.manufacture_date AS manufactureDate,
-        T1.quality_guarantee AS qualityGuarantee,
-        T1.raw_material AS rawMaterial,
-        T1.goods_explain AS goodsExplain,
-        T1.goods_name AS goodsName,
-        T1.manufacturer_id AS manufacturerId,
-        T1.supplier_id AS supplierId,
-        T1.place_of_production AS placeOfProduction,
-        T2.goods_type_name AS goodsTypeName,
-        T3.supplier_name AS supplierName,
-        T4.manufacturer_name AS manufacturerName,
-        T5.barcode_number AS barcodeNumber,
-        T6.city_name AS placeOfProductionName
-        FROM
-        `goods` AS T1
-        INNER JOIN
-        `goods_type` AS T2
-        ON
-        T1.goods_type_id = T2.goods_type_id
-        INNER JOIN
-        `supplier` AS T3
-        ON
-        T1.supplier_id = T3.supplier_id
-        INNER JOIN
-        `manufacturer` AS T4
-        ON
-        T1.manufacturer_id = T4.manufacturer_id
-        INNER JOIN
-        `city` AS T6
-        ON
-        T1.place_of_production = T6.city_id
-        LEFT JOIN
-        `barcode` AS T5
-        ON
-        T1.goods_id = T5.goods_id
-        WHERE T1.goods_id = #{goodsModel.goodsId}
-    </select>
-
     <select id="checkToInsert" parameterType="com.bcdm.foodtraceability.entity.Goods" resultType="Integer">
         SELECT COUNT(1)
         FROM goods_type AS T1

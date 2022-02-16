@@ -2,6 +2,7 @@ package com.bcdm.foodtraceability.service;
 
 import com.bcdm.foodtraceability.entity.Barcode;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.bcdm.foodtraceability.entity.GoodsModel;
 
 /**
  * <p>
@@ -21,4 +22,13 @@ public interface BarcodeService extends IService<Barcode> {
      * @throws Exception 创建二维码失败
      */
     Barcode createBarcode(Integer goodsId) throws Exception;
+
+    /**
+     * 查询指定的商品信息
+     *
+     * @param barcode 需要查询的商品二维码
+     * @return 查询到的商品信息
+     * @throws Exception 查询商品信息失败
+     */
+    GoodsModel getGoodsByQRCode(Barcode barcode) throws Exception;
 }

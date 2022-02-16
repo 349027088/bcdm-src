@@ -1,9 +1,11 @@
 package com.bcdm.foodtraceability.controller;
 
 import com.bcdm.foodtraceability.entity.Barcode;
+import com.bcdm.foodtraceability.entity.GoodsModel;
 import com.bcdm.foodtraceability.entity.ReturnItem;
 import com.bcdm.foodtraceability.service.BarcodeService;
 import com.bcdm.foodtraceability.validatedgroup.CreateGroup;
+import com.bcdm.foodtraceability.validatedgroup.GetInfoGroup;
 import com.bcdm.foodtraceability.validatedgroup.RegisterGroup;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_SUCCESS;
 import static com.bcdm.foodtraceability.common.MessageConstants.CREATE_BARCODE_SUCCESS;
+import static com.bcdm.foodtraceability.common.MessageConstants.SELECT_GOODS_INFO_SUCCESS;
 
 /**
  * <p>
@@ -48,6 +51,26 @@ public class BarcodeController {
         returnItem.setHttpMessage(CREATE_BARCODE_SUCCESS);
         return returnItem;
     }
+
+
+    /**
+     * 获取公司的所有商品信息
+     *
+     * @param barcode 需要获取商品列表的企业
+     * @return 获取商品种类列表
+     */
+    @PostMapping("/getGoodsByQRCode")
+    @CrossOrigin
+    public ReturnItem<GoodsModel> getGoodsById(@Validated({GetInfoGroup.class})
+                                                   @RequestBody Barcode barcode) throws Exception {
+        log.info("获取二维码：" + barcode.getBarcodeNumber() + "-----商品信息");
+        ReturnItem<GoodsModel> returnItem = new ReturnItem<>();
+        returnItem.setT(barcodeService.getGoodsByQRCode(barcode));
+        returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
+        returnItem.setHttpMessage(SELECT_GOODS_INFO_SUCCESS);
+        return returnItem;
+    }
+
 
 }
 

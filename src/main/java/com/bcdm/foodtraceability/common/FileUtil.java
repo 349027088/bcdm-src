@@ -5,6 +5,12 @@ public class FileUtil {
     //图片语序的后缀扩展名
     public static String[] IMAGE_FILE_EXTD = new String[]{"png", "bmp", "jpg", "jpeg"};
 
+    /**
+     * 图片格式确认
+     *
+     * @param fileName 需要确认格式得文件名称
+     * @return 是否为对应得文件格式
+     */
     public static boolean isFileAllowed(String fileName) {
         for (String ext : IMAGE_FILE_EXTD) {
             if (ext.equals(fileName)) {
@@ -33,9 +39,6 @@ public class FileUtil {
         } else if ("G".equalsIgnoreCase(unit)) {
             fileSize = (double) len / 1073741824;
         }
-        if (fileSize > size){
-            return false;
-        }
-        return true;
+        return !(fileSize > size);
     }
 }

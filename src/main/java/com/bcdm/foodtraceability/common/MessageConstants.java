@@ -323,5 +323,8 @@ public class MessageConstants {
     public static final String MODIFY_COMPANY_HEALTH_PERMIT_FAIL = "修改企业经营执照信息失败";
 
     /** 修改信息已存在 */
-    public static final String MODIFY_COMPANY_IS_FAIL = "当前存在正在修改得经营信息，请耐心等待审核";
+    public static final String MODIFY_COMPANY_IS_FAIL = "当前存在正在修改的经营信息，请耐心等待审核";
+
+    /** 上传的文件不是正确的图片格式 */
+    public static final String UPLOAD_FILE_IS_NOT_ICON = "上传的文件不是正确的图片格式";
 }

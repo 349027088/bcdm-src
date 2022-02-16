@@ -40,15 +40,6 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     }
 
     @Override
-    public GoodsModel getGoodsById(GoodsModel goodsModel) throws Exception {
-        goodsModel = goodsMapper.getGoodById(goodsModel);
-        if (null!=goodsModel){
-            return goodsModel;
-        }
-        throw new ServiceBusinessException(HTTP_RETURN_FAIL, SELECT_GOODS_INFO_FAIL);
-    }
-
-    @Override
     public IPage<GoodsModel> getGoodsListByCompany(SelectPageEntity<GoodsModel> selectInfo) throws Exception {
         if (null != selectInfo.getSelectInfo()) {
             selectInfo.setPageInfo(goodsMapper.selectGoodsPage((Page<GoodsModel>) selectInfo.getPageInfo(), selectInfo.getSelectInfo()));
@@ -114,21 +105,12 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         throw new ServiceBusinessException(HTTP_RETURN_FAIL, FIND_GOODS_NAME_BY_COMPANY_FAIL3);
     }
 
-    @Override
-    public int deleteGoodsList(Company company, List<Goods> goodsList) throws Exception {
-        return 0;
-    }
-
-    @Override
-    public List<Goods> createGoodsList(Company company, List<Goods> goodsList) throws Exception {
-        return null;
-    }
-
-    @Override
-    public List<Goods> modifyGoodsList(Company company, List<Goods> goodsList) throws Exception {
-        return null;
-    }
-
+    /**
+     * 查询商品关联得信息是否存在
+     *
+     * @param goods 需要查询创建得商品信息
+     * @return 如果存在返回true
+     */
     private Boolean checkSubInfo(Goods goods) {
         return GET_ONE.equals(goodsMapper.checkToInsert(goods));
     }

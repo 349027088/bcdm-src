@@ -1,11 +1,17 @@
 package com.bcdm.foodtraceability.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.bcdm.foodtraceability.entity.CompanyInfoCheck;
 import com.bcdm.foodtraceability.entity.Goods;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.bcdm.foodtraceability.entity.GoodsModel;
+import com.bcdm.foodtraceability.exception.ServiceBusinessException;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Mapper;
+
+import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_FAIL;
 
 /**
  * <p>
@@ -26,15 +32,6 @@ public interface GoodsMapper extends BaseMapper<Goods> {
      * @return 分页后的商品信息
      */
     IPage<GoodsModel> selectGoodsPage(Page<GoodsModel> page, GoodsModel goodsModel);
-
-    /**
-     * 参数条件查询
-     *
-     * @param page       分页条件
-     * @param goodsModel 查询条件
-     * @return 分页后的商品信息
-     */
-    GoodsModel getGoodById(GoodsModel goodsModel);
 
     /**
      * 验证插入商品信息的正确性

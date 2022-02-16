@@ -1,5 +1,6 @@
 package com.bcdm.foodtraceability.service;
 
+import com.bcdm.foodtraceability.entity.Company;
 import com.bcdm.foodtraceability.entity.CompanyInfoCheck;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -30,5 +31,12 @@ public interface CompanyInfoCheckService extends IService<CompanyInfoCheck> {
      */
     Boolean modifyHealthPermit(CompanyInfoCheck company) throws Exception;
 
+    /**
+     * 删除中间经营信息表
+     *
+     * @param company 需要删除中间表信息的企业
+     * @throws Exception 删除失败
+     */
+    void deleteCheckInfo(Company company) throws Exception;
 
 }

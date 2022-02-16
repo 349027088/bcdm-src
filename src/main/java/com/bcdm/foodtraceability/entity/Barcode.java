@@ -2,7 +2,9 @@ package com.bcdm.foodtraceability.entity;
 
 import java.io.Serializable;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.bcdm.foodtraceability.validatedgroup.CreateGroup;
+import com.bcdm.foodtraceability.validatedgroup.GetInfoGroup;
 import com.bcdm.foodtraceability.validatedgroup.ModifyGroup;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -28,6 +30,8 @@ public class Barcode implements Serializable {
     /**
      * 条形码编号
      */
+    @TableId
+    @NotNull(message = "您扫描的商品二维码信息异常", groups = {GetInfoGroup.class})
     private String barcodeNumber;
 
     /**
