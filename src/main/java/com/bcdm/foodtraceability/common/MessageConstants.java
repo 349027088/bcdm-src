@@ -275,7 +275,10 @@ public class MessageConstants {
     public static final String MODIFY_GOODS_INFO_FAIL = "修改商品信息失败";
 
     /** 删除商品信息失败 */
-    public static final String DELETE_GOODS_INFO_FAIL = "删除商品信息失败";
+    public static final String DELETE_GOODS_INFO_FAIL = "删除商品信息失败或者当前商品信息不存在";
+
+    /** 当前商品的关联信息获取失败或已删除 */
+    public static final String CHECK_INFO_FAIL = "当前商品的关联信息获取失败或已删除，请刷新后重试";
 
     /** 创建商品二维码失败 */
     public static final String CREATE_BARCODE_FAIL = "创建商品二维码失败";

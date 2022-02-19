@@ -40,11 +40,10 @@ public class BarcodeController {
      */
     @PostMapping("/create")
     @CrossOrigin
-    public ReturnItem<Barcode> create(@Validated({CreateGroup.class})
-                                          @RequestBody Barcode barcode) throws Exception {
-        BlogAction.logger.info("商品编号：" + barcode.getGoodsId() + "----生成新的二维码");
-        ReturnItem<Barcode> returnItem = new ReturnItem<>();
-        returnItem.setT(barcodeService.createBarcode(barcode.getGoodsId()));
+    public ReturnItem<String> create(@RequestBody GoodsModel goodsModel) throws Exception {
+        BlogAction.logger.info("商品编号:" + goodsModel.getGoodsId() + "----生成新的二维码");
+        ReturnItem<String> returnItem = new ReturnItem<>();
+        returnItem.setT(barcodeService.createBarcode(goodsModel));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
         returnItem.setHttpMessage(CREATE_BARCODE_SUCCESS);
         return returnItem;
@@ -54,16 +53,15 @@ public class BarcodeController {
     /**
      * 获取公司的所有商品信息
      *
-     * @param barcode 需要获取商品列表的企业
+     * @param goodsModel 需要获取商品列表的企业
      * @return 获取商品种类列表
      */
     @PostMapping("/getGoodsByQRCode")
     @CrossOrigin
-    public ReturnItem<GoodsModel> getGoodsById(@Validated({GetInfoGroup.class})
-                                                   @RequestBody Barcode barcode) throws Exception {
-        BlogAction.logger.info("获取二维码：" + barcode.getBarcodeNumber() + "-----商品信息");
+    public ReturnItem<GoodsModel> getGoodsById(@RequestBody GoodsModel goodsModel) throws Exception {
+        BlogAction.logger.info("获取二维码:" + goodsModel.getBarcodeNumber() + "-----商品信息");
         ReturnItem<GoodsModel> returnItem = new ReturnItem<>();
-        returnItem.setT(barcodeService.getGoodsByQRCode(barcode));
+        returnItem.setT(barcodeService.getGoodsByQRCode(goodsModel));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
         returnItem.setHttpMessage(SELECT_GOODS_INFO_SUCCESS);
         return returnItem;

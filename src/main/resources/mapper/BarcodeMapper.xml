@@ -3,7 +3,7 @@
 <mapper namespace="com.bcdm.foodtraceability.mapper.BarcodeMapper">
 
     <select id="getGoodById" resultType="com.bcdm.foodtraceability.entity.GoodsModel"
-            parameterType="com.bcdm.foodtraceability.entity.Barcode">
+            parameterType="com.bcdm.foodtraceability.entity.GoodsModel">
         SELECT T1.goods_id            AS goodsId,
                T1.goods_status        AS goodsStatus,
                T1.goods_level         AS goodsLevel,
@@ -24,7 +24,7 @@
                T4.manufacturer_name   AS manufacturerName,
                T5.barcode_number      AS barcodeNumber,
                T6.city_name           AS placeOfProductionName
-        FROM `goods` AS T1
+        FROM ${goodsTableName} AS T1
                  INNER JOIN
              `goods_type` AS T2
              ON
@@ -42,10 +42,19 @@
              ON
                  T1.place_of_production = T6.city_id
                  INNER JOIN
-             `barcode` AS T5
+             ${barcodeTableName} AS T5
              ON
                  T1.goods_id = T5.goods_id
         WHERE T5.barcode_number = #{barcodeNumber}
     </select>
+
+    <insert id="saveBarcode" parameterType="com.bcdm.foodtraceability.entity.GoodsModel">
+        INSERT INTO ${barcodeTableName}
+        (goods_id,
+         barcode_number)
+            VALUE ( #{goodsId},
+            #{barcodeNumber}
+            )
+    </insert>
 
 </mapper>

@@ -41,7 +41,7 @@ public class EmpowerController {
     @CrossOrigin
     public ReturnItem<IPage<Empower>> getGoodsTypeList(@RequestBody String selectInfo) throws Exception {
         SelectPageEntity<Empower> selectPageEntity = new SelectPageEntity<>(selectInfo);
-        BlogAction.logger.info("企业" + selectPageEntity.getCompanyId() + "-----获取所有授权信息");
+        BlogAction.logger.info("企业:" + selectPageEntity.getCompanyId() + "-----获取所有授权信息");
         ReturnItem<IPage<Empower>> returnItem = new ReturnItem<>();
         returnItem.setT(empowerService.getEmpowerList(selectPageEntity));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);

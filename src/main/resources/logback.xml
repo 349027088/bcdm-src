@@ -15,7 +15,7 @@
     <appender name="FILE"  class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--日志文件输出的文件名-->
-            <FileNamePattern>${LOG_HOME}/myApp.log.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <FileNamePattern>${LOG_HOME}/BCDM.log.%d{yyyy-MM-dd}.log</FileNamePattern>
             <MaxHistory>180</MaxHistory>
         </rollingPolicy>
         <layout class="ch.qos.logback.classic.PatternLayout">
@@ -34,4 +34,5 @@
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
     </root>
+<!--    <logger name="ShardingSphere-SQL" level="WARN" />-->
 </configuration>

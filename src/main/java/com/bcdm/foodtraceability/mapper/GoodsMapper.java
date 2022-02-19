@@ -1,17 +1,11 @@
 package com.bcdm.foodtraceability.mapper;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.bcdm.foodtraceability.entity.CompanyInfoCheck;
 import com.bcdm.foodtraceability.entity.Goods;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.bcdm.foodtraceability.entity.GoodsModel;
-import com.bcdm.foodtraceability.exception.ServiceBusinessException;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Mapper;
-
-import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_FAIL;
 
 /**
  * <p>
@@ -39,5 +33,45 @@ public interface GoodsMapper extends BaseMapper<Goods> {
      * @param goods 需要验证的商品信息
      * @return 返回结果是否为1
      */
-    Integer checkToInsert(Goods goods);
+    Integer checkToInsert(GoodsModel goods);
+
+    /**
+     * 插入新的商品信息
+     *
+     * @param goodsModel 需要插入的商品信息
+     * @return 返回1为插入成功
+     */
+    Integer saveGoodsModel(GoodsModel goodsModel);
+
+    /**
+     * 修改商品信息
+     *
+     * @param goodsModel 需要插入的商品信息
+     * @return 返回1为插入成功
+     */
+    Integer modifyGoodsModel(GoodsModel goodsModel);
+
+    /**
+     * 删除商品信息
+     *
+     * @param goodsModel 需要插入的商品信息
+     * @return 返回1为插入成功
+     */
+    Integer deleteGoodsModel(GoodsModel goodsModel);
+
+    /**
+     * 查询商品信息count
+     *
+     * @param goods 需要删除的商品信息
+     * @return 删除是否成功
+     */
+    Integer countGoodsName(GoodsModel goods);
+
+    /**
+     * 通过商品Id查询商品名称
+     *
+     * @param goods 需要查询的商品Id和table信息
+     * @return 查询到的name信息
+     */
+    GoodsModel getGoodsNameByGoodsId(GoodsModel goods);
 }

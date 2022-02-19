@@ -25,14 +25,13 @@ repositories {
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter-data-redis'
     compile 'org.springframework.boot:spring-boot-starter-web'
-    compile 'com.baomidou:mybatis-plus-boot-starter:3.5.0'
-    compile 'com.baomidou:mybatis-plus-generator:3.3.2'
+    compile 'com.baomidou:mybatis-plus-boot-starter:3.5.1'
+    compile 'com.baomidou:mybatis-plus-generator:3.5.1'
     compile 'org.apache.velocity:velocity:1.7'
     compile 'org.hibernate:hibernate-validator:7.0.1.Final'
-    compile 'com.qiniu:qiniu-java-sdk:7.7.+'
+    compile 'com.qiniu:qiniu-java-sdk:7.9.3'
     compile 'com.alibaba:fastjson:1.2.79'
     compile 'com.alibaba:druid:1.2.8'
-    compile 'com.alibaba:druid-spring-boot-starter:1.2.8'
     compile 'org.apache.commons:commons-lang3:3.12.0'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -42,9 +41,10 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     testImplementation 'junit:junit'
-    compile 'org.slf4j:slf4j-api:1.7.14'
-    compile 'ch.qos.logback:logback-core:1.1.3'
-    compile 'ch.qos.logback:logback-classic:1.1.3'
+    compile 'org.slf4j:slf4j-api:1.7.36'
+    compile 'ch.qos.logback:logback-core:1.2.10'
+    compile 'ch.qos.logback:logback-classic:1.2.10'
+//    compile 'org.apache.shardingsphere:sharding-jdbc-spring-boot-starter:4.0.0-RC2'
 }
 
 test {

@@ -58,7 +58,9 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
         QueryWrapper<Notice> noticeQueryWrapper = new QueryWrapper<>();
         noticeQueryWrapper
                 .ge("end_time", LocalDateTime.now())
-                .gt("update_time", userModel.getNoticeCheck());
+                .gt("update_time", userModel.getNoticeCheck())
+                .orderByAsc("company_id")
+                .orderByDesc("create_time");
             return count(noticeQueryWrapper);
     }
 

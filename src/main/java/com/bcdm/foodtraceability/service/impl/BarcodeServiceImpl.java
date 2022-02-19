@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+import static com.bcdm.foodtraceability.common.Constants.GET_ONE;
 import static com.bcdm.foodtraceability.common.HttpConstants.HTTP_RETURN_FAIL;
 import static com.bcdm.foodtraceability.common.MessageConstants.CREATE_BARCODE_FAIL;
 import static com.bcdm.foodtraceability.common.MessageConstants.SELECT_GOODS_INFO_FAIL;
@@ -33,19 +34,19 @@ public class BarcodeServiceImpl extends ServiceImpl<BarcodeMapper, Barcode> impl
     }
 
     @Override
-    public Barcode createBarcode(Integer goodsId) throws Exception {
-        Barcode barcode = new Barcode();
-        barcode.setBarcodeNumber(LocalDateTime.now().toLocalDate() + CreateUUID.getUUID());
-        barcode.setGoodsId(goodsId);
-        if (save(barcode)) {
-            return barcode;
+    public String createBarcode(GoodsModel goodsModel) throws Exception {
+        goodsModel.setBarcodeNumber(LocalDateTime.now().toLocalDate() + CreateUUID.getUUID() + goodsModel.getGoodsTableName().substring(goodsModel.getGoodsTableName().length() - 1));
+        if (GET_ONE.equals(barcodeMapper.saveBarcode(goodsModel))) {
+            return goodsModel.getBarcodeNumber();
         }
         throw new ServiceBusinessException(HTTP_RETURN_FAIL, CREATE_BARCODE_FAIL);
     }
 
     @Override
-    public GoodsModel getGoodsByQRCode(Barcode barcode) throws Exception {
-        GoodsModel goodById = barcodeMapper.getGoodById(barcode);
+    public GoodsModel getGoodsByQRCode(GoodsModel goodsModel) throws Exception {
+        goodsModel.setCompanyId(Integer.parseInt(goodsModel.getBarcodeNumber().substring(goodsModel.getBarcodeNumber().length() - 1)));
+        goodsModel.setGoodsModel();
+        GoodsModel goodById = barcodeMapper.getGoodById(goodsModel);
         if (null != goodById) {
             return goodById;
         }

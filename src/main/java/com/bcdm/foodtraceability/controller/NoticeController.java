@@ -113,7 +113,7 @@ public class NoticeController {
     @PostMapping("/getNewNotice")
     @CrossOrigin
     public ReturnItem<Long> getNewNotice(@RequestBody UserModel userModel) throws Exception {
-        BlogAction.logger.info("用户：" + userModel.getUserId() + "----获取新通知");
+        BlogAction.logger.info("用户:" + userModel.getUserId() + "----获取新通知");
         ReturnItem<Long> returnItem = new ReturnItem<>();
         returnItem.setT(noticeService.getNewNotice(userModel));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -131,7 +131,7 @@ public class NoticeController {
     @CrossOrigin
     public ReturnItem<Boolean> deleteNotice(@Validated({DeleteGroup.class})
                                             @RequestBody Notice notice) throws Exception {
-        BlogAction.logger.info("企业：" + notice.getCompanyId() + "----删除编号" + notice.getNoticeId() + "通知");
+        BlogAction.logger.info("企业:" + notice.getCompanyId() + "----删除编号" + notice.getNoticeId() + "通知");
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(noticeService.deleteNotice(notice));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);

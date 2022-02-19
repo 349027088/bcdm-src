@@ -2,6 +2,82 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bcdm.foodtraceability.mapper.GoodsMapper">
 
+    <insert id="saveGoodsModel" parameterType="com.bcdm.foodtraceability.entity.GoodsModel" useGeneratedKeys="true" keyProperty="goodsId">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="goodsId">
+            SELECT LAST_INSERT_ID() AS goodsId
+        </selectKey>
+        INSERT INTO ${goodsTableName}
+        (goods_status,
+         goods_level,
+         company_id,
+         goods_type_id,
+         supplier_id,
+         manufacturer_id,
+         goods_name,
+         place_of_production,
+         goods_explain,
+         raw_material,
+         quality_guarantee,
+         manufacture_date,
+         product_icon,
+         update_time,
+         create_time)
+            VALUE ( #{goodsStatus},
+            #{goodsLevel},
+            #{companyId},
+            #{goodsTypeId},
+            #{supplierId},
+            #{manufacturerId},
+            #{goodsName},
+            #{placeOfProduction},
+            #{goodsExplain},
+            #{rawMaterial},
+            #{qualityGuarantee},
+            #{manufactureDate},
+            #{productIcon},
+            #{updateTime},
+            #{createTime}
+            )
+    </insert>
+    <update id="modifyGoodsModel" parameterType="com.bcdm.foodtraceability.entity.GoodsModel">
+        UPDATE
+            ${goodsTableName}
+        SET goods_type_id       = #{goodsTypeId},
+            supplier_id         = #{supplierId},
+            manufacturer_id     = #{manufacturerId},
+            goods_name          = #{goodsName},
+            place_of_production = #{placeOfProduction},
+            goods_explain       = #{goodsExplain},
+            raw_material        = #{rawMaterial},
+            quality_guarantee   = #{qualityGuarantee},
+            manufacture_date    = #{manufactureDate},
+            product_icon        = #{productIcon},
+            update_time         = now()
+        WHERE goods_id = #{goodsId}
+          AND company_id = #{companyId}
+          AND update_time = #{updateTime}
+    </update>
+    <delete id="deleteGoodsModel" parameterType="com.bcdm.foodtraceability.entity.GoodsModel">
+        DELETE
+        FROM ${goodsTableName}
+        WHERE goods_id = #{goodsId}
+          AND company_id = #{companyId}
+    </delete>
+    <select id="countGoodsName" parameterType="com.bcdm.foodtraceability.entity.GoodsModel" resultType="Integer">
+        SELECT COUNT(1)
+        FROM ${goodsTableName}
+        WHERE company_id = #{companyId}
+          AND supplier_id = #{supplierId}
+          AND goods_name = #{goodsName}
+
+    </select>
+    <select id="getGoodsNameByGoodsId" resultType="com.bcdm.foodtraceability.entity.GoodsModel"
+            parameterType="com.bcdm.foodtraceability.entity.GoodsModel">
+        SELECT goods_name AS goodsName
+        FROM ${goodsTableName}
+        WHERE goods_id = #{goodsId}
+        LIMIT 1;
+    </select>
     <select id="selectGoodsPage" resultType="com.bcdm.foodtraceability.entity.GoodsModel"
             parameterType="com.bcdm.foodtraceability.entity.GoodsModel">
         SELECT
@@ -26,7 +102,7 @@
         T5.barcode_number AS barcodeNumber,
         T6.city_name AS placeOfProductionName
         FROM
-        `goods` AS T1
+        ${goodsModel.goodsTableName} AS T1
         INNER JOIN
         `goods_type` AS T2
         ON
@@ -47,7 +123,7 @@
         ON
         T1.place_of_production = T6.city_id
         LEFT JOIN
-        `barcode` AS T5
+        ${goodsModel.barcodeTableName} AS T5
         ON
         T1.goods_id = T5.goods_id
         WHERE T1.company_id = #{goodsModel.companyId}
@@ -71,7 +147,7 @@
         </if>
     </select>
 
-    <select id="checkToInsert" parameterType="com.bcdm.foodtraceability.entity.Goods" resultType="Integer">
+    <select id="checkToInsert" parameterType="com.bcdm.foodtraceability.entity.GoodsModel" resultType="Integer">
         SELECT COUNT(1)
         FROM goods_type AS T1
                  INNER JOIN

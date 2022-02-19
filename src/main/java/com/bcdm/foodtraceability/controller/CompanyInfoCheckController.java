@@ -38,7 +38,7 @@ public class CompanyInfoCheckController {
     @PostMapping("/modifyBusinessLicense")
     @CrossOrigin
     public ReturnItem<Boolean> modifyBusinessLicense(@RequestBody CompanyInfoCheck company) throws Exception {
-        BlogAction.logger.info("用户：" + company.getUserId() + "-----更新" + company.getCompanyId() + "企业的营业执照信息");
+        BlogAction.logger.info("用户:" + company.getUserId() + "-----更新" + company.getCompanyId() + "企业的营业执照信息");
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(companyInfoCheckService.modifyBusinessLicense(company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -56,7 +56,7 @@ public class CompanyInfoCheckController {
     @PostMapping("/modifyHealthPermit")
     @CrossOrigin
     public ReturnItem<Boolean> modifyHealthPermit(@RequestBody CompanyInfoCheck company) throws Exception {
-        BlogAction.logger.info("用户：" + company.getUserId() + "-----更新" + company.getCompanyId() + "企业的经营许可证信息");
+        BlogAction.logger.info("用户:" + company.getUserId() + "-----更新" + company.getCompanyId() + "企业的经营许可证信息");
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(companyInfoCheckService.modifyHealthPermit(company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);

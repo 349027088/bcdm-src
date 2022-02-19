@@ -42,7 +42,7 @@ public class SupplierController {
     @CrossOrigin
     public ReturnItem<IPage<Supplier>> getSupplierList(@RequestBody String selectInfo) throws Exception {
         SelectPageEntity<Supplier> selectPageEntity = new SelectPageEntity<>(selectInfo);
-        BlogAction.logger.info("企业" + selectPageEntity.getCompanyId() + "-----获取所有供应商信息");
+        BlogAction.logger.info("企业:" + selectPageEntity.getCompanyId() + "-----获取所有供应商信息");
         ReturnItem<IPage<Supplier>> returnItem = new ReturnItem<>();
         returnItem.setT(supplierService.getSupplierList(selectPageEntity));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -61,7 +61,7 @@ public class SupplierController {
     @CrossOrigin
     public ReturnItem<Supplier> getSupplierById(@Validated({GetInfoGroup.class})
                                                 @RequestBody Supplier supplier) throws Exception {
-        BlogAction.logger.info("企业" + supplier.getCompanyId() + "-----获取编号:" + supplier.getSupplierId() + "的供应商信息");
+        BlogAction.logger.info("企业:" + supplier.getCompanyId() + "-----获取编号:" + supplier.getSupplierId() + "的供应商信息");
         ReturnItem<Supplier> returnItem = new ReturnItem<>();
         returnItem.setT(supplierService.getSupplierById(supplier));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -80,7 +80,7 @@ public class SupplierController {
     @CrossOrigin
     public ReturnItem<Boolean> create(@Validated({CreateGroup.class})
                                       @RequestBody Supplier supplier) throws Exception {
-        BlogAction.logger.info("企业" + supplier.getCompanyId() + "-----添加供应商:" + supplier.getSupplierName());
+        BlogAction.logger.info("企业:" + supplier.getCompanyId() + "-----添加供应商:" + supplier.getSupplierName());
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(supplierService.createSupplier(supplier));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -99,7 +99,7 @@ public class SupplierController {
     @CrossOrigin
     public ReturnItem<Boolean> modify(@Validated({ModifyGroup.class})
                                       @RequestBody Supplier supplier) throws Exception {
-        BlogAction.logger.info("企业" + supplier.getCompanyId() + "-----修改供应商:" + supplier.getSupplierId() + "-----名称:" + supplier.getSupplierName());
+        BlogAction.logger.info("企业:" + supplier.getCompanyId() + "-----修改供应商:" + supplier.getSupplierId() + "-----名称:" + supplier.getSupplierName());
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(supplierService.modifySupplier(supplier));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -118,7 +118,7 @@ public class SupplierController {
     @CrossOrigin
     public ReturnItem<Boolean> delete(@Validated({DeleteGroup.class})
                                       @RequestBody Supplier supplier) throws Exception {
-        BlogAction.logger.info("企业" + supplier.getCompanyId() + "-----删除供应商:" + supplier.getSupplierName());
+        BlogAction.logger.info("企业:" + supplier.getCompanyId() + "-----删除供应商:" + supplier.getSupplierName());
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(supplierService.deleteSupplier(supplier));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);

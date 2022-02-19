@@ -14,16 +14,32 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = false)
 public class GoodsModel {
 
+    public void setGoodsModel() {
+        String bufferString = this.companyId + "";
+        setGoodsTableName("goods_" + bufferString.substring(bufferString.length() - 1));
+        setBarcodeTableName("barcode_" + bufferString.substring(bufferString.length() - 1));
+    }
+
     /**
      * 商品ID
      */
-    @NotNull(message = "没有需要查询的商品信息",groups = {GetInfoGroup.class})
+    @NotNull(message = "没有需要查询的商品信息", groups = {GetInfoGroup.class})
     private Integer goodsId;
 
     /**
      * 商品状态
      */
     private Integer goodsStatus;
+
+    /**
+     * goods表名
+     */
+    private String goodsTableName;
+
+    /**
+     * barcode表名
+     */
+    private String barcodeTableName;
 
     /**
      * 商品级别
@@ -109,6 +125,9 @@ public class GoodsModel {
      * 商品图片
      */
     private String productIcon;
+
+
+    private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
 }

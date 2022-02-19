@@ -80,7 +80,7 @@ public class ManufacturerController {
     @CrossOrigin
     public ReturnItem<Boolean> create(@Validated({CreateGroup.class})
                                       @RequestBody Manufacturer manufacturer) throws Exception {
-        BlogAction.logger.info("企业" + manufacturer.getCompanyId() + "-----创建新生产厂商:" + manufacturer.getManufacturerName());
+        BlogAction.logger.info("企业:" + manufacturer.getCompanyId() + "-----创建新生产厂商:" + manufacturer.getManufacturerName());
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(manufacturerService.createManufacturer(manufacturer));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -99,7 +99,7 @@ public class ManufacturerController {
     @CrossOrigin
     public ReturnItem<Boolean> modify(@Validated(ModifyGroup.class)
                                       @RequestBody Manufacturer manufacturer) throws Exception {
-        BlogAction.logger.info("企业" + manufacturer.getCompanyId() + "-----修改生产厂商编号:" + manufacturer.getManufacturerId() + "-----名称:" + manufacturer.getManufacturerName());
+        BlogAction.logger.info("企业:" + manufacturer.getCompanyId() + "-----修改生产厂商编号:" + manufacturer.getManufacturerId() + "-----名称:" + manufacturer.getManufacturerName());
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(manufacturerService.modifyManufacturer(manufacturer));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -118,7 +118,7 @@ public class ManufacturerController {
     @CrossOrigin
     public ReturnItem<Boolean> delete(@Validated(DeleteGroup.class)
                                       @RequestBody Manufacturer manufacturer) throws Exception {
-        BlogAction.logger.info("企业" + manufacturer.getCompanyId() + "-----删除生产厂商:" + manufacturer.getManufacturerName());
+        BlogAction.logger.info("企业:" + manufacturer.getCompanyId() + "-----删除生产厂商:" + manufacturer.getManufacturerName());
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(manufacturerService.deleteManufacturer(manufacturer));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);

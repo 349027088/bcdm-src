@@ -39,7 +39,7 @@ public class CityController {
     @PostMapping("/get")
     @CrossOrigin
     public ReturnItem<List<CityModel>> getCityList(@RequestBody String selectInfo) throws Exception {
-        BlogAction.logger.info("企业"+ JSONObject.parseObject(selectInfo).getInteger("companyId") +"----获取城市信息列表");
+        BlogAction.logger.info("企业:"+ JSONObject.parseObject(selectInfo).getInteger("companyId") +"----获取城市信息列表");
         ReturnItem<List<CityModel>> returnItem = new ReturnItem<>();
         returnItem.setT(cityService.getCityList());
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);

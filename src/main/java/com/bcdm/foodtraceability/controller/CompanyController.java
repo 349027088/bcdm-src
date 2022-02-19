@@ -47,7 +47,7 @@ public class CompanyController {
     @CrossOrigin
     public ReturnItem<IPage<Company>> getCompanyList(@RequestBody String selectInfo) throws Exception {
         SelectPageEntity<Company> selectPageEntity = new SelectPageEntity<>(selectInfo);
-        BlogAction.logger.info("管理员" + selectPageEntity.getUserId() + "-----获取指定的企业信息");
+        BlogAction.logger.info("管理员:" + selectPageEntity.getUserId() + "-----获取指定的企业信息");
         ReturnItem<IPage<Company>> returnItem = new ReturnItem<>();
         returnItem.setT(companyService.getCompanyList(selectPageEntity));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -66,7 +66,7 @@ public class CompanyController {
     @CrossOrigin
     public ReturnItem<Company> register(@Validated({RegisterGroup.class})
                                         @RequestBody Company company) throws Exception {
-        BlogAction.logger.info("用户" + company.getUserId() + "-----创建新的企业");
+        BlogAction.logger.info("用户:" + company.getUserId() + "-----创建新的企业");
         ReturnItem<Company> returnItem = new ReturnItem<>();
         returnItem.setT(companyService.register(company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -84,7 +84,7 @@ public class CompanyController {
     @PostMapping("/modify")
     @CrossOrigin
     public ReturnItem<Company> modify(@RequestBody Company company) throws Exception {
-        BlogAction.logger.info("用户：" + company.getUserId() + "-----修改" + company.getCompanyId() + "企业的信息修改");
+        BlogAction.logger.info("用户:" + company.getUserId() + "-----修改" + company.getCompanyId() + "企业的信息修改");
         ReturnItem<Company> returnItem = new ReturnItem<>();
         returnItem.setT(companyService.modify(company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -105,7 +105,7 @@ public class CompanyController {
         JSONObject jsonObject = JSONObject.parseObject(modifyInfo);
         String managementId = jsonObject.getString("managementId");
         Company company = jsonObject.getObject("company",Company.class);
-        BlogAction.logger.info("管理员" + managementId + "-----更新" + company.getCompanyId() + "企业的营业执照信息");
+        BlogAction.logger.info("管理员:" + managementId + "-----更新" + company.getCompanyId() + "企业的营业执照信息");
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(companyService.modifyBusinessLicense(managementId,company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -126,7 +126,7 @@ public class CompanyController {
         JSONObject jsonObject = JSONObject.parseObject(modifyInfo);
         String managementId = jsonObject.getString("managementId");
         Company company = jsonObject.getObject("company",Company.class);
-        BlogAction.logger.info("管理员" + managementId + "-----更新" + company.getCompanyId() + "企业的经营许可证信息");
+        BlogAction.logger.info("管理员:" + managementId + "-----更新" + company.getCompanyId() + "企业的经营许可证信息");
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(companyService.modifyHealthPermit(managementId,company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -145,7 +145,7 @@ public class CompanyController {
     @CrossOrigin
     public ReturnItem<IPage<UserModel>> getUserByCompany(@RequestBody String selectInfo) throws Exception {
         SelectPageEntity<UserModel> selectPageEntity = new SelectPageEntity<>(selectInfo);
-        BlogAction.logger.info("用户" + selectPageEntity.getUserId() + "-----获取" + selectPageEntity.getCompanyId() + "企业的员工信息");
+        BlogAction.logger.info("用户:" + selectPageEntity.getUserId() + "-----获取" + selectPageEntity.getCompanyId() + "企业的员工信息");
         ReturnItem<IPage<UserModel>> returnItem = new ReturnItem<>();
         returnItem.setT(userService.getUserByCompany(selectPageEntity));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -164,7 +164,7 @@ public class CompanyController {
     @CrossOrigin
     public ReturnItem<Company> getCompanyInfo(@Validated({CreateGroup.class})
                                               @RequestBody Company company) throws Exception {
-        BlogAction.logger.info("获取-----" + company.getCompanyId() + "企业的信息");
+        BlogAction.logger.info("获取企业:" + company.getCompanyId() + "-----的信息");
         ReturnItem<Company> returnItem = new ReturnItem<>();
         returnItem.setT(companyService.getCompanyInfo(company));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);

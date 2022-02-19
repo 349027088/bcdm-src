@@ -1,5 +1,6 @@
 package com.bcdm.foodtraceability.controller;
 
+import com.bcdm.foodtraceability.configuration.BlogAction;
 import com.bcdm.foodtraceability.entity.ModifyPassword;
 import com.bcdm.foodtraceability.entity.ReturnItem;
 import com.bcdm.foodtraceability.entity.User;
@@ -44,6 +45,7 @@ public class UserController {
     @CrossOrigin
     public ReturnItem<User> register(@Validated({RegisterGroup.class})
                                      @RequestBody User user) throws Exception {
+        BlogAction.logger.info("新用户账号:" + user.getLoginId() + "-----注册");
         ReturnItem<User> returnItem = new ReturnItem<>();
         returnItem.setT(userService.register(user));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -62,6 +64,7 @@ public class UserController {
     @CrossOrigin
     public ReturnItem<Map<String,Object>> login(@Validated({GetInfoGroup.class})
                                   @RequestBody User user) throws Exception {
+        BlogAction.logger.info("账号:" + user.getLoginId() + "-----用户登录");
         ReturnItem<Map<String,Object>> returnItem = new ReturnItem<>();
         returnItem.setT(userService.login(user));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -80,6 +83,7 @@ public class UserController {
     @CrossOrigin
     public ReturnItem<User> modify(@Validated({ModifyGroup.class})
                                    @RequestBody User user) throws Exception {
+        BlogAction.logger.info("用户:" + user.getUserId() + "-----修改个人信息");
         ReturnItem<User> returnItem = new ReturnItem<>();
         returnItem.setT(userService.modifyUserInfo(user));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -98,6 +102,7 @@ public class UserController {
     @CrossOrigin
     public ReturnItem<User> modifyPassword(@Validated({ModifyGroup.class})
                                            @RequestBody ModifyPassword userLoginInfo) throws Exception {
+        BlogAction.logger.info("账号:" + userLoginInfo.getLoginId() + "-----修改密码");
         ReturnItem<User> returnItem = new ReturnItem<>();
         returnItem.setT(userService.modifyPassword(userLoginInfo));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);

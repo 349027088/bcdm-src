@@ -35,7 +35,7 @@ public class GoodsController {
      * 获取公司的所有商品信息
      *
      * @param selectInfo 需要获取商品列表的企业
-     * @return 获取商品种类列表
+     * @return 获取商品列表
      */
     @PostMapping("/getGoodsList")
     @CrossOrigin
@@ -43,7 +43,7 @@ public class GoodsController {
         SelectPageEntity<GoodsModel> selectPageEntity = new SelectPageEntity<>(selectInfo);
         JSONObject selectPageInfo = JSONObject.parseObject(selectInfo);
         selectPageEntity.setSelectInfo(selectPageInfo.getObject("goods", GoodsModel.class));
-        BlogAction.logger.info("企业" + selectPageEntity.getCompanyId() + "-----获取商品信息");
+        BlogAction.logger.info("企业:" + selectPageEntity.getCompanyId() + "-----获取商品信息");
         ReturnItem<IPage<GoodsModel>> returnItem = new ReturnItem<>();
         returnItem.setT(goodsService.getGoodsListByCompany(selectPageEntity));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -52,16 +52,16 @@ public class GoodsController {
     }
 
     /**
-     * 增加商品种类信息Controller
+     * 增加商品信息Controller
      *
-     * @param goods 需要添加的供应想信息
+     * @param goods 需要添加的商品信息
      * @return true 创建成功
-     * @throws Exception 增加供应商失败
+     * @throws Exception 增加商品信息失败
      */
     @PostMapping("/create")
     @CrossOrigin
-    public ReturnItem<Boolean> create(@RequestBody Goods goods) throws Exception {
-        BlogAction.logger.info("企业" + goods.getCompanyId() + "-----添加" + goods.getGoodsName() + "商品信息");
+    public ReturnItem<Boolean> create(@RequestBody GoodsModel goods) throws Exception {
+        BlogAction.logger.info("企业:" + goods.getCompanyId() + "-----添加" + goods.getGoodsName() + "商品信息");
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(goodsService.createGoods(goods));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -78,8 +78,8 @@ public class GoodsController {
      */
     @PostMapping("/modify")
     @CrossOrigin
-    public ReturnItem<Boolean> modify(@RequestBody Goods goods) throws Exception {
-        BlogAction.logger.info("企业" + goods.getCompanyId() + "-----修改编号" + goods.getGoodsId() + "商品信息" );
+    public ReturnItem<Boolean> modify(@RequestBody GoodsModel goods) throws Exception {
+        BlogAction.logger.info("企业:" + goods.getCompanyId() + "-----修改编号" + goods.getGoodsId() + "商品信息" );
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(goodsService.modifyGoods(goods));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);
@@ -96,8 +96,8 @@ public class GoodsController {
      */
     @PostMapping("/delete")
     @CrossOrigin
-    public ReturnItem<Boolean> delete(@RequestBody Goods goods) throws Exception {
-        BlogAction.logger.info("企业" + goods.getCompanyId() + "-----删除编号" + goods.getGoodsId() + "商品信息" );
+    public ReturnItem<Boolean> delete(@RequestBody GoodsModel goods) throws Exception {
+        BlogAction.logger.info("企业:" + goods.getCompanyId() + "-----删除编号" + goods.getGoodsId() + "商品信息" );
         ReturnItem<Boolean> returnItem = new ReturnItem<>();
         returnItem.setT(goodsService.deleteGoods(goods));
         returnItem.setHttpStatus(HTTP_RETURN_SUCCESS);

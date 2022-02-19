@@ -32,7 +32,7 @@ public interface GoodsService extends IService<Goods> {
      * @return 创建成功的商品
      * @throws Exception 创建商品失败
      */
-    Boolean createGoods(Goods goods) throws Exception;
+    Boolean createGoods(GoodsModel goods) throws Exception;
 
     /**
      * 需要修改的商品信息
@@ -41,7 +41,7 @@ public interface GoodsService extends IService<Goods> {
      * @return 修改成功的商品信息
      * @throws Exception 修改商品信息失败
      */
-    Boolean modifyGoods(Goods goods) throws Exception;
+    Boolean modifyGoods(GoodsModel goods) throws Exception;
 
     /**
      * 删除一个商品信息
@@ -49,6 +49,6 @@ public interface GoodsService extends IService<Goods> {
      * @return 删除是否成功
      * @throws Exception 删除信息失败
      */
-    boolean deleteGoods(Goods goods) throws Exception;
+    Boolean deleteGoods(GoodsModel goods) throws Exception;
 
 }
